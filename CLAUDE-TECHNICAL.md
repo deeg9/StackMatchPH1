@@ -2,6 +2,17 @@
 
 This file contains technical implementation details, API documentation, and development patterns for the StackMatch project. For project overview and business context, see [CLAUDE.md](./CLAUDE.md).
 
+## Phase 1 Go-to-Market Focus
+
+**Current Implementation**: Phase 1 - AI-powered RFQ creation tool with single-player utilities
+
+### Phase 1 Technical Architecture
+- **Core Feature**: AI-powered RFQ builder using TurboTax-style workflow
+- **Utility Features**: StackTalk forum, Browse Vendors (read-only), My Tech Stack management
+- **Hidden Features**: Marketplace transactions, deal rooms, proposals (showing "Coming Soon")
+- **Navigation**: Simplified 3-item navigation (Dashboard, Browse Vendors, StackTalk)
+- **Messaging**: Positioned as "RFQ creation tool" rather than "marketplace"
+
 ## Tech Stack & Architecture
 
 ### Frontend Framework
@@ -27,13 +38,16 @@ This file contains technical implementation details, API documentation, and deve
 
 ### Environment Variables (.env.local)
 ```
-SUPABASE_URL=https://lnxceojnwkrmxxsulorp.supabase.co
-NEXT_PUBLIC_SUPABASE_URL=https://lnxceojnwkrmxxsulorp.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxueGNlb2pud2tybXh4c3Vsb3JwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Njg3MDMsImV4cCI6MjA2NDA0NDcwM30.UenPulAasBe_LmMB8faIpDwtMtuMfpfvhckdm1i00u8
-NEXT_PUBLIC_SUPABASE_ANON_KEY=[same as above]
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxueGNlb2pud2tybXh4c3Vsb3JwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODQ2ODcwMywiZXhwIjoyMDY0MDQ0NzAzfQ.6Tp3K2xtSlNnhlgiKjAEjP6bJhsCoON4C17qrP8IJZM
-SUPABASE_JWT_SECRET=bUzXJLa070qPjdfaN0Svr8ogMWTay55HG7AHHMBNhfJBjIPwO2Wa/GL2wSBXxRy1gTlGwhGa53WSoJQcuXJmOw==
+# IMPORTANT: All environment variables use StackMatch_ prefix
+StackMatch_SUPABASE_URL=https://sgitnzeilyytxofqlhrd.supabase.co
+StackMatch_NEXT_PUBLIC_SUPABASE_URL=https://sgitnzeilyytxofqlhrd.supabase.co
+StackMatch_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnaXRuemVpbHl5dHhvZnFsaHJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcyMzE5NjksImV4cCI6MjA1MjgwNzk2OX0.2EGTQRGDhusQqOLQhTQJ0i-AiT5sLNL3vXLagTaU_D8
+StackMatch_NEXT_PUBLIC_SUPABASE_ANON_KEY=[same as above]
+StackMatch_SUPABASE_SERVICE_ROLE_KEY=[your service role key]
+StackMatch_SUPABASE_JWT_SECRET=[your JWT secret]
 ```
+
+> **Note**: For Vercel deployment, ensure all environment variables are prefixed with `StackMatch_` to match the production configuration.
 
 ### Database Schema & Enums (Critical for Development)
 
@@ -295,6 +309,14 @@ if (error || !user) {
 - **Type Safety**: TypeScript throughout prevents data structure errors
 
 ## Testing Credentials
+
+### Phase 1 Development Database
+The project has been migrated to a new Supabase instance for Phase 1 development:
+
+- **Project URL**: https://sgitnzeilyytxofqlhrd.supabase.co
+- **Test User**: Create using the SQL scripts in the deployment section
+
+### Legacy Database (Reference Only)
 - **Buyer**: christopherfill9@gmail.com / 123456 (Christopher Fill, StackMatch)
 - **Seller**: bigdfill@gmail.com / [password] (Diego Fill, BiltLocal)
 
@@ -475,13 +497,20 @@ if (error || !user) {
   - **Spread Operator Safety**: Type checking for object spread operations
 
 ## Next Technical Priorities
+
+### Phase 1 Priorities
+1. **RFQ PDF Export**: Generate downloadable RFQs from AI-created listings
+2. **User Onboarding Flow**: Streamlined registration focused on RFQ creation
+3. **StackTalk Enhancement**: Community features for procurement discussions
+4. **Analytics Integration**: Track RFQ creation and utility feature usage
+5. **SEO Optimization**: Landing pages for RFQ creation keywords
+
+### Phase 2/3 Features (Deferred)
 1. **eSignature Backend Integration**: API endpoints for document signing workflow
 2. **Deal Room APIs**: Real-time messaging and collaboration
-3. **File Upload System**: Drag-and-drop with progress tracking
+3. **Marketplace Transactions**: Proposal submission and vendor matching
 4. **Calendar Sync APIs**: Google Calendar/Outlook integration
 5. **Real-time Features**: WebSocket subscriptions for live updates
-6. **Search Infrastructure**: Full-text search implementation
-7. **Analytics Pipeline**: Event tracking and reporting
 
 ## API Development Guidelines
 - Always validate user authentication
@@ -492,6 +521,14 @@ if (error || !user) {
 - Test with both user types (buyer/seller)
 
 ## Component Development Guidelines
+
+### Phase 1 Guidelines
+- **Coming Soon Pages**: Use consistent design for features deferred to Phase 2/3
+- **Navigation Simplification**: Show only Phase 1 features in navigation
+- **Messaging Consistency**: Focus on "RFQ creation" rather than "marketplace"
+- **Responsive Priority**: Ensure excellent mobile experience for utility features
+
+### General Guidelines
 - Use TypeScript interfaces for all props
 - Implement loading and error states
 - Follow StackMatch design system
@@ -500,6 +537,55 @@ if (error || !user) {
 - Test with keyboard navigation
 - Use SidebarWidget component for all sidebar portlets
 - Maintain consistent bold navy titles (#1A2B4C) across UI
+
+## Phase 1 Deployment Notes
+
+### Environment Variable Configuration
+When deploying to Vercel or other hosting platforms:
+
+1. **Use StackMatch_ Prefix**: All environment variables must be prefixed with `StackMatch_`
+2. **Required Variables**:
+   - `StackMatch_SUPABASE_URL`
+   - `StackMatch_NEXT_PUBLIC_SUPABASE_URL`
+   - `StackMatch_SUPABASE_ANON_KEY`
+   - `StackMatch_NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+### Database Setup
+For new Supabase instances, create the minimal tables needed for Phase 1:
+
+```sql
+-- Create profiles table
+CREATE TABLE profiles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email TEXT UNIQUE NOT NULL,
+    full_name TEXT,
+    user_type TEXT CHECK (user_type IN ('buyer', 'seller')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create test user
+INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at)
+VALUES (
+    '1cae22cb-1311-48ca-9caa-47d474c0a20e',
+    'test@stackmatch.com',
+    crypt('password123', gen_salt('bf')),
+    NOW()
+);
+
+INSERT INTO profiles (id, email, full_name, user_type)
+VALUES (
+    '1cae22cb-1311-48ca-9caa-47d474c0a20e',
+    'test@stackmatch.com',
+    'Test User',
+    'buyer'
+);
+```
+
+### Navigation Configuration
+- **Desktop**: Shows 3 main navigation items at medium breakpoint (md:flex)
+- **Mobile**: Hamburger menu with same 3 items
+- **Loading State**: Shows skeleton navigation during auth check
+- **Fallback User**: Default buyer navigation if not authenticated
 
 ---
 
