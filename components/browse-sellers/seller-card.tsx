@@ -202,13 +202,6 @@ export function SellerCard({ seller }: SellerCardProps) {
             </Button>
           </div>
           
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full text-trust-green border-trust-green hover:bg-trust-green hover:text-white transition-all"
-          >
-            Request Quote
-          </Button>
         </div>
 
         {/* Availability Status */}

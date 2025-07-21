@@ -320,7 +320,7 @@ export default function FinalApproval({ rfqData, categoryName, onSubmit, onBack,
           ) : (
             <div className="flex items-center space-x-2">
               <Send className="h-5 w-5" />
-              <span>Submit Listing to Marketplace</span>
+              <span>Save RFQ</span>
             </div>
           )}
         </Button>

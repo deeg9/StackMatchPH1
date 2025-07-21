@@ -1,5 +1,7 @@
 'use client'
 
+import { downloadRFQPDF } from '@/lib/rfq-pdf-generator'
+
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -33,8 +35,6 @@ interface ListingCardProps {
     datePosted: string
     proposalDeadline: string
     views: number
-    proposalsReceived: number
-    dealRoomsCreated: number
     budgetRange?: string
     description?: string
   }
@@ -140,45 +140,50 @@ export function ListingCard({ listing }: ListingCardProps) {
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-attention-orange" />
             <div>
-              <p className="text-xs text-medium-gray">Proposal Deadline</p>
+              <p className="text-xs text-medium-gray">RFQ Deadline</p>
               <p className="text-sm font-medium text-charcoal">{listing.proposalDeadline}</p>
             </div>
           </div>
         </div>
 
         {/* Engagement Metrics */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-            <Eye className="h-4 w-4 text-information-blue" />
-            <div>
-              <p className="text-sm font-semibold text-charcoal">{listing.views}</p>
-              <p className="text-xs text-medium-gray">Views</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-            <MessageCircle className="h-4 w-4 text-trust-green" />
-            <div>
-              <p className="text-sm font-semibold text-charcoal">{listing.proposalsReceived}</p>
-              <p className="text-xs text-medium-gray">Proposals</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-            <Users className="h-4 w-4 text-stackmatch-blue" />
-            <div>
-              <p className="text-sm font-semibold text-charcoal">{listing.dealRoomsCreated}</p>
-              <p className="text-xs text-medium-gray">Deal Rooms</p>
-            </div>
+        <div className="flex items-center gap-2 p-3 mb-6 bg-slate-50 rounded-lg">
+          <Eye className="h-4 w-4 text-information-blue" />
+          <div>
+            <p className="text-sm font-semibold text-charcoal">{listing.views}</p>
+            <p className="text-xs text-medium-gray">Views</p>
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Link href={`/listings/${listing.id}`} className="flex-1">
-            <Button className="w-full bg-stackmatch-blue hover:bg-stackmatch-navy text-white">
-              <ExternalLink className="h-4 w-4 mr-2" />
-              View Listing
-            </Button>
-          </Link>
+          <Button 
+            className="flex-1 bg-stackmatch-blue hover:bg-stackmatch-navy text-white"
+            onClick={() => {
+              // Mock RFQ data for download
+              const rfqData = {
+                title: listing.title,
+                category: listing.category,
+                company: 'Your Company', // This would come from user profile
+                coreRequirements: {
+                  employeeCount: '100-500',
+                  features: ['Feature 1', 'Feature 2'],
+                  integrations: ['Integration 1']
+                },
+                budget: {
+                  range: listing.budgetRange || 'Not specified'
+                },
+                timeline: {
+                  startDate: listing.datePosted,
+                  implementationDeadline: listing.proposalDeadline
+                }
+              }
+              downloadRFQPDF(rfqData)
+            }}
+          >
+            <ExternalLink className="h-4 w-4 mr-2" />
+            Download RFQ
+          </Button>
           <Link href={`/listings/${listing.id}/edit`}>
             <Button variant="outline" className="hover:bg-slate-50">
               <Edit className="h-4 w-4 mr-2" />

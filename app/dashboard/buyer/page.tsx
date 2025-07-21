@@ -15,14 +15,13 @@ import Link from "next/link"
 import { TickerBanner } from "@/components/ticker/ticker-banner"
 import { NavigationWrapper } from '@/components/navigation/navigation-wrapper'
 import { BuyerDashboardSidebar } from '@/components/dashboard/buyer-dashboard-sidebar'
-import { RecentListingsPortlet, RecentProposalsPortlet } from '@/components/dashboard/portlets'
+import { RecentListingsPortlet } from '@/components/dashboard/portlets'
 import { KPICard } from '@/components/shared/kpi-card'
 import { cn } from "@/lib/utils"
 
 // Type definitions for API responses
 interface DashboardStats {
   activeListings: number
-  totalProposals: number
   completedProjects: number
   successRate: number
   totalInvested: number
@@ -39,16 +38,6 @@ interface Listing {
   proposalCount: number
 }
 
-interface Proposal {
-  id: string
-  sellerName: string
-  sellerAvatar: string | null
-  proposedBudget: number
-  listingTitle: string
-  status: string
-  submittedAt: string
-}
-
 interface UserProfile {
   id: string
   email: string
@@ -62,7 +51,6 @@ export default function BuyerDashboard() {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [statsLoading, setStatsLoading] = useState(true)
   const [listingsLoading, setListingsLoading] = useState(true)
-  const [proposalsLoading, setProposalsLoading] = useState(true)
   const [profileLoading, setProfileLoading] = useState(true)
   const [calendarView, setCalendarView] = useState<'day' | 'week' | 'month'>('week')
   interface Reminder {
@@ -75,9 +63,9 @@ export default function BuyerDashboard() {
   }
 
   const [reminders, setReminders] = useState<Reminder[]>([
-    { id: 1, text: 'Sign Master Service Agreement', completed: false, dueDate: '2024-02-05', link: '/deal-rooms/DR-001/documents', isSmartReminder: true },
-    { id: 2, text: 'Salesforce renewal approaching', completed: false, dueDate: '2024-02-15', link: '#tech-stack', isSmartReminder: true },
-    { id: 3, text: 'Review new proposal from CRM Experts', completed: false, dueDate: '2024-02-03', link: '/proposals/PR-003', isSmartReminder: true },
+    { id: 1, text: 'Complete RFQ for new analytics platform', completed: false, dueDate: '2024-02-05', link: '/create-listing', isSmartReminder: true },
+    { id: 2, text: 'Salesforce renewal approaching', completed: false, dueDate: '2024-02-15', link: '/my-tech-stack', isSmartReminder: true },
+    { id: 3, text: 'Research vendors for HR system upgrade', completed: false, dueDate: '2024-02-03', link: '/browse-sellers', isSmartReminder: true },
     { id: 4, text: 'Schedule quarterly software review', completed: false, dueDate: '2024-02-20', isSmartReminder: false },
     { id: 5, text: 'Complete security assessment for new vendor', completed: true, dueDate: '2024-01-30', isSmartReminder: false }
   ])
@@ -85,13 +73,11 @@ export default function BuyerDashboard() {
   
   const [stats, setStats] = useState<DashboardStats>({
     activeListings: 0,
-    totalProposals: 0,
     completedProjects: 0,
     successRate: 0,
     totalInvested: 0
   })
   const [listings, setListings] = useState<Listing[]>([])
-  const [proposals, setProposals] = useState<Proposal[]>([])
   const [profile, setProfile] = useState<UserProfile | null>(null)
 
   useEffect(() => {
@@ -125,20 +111,6 @@ export default function BuyerDashboard() {
       // }
     }
 
-    // Fetch recent proposals - COMMENTED OUT FOR UI/UX DESIGN
-    const fetchProposals = async () => {
-      // try {
-      //   const response = await fetch('/api/dashboard/buyer/proposals')
-      //   if (response.ok) {
-      //     const data = await response.json()
-      //     setProposals(data)
-      //   }
-      // } catch (error) {
-      //   console.error('Error fetching proposals:', error)
-      // } finally {
-        setProposalsLoading(false)
-      // }
-    }
 
     // Fetch user profile
     const fetchProfile = async () => {
@@ -157,7 +129,6 @@ export default function BuyerDashboard() {
 
     fetchStats()
     fetchListings()
-    fetchProposals()
     fetchProfile()
   }, [])
 
@@ -183,9 +154,9 @@ export default function BuyerDashboard() {
 
   // Mock calendar events
   const calendarEvents = [
-    { id: 1, title: 'Deal Room Meeting: CRM Implementation', time: '10:00 AM', isStackMatch: true, date: '2024-02-01' },
+    { id: 1, title: 'RFQ Deadline: Analytics Platform', time: '10:00 AM', isStackMatch: true, date: '2024-02-01' },
     { id: 2, title: 'Team Standup', time: '11:00 AM', isStackMatch: false, date: '2024-02-01' },
-    { id: 3, title: 'Vendor Demo: Analytics Platform', time: '2:00 PM', isStackMatch: true, date: '2024-02-01' },
+    { id: 3, title: 'Software Budget Review', time: '2:00 PM', isStackMatch: true, date: '2024-02-01' },
     { id: 4, title: 'Quarterly Business Review', time: '3:30 PM', isStackMatch: false, date: '2024-02-02' },
     { id: 5, title: 'Contract Review: E-commerce Platform', time: '9:00 AM', isStackMatch: true, date: '2024-02-02' }
   ]
@@ -239,11 +210,11 @@ export default function BuyerDashboard() {
           />
 
           <KPICard
-            title="Total Proposals Received"
-            value={statsLoading ? '...' : '3'}
-            subtitle="+1 more than last week"
-            trend={{ value: '+33%', direction: 'up' }}
-            icon={Activity}
+            title="Vendors Researched"
+            value={statsLoading ? '...' : '12'}
+            subtitle="+5 more than last month"
+            trend={{ value: '+42%', direction: 'up' }}
+            icon={Users}
             color="text-trust-green"
             bgColor="bg-trust-green/10"
             borderColor="hover:border-trust-green"
@@ -290,14 +261,37 @@ export default function BuyerDashboard() {
             createLink="/create-listing"
           />
 
-          {/* Recent Proposals */}
-          <RecentProposalsPortlet
-            proposals={proposals}
-            loading={proposalsLoading}
-            viewAllLink="/proposals"
-            emptyMessage="No proposals received yet"
-            emptySubMessage="Create listings to start receiving proposals from sellers"
-          />
+          {/* Vendor Research */}
+          <Card className="border-2 hover:border-[#4A73CC] transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-xl font-semibold text-[#1A2B4C]">Vendor Research</CardTitle>
+              <Link href="/browse-sellers">
+                <Button variant="ghost" size="sm" className="text-[#4A73CC] hover:text-[#1A2B4C]">
+                  Browse All
+                  <ArrowRight className="h-4 w-4 ml-1" />
+                </Button>
+              </Link>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="text-center py-8">
+                <Users className="h-12 w-12 text-[#4A73CC] mx-auto mb-4" />
+                <p className="text-lg font-semibold text-[#1A2B4C] mb-2">Discover Software Vendors</p>
+                <p className="text-sm text-[#6B7280] mb-6">
+                  Research and compare vendors before creating your RFQ
+                </p>
+                <div className="space-y-3">
+                  <Link href="/browse-sellers">
+                    <Button className="w-full bg-[#4A73CC] hover:bg-[#1A2B4C] text-white">
+                      Browse Vendors
+                    </Button>
+                  </Link>
+                  <p className="text-xs text-[#6B7280]">
+                    Access 500+ verified B2B software vendors
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
             </div>
 
             {/* Row 3: Calendar (Full-width) */}

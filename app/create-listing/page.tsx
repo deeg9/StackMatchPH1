@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { downloadRFQPDF } from '@/lib/rfq-pdf-generator'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -206,8 +207,8 @@ const steps = [
   },
   {
     id: 4,
-    title: 'Review & Submit',
-    description: 'Review your listing and publish',
+    title: 'Review & Save',
+    description: 'Review your RFQ and save',
     estimatedTime: '2-3 min'
   }
 ]
@@ -489,12 +490,38 @@ export default function CreateListingPage() {
             <CheckCircle className="h-12 w-12 text-white" />
           </div>
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold text-[#1A2B4C]">Listing Submitted Successfully!</h1>
+            <h1 className="text-4xl font-bold text-[#1A2B4C]">RFQ Saved Successfully!</h1>
             <p className="text-xl text-[#6B7280]">
-              Your RFQ has been published to the StackMatch marketplace. You'll start receiving proposals within 48-72 hours.
+              Your RFQ has been saved. You can download it as a PDF or share it with vendors directly.
             </p>
-            <p className="text-sm text-[#6B7280]">
-              Redirecting to your dashboard...
+            <div className="flex gap-4 justify-center mt-6">
+              <Button 
+                size="lg"
+                className="bg-[#4A73CC] hover:bg-[#1A2B4C] text-white"
+                onClick={() => {
+                  if (aiGeneratedRFQ) {
+                    downloadRFQPDF({
+                      title: aiGeneratedRFQ.title,
+                      category: selectedCategory?.name || '',
+                      company: 'Your Company', // This would come from user profile
+                      ...aiGeneratedRFQ
+                    })
+                  }
+                }}
+              >
+                <FileText className="h-5 w-5 mr-2" />
+                Download RFQ
+              </Button>
+              <Button 
+                size="lg"
+                variant="outline"
+                onClick={() => window.location.href = '/my-listings'}
+              >
+                Go to My Listings
+              </Button>
+            </div>
+            <p className="text-sm text-[#6B7280] mt-4">
+              Redirecting to your dashboard in 5 seconds...
             </p>
           </div>
         </div>
@@ -767,7 +794,7 @@ export default function CreateListingPage() {
               <div className="max-w-4xl mx-auto">
                 <div className="text-center py-12">
                   <h3 className="text-xl font-semibold text-[#1A2B4C] mb-4">
-                    Step 4: Review & Submit
+                    Step 4: Review & Save
                   </h3>
                   <p className="text-[#6B7280]">
                     Review panel coming soon
@@ -799,7 +826,7 @@ export default function CreateListingPage() {
                 disabled={currentStep === steps.length}
                 className="bg-[#22C55E] hover:bg-[#16A34A] text-white"
               >
-                {currentStep === steps.length ? 'Submit Listing' : 'Next'}
+                {currentStep === steps.length ? 'Save RFQ' : 'Next'}
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>

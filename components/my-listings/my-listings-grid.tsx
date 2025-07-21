@@ -20,8 +20,6 @@ interface Listing {
   datePosted: string
   proposalDeadline: string
   views: number
-  proposalsReceived: number
-  dealRoomsCreated: number
   budgetRange?: string
   description?: string
 }
@@ -40,8 +38,6 @@ export function MyListingsGrid({ searchQuery, statusFilter, sortBy }: MyListings
       datePosted: 'Jan 15, 2024',
       proposalDeadline: 'Feb 28, 2024',
       views: 147,
-      proposalsReceived: 8,
-      dealRoomsCreated: 3,
       budgetRange: '$50,000 - $100,000',
       description: 'Looking for a comprehensive CRM solution to manage our growing customer base of 10,000+ contacts with advanced automation features.'
     },
@@ -53,8 +49,6 @@ export function MyListingsGrid({ searchQuery, statusFilter, sortBy }: MyListings
       datePosted: 'Jan 20, 2024',
       proposalDeadline: 'Mar 15, 2024',
       views: 89,
-      proposalsReceived: 5,
-      dealRoomsCreated: 2,
       budgetRange: '$25,000 - $75,000',
       description: 'Need a modern analytics platform with real-time dashboards, predictive analytics, and integration capabilities.'
     },
@@ -66,8 +60,6 @@ export function MyListingsGrid({ searchQuery, statusFilter, sortBy }: MyListings
       datePosted: 'Jan 25, 2024',
       proposalDeadline: 'Mar 30, 2024',
       views: 124,
-      proposalsReceived: 7,
-      dealRoomsCreated: 4,
       budgetRange: '$30,000 - $80,000',
       description: 'Seeking to replace legacy HR system with modern cloud-based solution supporting payroll, benefits, and performance management.'
     },
@@ -79,8 +71,6 @@ export function MyListingsGrid({ searchQuery, statusFilter, sortBy }: MyListings
       datePosted: 'Jan 30, 2024',
       proposalDeadline: 'TBD',
       views: 0,
-      proposalsReceived: 0,
-      dealRoomsCreated: 0,
       budgetRange: '$75,000 - $150,000',
       description: 'Planning to migrate from legacy e-commerce platform to modern, scalable solution with advanced inventory management.'
     }

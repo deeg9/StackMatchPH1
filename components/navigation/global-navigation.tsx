@@ -54,16 +54,22 @@ export function GlobalNavigation({ user, notificationCount = 0, messageCount = 0
     }
   }, [user])
 
-  const mainNavigation = [
-    { href: `/dashboard/${user?.userType || 'buyer'}`, label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/browse-sellers', label: 'Browse Sellers', icon: Users },
-    { href: '/deal-rooms', label: 'Deal Rooms', icon: Briefcase },
+  const mainNavigation = user?.userType === 'buyer' ? [
+    { href: `/dashboard/${user?.userType}`, label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/create-listing', label: 'Create Listing', icon: Plus },
+    { href: '/my-listings', label: 'My Listings', icon: Briefcase },
+    { href: '/browse-sellers', label: 'Browse Vendors', icon: Users },
+    { href: '/my-tech-stack', label: 'My Tech Stack', icon: Shield },
+    { href: '/stacktalk', label: 'StackTalk', icon: MessageSquare },
+  ] : [
+    // Seller navigation for Phase 1
+    { href: `/dashboard/${user?.userType || 'seller'}`, label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/browse-sellers', label: 'Browse Vendors', icon: Users },
     { href: '/stacktalk', label: 'StackTalk', icon: MessageSquare },
   ]
 
   const userMenuItems = user ? [
     { href: '/profile', label: 'Profile Settings', icon: Settings },
-    { href: '/saved-sellers', label: 'Saves', icon: Heart },
     { href: '/billing', label: 'Billing', icon: CreditCard },
     { href: '/support', label: 'Help & Support', icon: HelpCircle },
   ] : []

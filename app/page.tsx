@@ -52,20 +52,20 @@ export default function LandingPage() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <Badge className="bg-[#22C55E] text-white hover:bg-[#16A34A] px-3 py-1">
-                  Transforming $260B in Annual Procurement Failures
+                  AI-Powered RFQ Creation in Minutes
                 </Badge>
                 <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                  Intelligent Software Procurement
+                  Create Professional RFQs with AI
                 </h1>
                 <p className="text-xl text-blue-100 leading-relaxed">
-                  End the chaos of software buying. StackMatch connects mid-market companies with expert consultants and verified vendors through structured workflows that guarantee success.
+                  Stop wasting weeks on software procurement. Our AI-powered platform helps you create comprehensive RFQs in minutes, research vendors, and manage your tech stack - all in one place.
                 </p>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/signup">
                   <Button size="lg" className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-8 py-4 text-lg">
-                    Start Your Project
+                    Create Your First RFQ
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
@@ -94,28 +94,28 @@ export default function LandingPage() {
               <div className="bg-white rounded-2xl shadow-2xl p-8 transform rotate-2 hover:rotate-0 transition-transform duration-300">
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-[#1A2B4C]">Deal Room: CRM Migration</h3>
-                    <Badge className="bg-[#22C55E] text-white">Active</Badge>
+                    <h3 className="text-lg font-semibold text-[#1A2B4C]">AI-Generated RFQ: CRM Implementation</h3>
+                    <Badge className="bg-[#22C55E] text-white">Completed</Badge>
                   </div>
                   
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-[#4A73CC] rounded-full flex items-center justify-center">
-                        <Users className="w-4 h-4 text-white" />
+                        <Zap className="w-4 h-4 text-white" />
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-[#374151]">3 Vendors Matched</div>
-                        <div className="text-xs text-[#6B7280]">Salesforce, HubSpot, Pipedrive</div>
+                        <div className="text-sm font-medium text-[#374151]">AI-Powered Generation</div>
+                        <div className="text-xs text-[#6B7280]">8 comprehensive sections created</div>
                       </div>
                     </div>
                     
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-[#22C55E] rounded-full flex items-center justify-center">
-                        <Shield className="w-4 h-4 text-white" />
+                        <CheckCircle className="w-4 h-4 text-white" />
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-[#374151]">Expert Consultant Assigned</div>
-                        <div className="text-xs text-[#6B7280]">Sarah Chen, CRM Specialist</div>
+                        <div className="text-sm font-medium text-[#374151]">Professional RFQ Ready</div>
+                        <div className="text-xs text-[#6B7280]">Download PDF with watermark</div>
                       </div>
                     </div>
                     
@@ -124,16 +124,16 @@ export default function LandingPage() {
                         <Clock className="w-4 h-4 text-white" />
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-[#374151]">Timeline: 45 days</div>
-                        <div className="text-xs text-[#6B7280]">60% faster than industry average</div>
+                        <div className="text-sm font-medium text-[#374151]">Created in 15 minutes</div>
+                        <div className="text-xs text-[#6B7280]">vs 2 weeks manual process</div>
                       </div>
                     </div>
                   </div>
                   
                   <div className="pt-4 border-t border-[#D1D5DB]">
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#6B7280]">Projected Savings</span>
-                      <span className="font-semibold text-[#22C55E]">$125,000</span>
+                      <span className="text-[#6B7280]">Time Saved</span>
+                      <span className="font-semibold text-[#22C55E]">95%</span>
                     </div>
                   </div>
                 </div>
@@ -305,9 +305,9 @@ export default function LandingPage() {
       <section id="how-it-works" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
-            <h2 className="text-4xl font-bold text-[#1A2B4C]">How StackMatch Works</h2>
+            <h2 className="text-4xl font-bold text-[#1A2B4C]">How It Works</h2>
             <p className="text-xl text-[#6B7280] max-w-3xl mx-auto">
-              A simple, guided process that transforms chaotic software procurement into structured success.
+              Create professional RFQs in minutes with our AI-powered platform.
             </p>
           </div>
 
@@ -316,9 +316,9 @@ export default function LandingPage() {
               <div className="w-16 h-16 bg-[#4A73CC] rounded-full flex items-center justify-center mx-auto">
                 <span className="text-white font-bold text-xl">1</span>
               </div>
-              <h3 className="text-lg font-semibold text-[#1A2B4C]">Define Your Needs</h3>
+              <h3 className="text-lg font-semibold text-[#1A2B4C]">Choose Category</h3>
               <p className="text-sm text-[#6B7280]">
-                Use our guided workflow to articulate business requirements and strategic goals clearly.
+                Select from 20+ software categories to start your AI-powered RFQ creation.
               </p>
             </div>
 
@@ -326,9 +326,9 @@ export default function LandingPage() {
               <div className="w-16 h-16 bg-[#22C55E] rounded-full flex items-center justify-center mx-auto">
                 <span className="text-white font-bold text-xl">2</span>
               </div>
-              <h3 className="text-lg font-semibold text-[#1A2B4C]">Get Expert Help</h3>
+              <h3 className="text-lg font-semibold text-[#1A2B4C]">AI Generates RFQ</h3>
               <p className="text-sm text-[#6B7280]">
-                AI matches you with specialized consultants who manage the entire procurement process.
+                Our AI analyzes your needs and creates a comprehensive 8-section RFQ instantly.
               </p>
             </div>
 
@@ -336,9 +336,9 @@ export default function LandingPage() {
               <div className="w-16 h-16 bg-[#F59E0B] rounded-full flex items-center justify-center mx-auto">
                 <span className="text-white font-bold text-xl">3</span>
               </div>
-              <h3 className="text-lg font-semibold text-[#1A2B4C]">Review Proposals</h3>
+              <h3 className="text-lg font-semibold text-[#1A2B4C]">Review & Download</h3>
               <p className="text-sm text-[#6B7280]">
-                Receive high-quality proposals from pre-qualified vendors in secure deal rooms.
+                Review your AI-generated RFQ and download as a professional PDF with watermark.
               </p>
             </div>
 
@@ -346,9 +346,9 @@ export default function LandingPage() {
               <div className="w-16 h-16 bg-[#16A34A] rounded-full flex items-center justify-center mx-auto">
                 <span className="text-white font-bold text-xl">4</span>
               </div>
-              <h3 className="text-lg font-semibold text-[#1A2B4C]">Close Successfully</h3>
+              <h3 className="text-lg font-semibold text-[#1A2B4C]">Share with Vendors</h3>
               <p className="text-sm text-[#6B7280]">
-                Negotiate and close deals with expert guidance and transparent collaboration tools.
+                Send your RFQ to vendors directly or use our vendor discovery tools.
               </p>
             </div>
           </div>
@@ -359,16 +359,16 @@ export default function LandingPage() {
       <section className="py-20 bg-gradient-to-r from-[#1A2B4C] to-[#4A73CC] text-white">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold mb-6">
-            Ready to Transform Your Software Procurement?
+            Ready to Create Your First RFQ?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join the companies already saving time, money, and reducing risk with StackMatch's intelligent procurement platform.
+            Join thousands of companies creating professional RFQs in minutes instead of weeks.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/signup">
               <Button size="lg" className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-8 py-4 text-lg">
-                Start Your Project Today
+                Create Your RFQ Now
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
