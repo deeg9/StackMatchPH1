@@ -16,42 +16,64 @@ import { QuestionList } from './form-components/QuestionList'
 export function RfqFormRenderer({
   blueprint,
   onSubmit,
-  initialData = {}
-}: RfqFormRendererProps) {
+  initialData = {},
+  onDataChange,
+  onSectionChange
+}: RfqFormRendererProps & {
+  onDataChange?: (data: FormData) => void
+  onSectionChange?: (sectionId: string) => void
+}) {
   const [formData, setFormData] = useState<FormData>(initialData)
   const [isSaving, setIsSaving] = useState(false)
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(0)
 
   // Auto-save indicator
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
 
   // Handle form data updates
   const handleDataChange = (key: string, value: any) => {
-    setFormData(prev => ({
-      ...prev,
+    const newData = {
+      ...formData,
       [key]: value
-    }))
+    }
+    setFormData(newData)
+    
+    // Notify parent component of data changes
+    if (onDataChange) {
+      onDataChange(newData)
+    }
   }
 
   // Handle KeyValueTable data
   const handleTableDataChange = (tableId: string, label: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
+    const newData = {
+      ...formData,
       [tableId]: {
-        ...(prev[tableId] || {}),
+        ...(formData[tableId] || {}),
         [label]: value
       }
-    }))
+    }
+    setFormData(newData)
+    
+    if (onDataChange) {
+      onDataChange(newData)
+    }
   }
 
   // Handle QuestionList data
   const handleQuestionDataChange = (listId: string, questionId: string, value: any) => {
-    setFormData(prev => ({
-      ...prev,
+    const newData = {
+      ...formData,
       [listId]: {
-        ...(prev[listId] || {}),
+        ...(formData[listId] || {}),
         [questionId]: value
       }
-    }))
+    }
+    setFormData(newData)
+    
+    if (onDataChange) {
+      onDataChange(newData)
+    }
   }
 
   // Auto-save every 30 seconds
@@ -67,6 +89,13 @@ export function RfqFormRenderer({
 
     return () => clearInterval(autoSaveInterval)
   }, [formData])
+
+  // Notify parent when section changes
+  useEffect(() => {
+    if (onSectionChange && blueprint.sections[currentSectionIndex]) {
+      onSectionChange(blueprint.sections[currentSectionIndex].sectionId)
+    }
+  }, [currentSectionIndex, blueprint.sections, onSectionChange])
 
   // Handle form submission
   const handleSubmit = () => {
@@ -140,21 +169,41 @@ export function RfqFormRenderer({
           </div>
         </div>
 
-        {/* Form Sections */}
+        {/* Section Navigation */}
+        {blueprint.sections.length > 1 && (
+          <div className="mb-6 flex items-center justify-center gap-2">
+            {blueprint.sections.map((section, index) => (
+              <button
+                key={section.sectionId}
+                onClick={() => setCurrentSectionIndex(index)}
+                className={cn(
+                  "px-3 py-1 text-sm font-medium rounded-full transition-all",
+                  index === currentSectionIndex
+                    ? "bg-stackmatch-blue text-white"
+                    : "bg-light-gray text-medium-gray hover:bg-stackmatch-blue/10"
+                )}
+              >
+                {index + 1}. {section.sectionTitle}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Current Section */}
         <div className="space-y-8">
-          {blueprint.sections.map((section) => (
+          {blueprint.sections.length > 0 && (
             <Card 
-              key={section.sectionId}
+              key={blueprint.sections[currentSectionIndex].sectionId}
               className="p-6 shadow-sm border-light-gray animate-fade-in"
             >
-              <SectionHeader title={section.sectionTitle} />
+              <SectionHeader title={blueprint.sections[currentSectionIndex].sectionTitle} />
               <div className="space-y-6">
-                {section.components.map((component) => 
-                  renderComponent(component, section.sectionId)
+                {blueprint.sections[currentSectionIndex].components.map((component) => 
+                  renderComponent(component, blueprint.sections[currentSectionIndex].sectionId)
                 )}
               </div>
             </Card>
-          ))}
+          )}
         </div>
 
         {/* Form Actions */}

@@ -34,6 +34,8 @@ import IntelligentIngestion from '@/components/ai-listing/intelligent-ingestion'
 import AIWorkingScreen from '@/components/ai-listing/ai-working-screen'
 import AIAssistedReview from '@/components/ai-listing/ai-assisted-review'
 import FinalApproval from '@/components/ai-listing/final-approval'
+import { useRouter } from 'next/navigation'
+import { getBlueprintIdByCategory } from '@/lib/rfq-blueprints'
 
 // Types
 interface Category {
@@ -242,6 +244,8 @@ const steps = [
 ]
 
 export default function CreateListingPage() {
+  const router = useRouter()
+  
   // AI Workflow State
   const [currentWorkflowStep, setCurrentWorkflowStep] = useState<AIWorkflowStep>('category')
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
@@ -288,20 +292,28 @@ export default function CreateListingPage() {
   }
 
   const handleSubCategorySelect = (subCategoryName: string) => {
-    // Create a Category object from the selected sub-category
-    const category: Category = {
-      id: subCategoryName.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-      name: subCategoryName,
-      icon: selectedParentCategory?.icon || Briefcase,
-      description: `${selectedParentCategory?.parentName} - ${subCategoryName}`,
-      estimatedTime: '10-15 min',
-      color: selectedParentCategory?.color || 'bg-[#3B82F6]'
-    }
+    // Check if this category has a dynamic form blueprint
+    const blueprintId = getBlueprintIdByCategory(subCategoryName)
     
-    setSelectedCategory(category)
-    setFormData(prev => ({ ...prev, category }))
-    // Start AI workflow
-    setCurrentWorkflowStep('ingestion')
+    if (blueprintId) {
+      // Route to dynamic form page
+      router.push(`/listings/new/${blueprintId}`)
+    } else {
+      // Continue with AI workflow for categories without blueprints
+      const category: Category = {
+        id: subCategoryName.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+        name: subCategoryName,
+        icon: selectedParentCategory?.icon || Briefcase,
+        description: `${selectedParentCategory?.parentName} - ${subCategoryName}`,
+        estimatedTime: '10-15 min',
+        color: selectedParentCategory?.color || 'bg-[#3B82F6]'
+      }
+      
+      setSelectedCategory(category)
+      setFormData(prev => ({ ...prev, category }))
+      // Start AI workflow
+      setCurrentWorkflowStep('ingestion')
+    }
   }
 
   const handleBackToParentCategories = () => {
