@@ -1,12 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card } from '@/components/ui/card'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { 
-  Sparkles, 
   Info, 
   CheckCircle2, 
   AlertCircle,
@@ -17,14 +15,7 @@ import {
   ChevronRight
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { type FormSection, type Question, type FormData } from '@/types/rfq-forms'
-
-interface AiCoPilotProps {
-  currentSection?: FormSection
-  currentQuestions?: Question[]
-  formData: FormData
-  categoryName: string
-}
+import { type SectionInfoTabProps } from '@/types/ai-assistant'
 
 interface Tip {
   id: string
@@ -34,7 +25,7 @@ interface Tip {
   icon: any
 }
 
-// Section-specific tips and guidance
+// Section-specific tips and guidance (imported from original AiCoPilot)
 const sectionTips: Record<string, Tip[]> = {
   'general-info': [
     {
@@ -100,22 +91,12 @@ const sectionTips: Record<string, Tip[]> = {
   ]
 }
 
-// Question-specific help
-const questionHelp: Record<string, string> = {
-  'sq_01': 'Examples: Excel spreadsheets, QuickBooks Fixed Asset Manager, manual journal entries, or specialized software like Sage Fixed Assets.',
-  'sq_02': 'Consider all time spent: calculating depreciation, creating journal entries, reconciling, and reviewing. A typical range is 4-16 hours per month.',
-  'sq_03': 'Include all tracked assets: furniture, equipment, vehicles, buildings, leasehold improvements, and intangible assets.',
-  'scq_02': 'Most companies use thresholds between $1,000-$5,000. Also mention if you have different policies for different asset types.',
-  'scq_06': 'List all methods used for book and tax purposes. Note if you need different methods for different asset classes.',
-  'scq_11': 'Common reports: Monthly depreciation expense, Asset additions/disposals, Tax depreciation schedules, Asset location reports.'
-}
-
-export function AiCoPilot({ 
+export function SectionInfoTab({ 
   currentSection, 
   currentQuestions,
   formData,
   categoryName 
-}: AiCoPilotProps) {
+}: SectionInfoTabProps) {
   const [activeTip, setActiveTip] = useState<string | null>(null)
   const [sectionProgress, setSectionProgress] = useState(0)
 
@@ -125,7 +106,7 @@ export function AiCoPilot({
       let totalFields = 0
       let filledFields = 0
 
-      currentSection.components.forEach(component => {
+      currentSection.components.forEach((component: any) => {
         if (component.componentType === 'KeyValueTable' && 'rows' in component) {
           totalFields += component.rows.length
           const tableData = formData[component.id || ''] as Record<string, string>
@@ -167,21 +148,10 @@ export function AiCoPilot({
   }
 
   return (
-    <Card className="h-full bg-white shadow-lg border-light-gray">
-      {/* Header */}
-      <div className="p-6 border-b border-light-gray">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 bg-gradient-to-br from-stackmatch-blue to-information-blue rounded-full flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-stackmatch-navy">AI Assistant</h3>
-            <p className="text-sm text-medium-gray">Helping you complete your {categoryName} RFQ</p>
-          </div>
-        </div>
-
-        {/* Section Progress */}
-        {currentSection && (
+    <div className="flex flex-col h-full">
+      {/* Section Progress */}
+      {currentSection && (
+        <div className="p-4 border-b border-light-gray">
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
               <span className="text-medium-gray">Section Progress</span>
@@ -194,11 +164,11 @@ export function AiCoPilot({
               />
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Content */}
-      <ScrollArea className="flex-1 p-6">
+      <ScrollArea className="flex-1 p-4">
         <div className="space-y-6">
           {/* Current Section Info */}
           {currentSection && (
@@ -295,14 +265,6 @@ export function AiCoPilot({
           </div>
         </div>
       </ScrollArea>
-
-      {/* Footer */}
-      <div className="p-6 border-t border-light-gray bg-background-gray">
-        <div className="flex items-center gap-2 text-sm text-medium-gray">
-          <Sparkles className="w-4 h-4" />
-          <span>AI suggestions update as you progress</span>
-        </div>
-      </div>
-    </Card>
+    </div>
   )
 }

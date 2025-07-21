@@ -11,7 +11,8 @@ export function QuestionList({
   questions,
   values,
   onChange,
-  errors = {}
+  errors = {},
+  onSmartPromptClick
 }: QuestionListProps) {
   const renderQuestion = (question: typeof questions[0]) => {
     switch (question.inputType) {
@@ -25,6 +26,12 @@ export function QuestionList({
             error={errors[question.id]}
             helpText={question.helpText}
             rows={4}
+            smartPrompts={question.smartPrompts}
+            onSmartPromptClick={
+              onSmartPromptClick 
+                ? (prompt) => onSmartPromptClick(question.id, prompt)
+                : undefined
+            }
           />
         )
       

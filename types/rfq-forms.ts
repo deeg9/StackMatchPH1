@@ -50,6 +50,10 @@ export interface Question {
   inputType: 'textarea' | 'text' | 'radio' | 'checkbox' | 'radiogroup' | 'checkboxgroup' | 'checkboxgroup_with_number'
   options?: string[] | CheckboxOption[] // For radio and checkbox types
   value?: string | string[] | CheckboxWithNumberValue[] // string for text/radio, string[] for checkbox, CheckboxWithNumberValue[] for checkbox_with_number
+  smartPrompts?: Array<{
+    text: string
+    question: string
+  }>
 }
 
 export interface CheckboxOption {
@@ -101,6 +105,11 @@ export interface TextAreaInputProps {
   required?: boolean
   rows?: number
   helpText?: string
+  smartPrompts?: Array<{
+    text: string
+    question: string
+  }>
+  onSmartPromptClick?: (prompt: { text: string; question: string }) => void
 }
 
 export interface RadioGroupProps {
@@ -146,10 +155,12 @@ export interface QuestionListProps {
   values: FormData
   onChange: (questionId: string, value: any) => void
   errors?: FormErrors
+  onSmartPromptClick?: (questionId: string, prompt: { text: string; question: string }) => void
 }
 
 export interface RfqFormRendererProps {
   blueprint: RfqFormBlueprint
   onSubmit?: (data: FormData) => void
   initialData?: FormData
+  onSmartPromptClick?: (questionId: string, prompt: { text: string; question: string }) => void
 }

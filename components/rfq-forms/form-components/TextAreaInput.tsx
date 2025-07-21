@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { HelpCircle } from 'lucide-react'
+import { SmartPromptButton } from './SmartPromptButton'
 
 export function TextAreaInput({
   id,
@@ -15,7 +16,9 @@ export function TextAreaInput({
   placeholder,
   required = false,
   rows = 4,
-  helpText
+  helpText,
+  smartPrompts,
+  onSmartPromptClick
 }: TextAreaInputProps) {
   return (
     <div className="space-y-2 animate-fade-in">
@@ -36,6 +39,20 @@ export function TextAreaInput({
           </div>
         )}
       </div>
+      
+      {/* Smart Prompts */}
+      {smartPrompts && smartPrompts.length > 0 && onSmartPromptClick && (
+        <div className="flex flex-wrap gap-2">
+          {smartPrompts.map((prompt, index) => (
+            <SmartPromptButton
+              key={index}
+              promptText={prompt.text}
+              onClick={() => onSmartPromptClick(prompt)}
+            />
+          ))}
+        </div>
+      )}
+      
       <Textarea
         id={id}
         value={value}

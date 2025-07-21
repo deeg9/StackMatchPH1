@@ -18,7 +18,8 @@ export function RfqFormRenderer({
   onSubmit,
   initialData = {},
   onDataChange,
-  onSectionChange
+  onSectionChange,
+  onSmartPromptClick
 }: RfqFormRendererProps & {
   onDataChange?: (data: FormData) => void
   onSectionChange?: (sectionId: string) => void
@@ -132,6 +133,7 @@ export function RfqFormRenderer({
             questions={component.questions}
             values={formData[component.id] || {}}
             onChange={(questionId, value) => handleQuestionDataChange(component.id, questionId, value)}
+            onSmartPromptClick={onSmartPromptClick}
           />
         )
       

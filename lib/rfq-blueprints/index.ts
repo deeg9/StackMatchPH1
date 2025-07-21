@@ -41,12 +41,28 @@ const fixedAssetsManagementBlueprint: RfqFormBlueprint = {
               id: "sq_01",
               questionText: "How do you manage depreciation today?",
               helpText: "Are you using spreadsheets or another application for this process?",
-              inputType: "textarea"
+              inputType: "textarea",
+              smartPrompts: [
+                {
+                  text: "Show an example",
+                  question: "Can you show me an example of how to describe my current fixed asset depreciation management process?"
+                }
+              ]
             },
             {
               id: "sq_02",
               questionText: "How much time does it take your accounting team to calculate and enter depreciation during month end?",
-              inputType: "textarea"
+              inputType: "textarea",
+              smartPrompts: [
+                {
+                  text: "What should I include?",
+                  question: "What details should I include when describing the time spent on depreciation calculations?"
+                },
+                {
+                  text: "Typical timeline",
+                  question: "What's a typical timeline for depreciation calculations in companies like mine?"
+                }
+              ]
             },
             {
               id: "sq_03",
@@ -93,7 +109,13 @@ const fixedAssetsManagementBlueprint: RfqFormBlueprint = {
               id: "scq_02",
               questionText: "What is your capitalization policy?",
               helpText: "Note: Our platform does not automatically reject assets based on a cap policy. The approval step should be highlighted when creating an asset. If a customer is looking to automate this, it would require a customization.",
-              inputType: "textarea"
+              inputType: "textarea",
+              smartPrompts: [
+                {
+                  text: "What's a cap policy?",
+                  question: "Can you explain what a capitalization policy is and provide some examples?"
+                }
+              ]
             },
             {
               id: "scq_03",

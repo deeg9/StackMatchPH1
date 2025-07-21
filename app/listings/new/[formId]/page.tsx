@@ -3,9 +3,9 @@
 import { useState, useEffect, use } from 'react'
 import { useRouter } from 'next/navigation'
 import { RfqFormRenderer } from '@/components/rfq-forms/RfqFormRenderer'
-import { AiCoPilot } from '@/components/rfq-forms/AiCoPilot'
+import { AiAssistant } from '@/components/rfq-forms/AiAssistant'
 import { getBlueprintById } from '@/lib/rfq-blueprints'
-import { type FormData, type FormSection } from '@/types/rfq-forms'
+import { type FormData as RfqFormData, type FormSection } from '@/types/rfq-forms'
 import { NavigationWrapper } from '@/components/navigation/navigation-wrapper'
 import { TickerBanner } from '@/components/ticker/ticker-banner'
 import { Button } from '@/components/ui/button'
@@ -19,10 +19,11 @@ interface PageProps {
 export default function DynamicRfqFormPage({ params }: PageProps) {
   const router = useRouter()
   const resolvedParams = use(params)
-  const [formData, setFormData] = useState<FormData>({})
+  const [formData, setFormData] = useState<RfqFormData>({})
   const [currentSection, setCurrentSection] = useState<FormSection | undefined>()
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [smartPromptHandler, setSmartPromptHandler] = useState<((questionId: string, prompt: { text: string; question: string }) => void) | null>(null)
 
   // Load the blueprint
   const blueprint = getBlueprintById(resolvedParams.formId)
@@ -42,7 +43,7 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
   }, [blueprint])
 
   // Handle form submission
-  const handleFormSubmit = async (data: FormData) => {
+  const handleFormSubmit = async (data: RfqFormData) => {
     console.log('Form submitted:', data)
     
     // TODO: Integration with existing listing creation API
@@ -51,7 +52,7 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
   }
 
   // Handle form data updates (for AI Co-Pilot)
-  const handleFormDataChange = (newData: FormData) => {
+  const handleFormDataChange = (newData: RfqFormData) => {
     setFormData(newData)
   }
 
@@ -149,14 +150,15 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
                 onSubmit={handleFormSubmit}
                 onDataChange={handleFormDataChange}
                 onSectionChange={handleSectionChange}
+                onSmartPromptClick={smartPromptHandler || undefined}
               />
             </div>
           </div>
 
-          {/* AI Co-Pilot - Right Side (1/3 width on desktop) */}
+          {/* AI Assistant - Right Side (1/3 width on desktop) */}
           <div className="lg:col-span-1">
             <div className="sticky top-24">
-              <AiCoPilot
+              <AiAssistant
                 currentSection={currentSection}
                 currentQuestions={
                   currentSection?.components
@@ -165,6 +167,7 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
                 }
                 formData={formData}
                 categoryName={categoryName}
+                onSmartPromptTrigger={setSmartPromptHandler}
               />
             </div>
           </div>
