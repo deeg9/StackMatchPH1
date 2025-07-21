@@ -261,33 +261,88 @@ export default function BuyerDashboard() {
             createLink="/create-listing"
           />
 
-          {/* Vendor Research */}
+          {/* Your Tech Stack */}
           <Card className="border-2 hover:border-[#4A73CC] transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-xl font-semibold text-[#1A2B4C]">Vendor Research</CardTitle>
-              <Link href="/browse-sellers">
+              <CardTitle className="text-xl font-semibold text-[#1A2B4C]">Your Tech Stack</CardTitle>
+              <Link href="/my-tech-stack">
                 <Button variant="ghost" size="sm" className="text-[#4A73CC] hover:text-[#1A2B4C]">
-                  Browse All
+                  Manage Software
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </Button>
               </Link>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="text-center py-8">
-                <Users className="h-12 w-12 text-[#4A73CC] mx-auto mb-4" />
-                <p className="text-lg font-semibold text-[#1A2B4C] mb-2">Discover Software Vendors</p>
-                <p className="text-sm text-[#6B7280] mb-6">
-                  Research and compare vendors before creating your RFQ
-                </p>
-                <div className="space-y-3">
-                  <Link href="/browse-sellers">
-                    <Button className="w-full bg-[#4A73CC] hover:bg-[#1A2B4C] text-white">
-                      Browse Vendors
-                    </Button>
-                  </Link>
-                  <p className="text-xs text-[#6B7280]">
-                    Access 500+ verified B2B software vendors
-                  </p>
+              {/* Tech Stack Items */}
+              <div className="space-y-3">
+                {/* CRM - Salesforce */}
+                <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-[#F9FAFB] transition-all duration-200">
+                  <div>
+                    <h3 className="font-bold text-[#1A2B4C]">CRM</h3>
+                    <p className="text-sm text-[#6B7280]">Salesforce</p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-sm font-medium text-[#1A2B4C]">$20,000/yr</span>
+                    <Badge className="bg-[#F59E0B] text-[#FFFFFF]">
+                      Renewal Approaching
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* Project Management - Asana */}
+                <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-[#F9FAFB] transition-all duration-200">
+                  <div>
+                    <h3 className="font-bold text-[#1A2B4C]">Project Management</h3>
+                    <p className="text-sm text-[#6B7280]">Asana</p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-sm font-medium text-[#1A2B4C]">$12,000/yr</span>
+                    <Badge className="bg-[#16A34A] text-[#FFFFFF]">
+                      Active
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* Communication - Slack */}
+                <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-[#F9FAFB] transition-all duration-200">
+                  <div>
+                    <h3 className="font-bold text-[#1A2B4C]">Communication</h3>
+                    <p className="text-sm text-[#6B7280]">Slack</p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-sm font-medium text-[#1A2B4C]">$8,400/yr</span>
+                    <Badge className="bg-[#16A34A] text-[#FFFFFF]">
+                      Active
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* Analytics - Tableau */}
+                <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-[#F9FAFB] transition-all duration-200">
+                  <div>
+                    <h3 className="font-bold text-[#1A2B4C]">Analytics</h3>
+                    <p className="text-sm text-[#6B7280]">Tableau</p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-sm font-medium text-[#1A2B4C]">$15,600/yr</span>
+                    <Badge className="bg-[#6B7280] text-[#FFFFFF]">
+                      Inactive
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* HR Management - BambooHR */}
+                <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-[#F9FAFB] transition-all duration-200">
+                  <div>
+                    <h3 className="font-bold text-[#1A2B4C]">HR Management</h3>
+                    <p className="text-sm text-[#6B7280]">BambooHR</p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-sm font-medium text-[#1A2B4C]">$9,600/yr</span>
+                    <Badge className="bg-[#16A34A] text-[#FFFFFF]">
+                      Active
+                    </Badge>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -391,94 +446,8 @@ export default function BuyerDashboard() {
           </Card>
             </div>
 
-            {/* Row 4: Asset Management & Smart Reminders - Two-column layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <Card className="border-2 hover:border-[#4A73CC] transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-xl font-semibold text-[#1A2B4C]">Your Tech Stack</CardTitle>
-              <Link href="/my-tech-stack">
-                <Button variant="ghost" size="sm" className="text-[#4A73CC] hover:text-[#1A2B4C]">
-                  Manage Software
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </Button>
-              </Link>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Tech Stack Items */}
-              <div className="space-y-3">
-                {/* CRM - Salesforce */}
-                <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-[#F9FAFB] transition-all duration-200">
-                  <div>
-                    <h3 className="font-bold text-[#1A2B4C]">CRM</h3>
-                    <p className="text-sm text-[#6B7280]">Salesforce</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm font-medium text-[#1A2B4C]">$20,000/yr</span>
-                    <Badge className="bg-[#F59E0B] text-[#FFFFFF]">
-                      Renewal Approaching
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Project Management - Asana */}
-                <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-[#F9FAFB] transition-all duration-200">
-                  <div>
-                    <h3 className="font-bold text-[#1A2B4C]">Project Management</h3>
-                    <p className="text-sm text-[#6B7280]">Asana</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm font-medium text-[#1A2B4C]">$12,000/yr</span>
-                    <Badge className="bg-[#16A34A] text-[#FFFFFF]">
-                      Active
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Communication - Slack */}
-                <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-[#F9FAFB] transition-all duration-200">
-                  <div>
-                    <h3 className="font-bold text-[#1A2B4C]">Communication</h3>
-                    <p className="text-sm text-[#6B7280]">Slack</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm font-medium text-[#1A2B4C]">$8,400/yr</span>
-                    <Badge className="bg-[#16A34A] text-[#FFFFFF]">
-                      Active
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Analytics - Tableau */}
-                <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-[#F9FAFB] transition-all duration-200">
-                  <div>
-                    <h3 className="font-bold text-[#1A2B4C]">Analytics</h3>
-                    <p className="text-sm text-[#6B7280]">Tableau</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm font-medium text-[#1A2B4C]">$15,600/yr</span>
-                    <Badge className="bg-[#6B7280] text-[#FFFFFF]">
-                      Inactive
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* HR Management - BambooHR */}
-                <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-[#F9FAFB] transition-all duration-200">
-                  <div>
-                    <h3 className="font-bold text-[#1A2B4C]">HR Management</h3>
-                    <p className="text-sm text-[#6B7280]">BambooHR</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm font-medium text-[#1A2B4C]">$9,600/yr</span>
-                    <Badge className="bg-[#16A34A] text-[#FFFFFF]">
-                      Active
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
+            {/* Row 4: Smart Reminders - Full-width layout */}
+            <div className="mb-8">
           {/* Smart Reminders */}
           <Card className="border-2 hover:border-[#22C55E] transition-all duration-300">
             <CardHeader>
