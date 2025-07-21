@@ -56,10 +56,7 @@ export function GlobalNavigation({ user, notificationCount = 0, messageCount = 0
 
   const mainNavigation = user?.userType === 'buyer' ? [
     { href: `/dashboard/${user?.userType}`, label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/create-listing', label: 'Create Listing', icon: Plus },
-    { href: '/my-listings', label: 'My Listings', icon: Briefcase },
     { href: '/browse-sellers', label: 'Browse Vendors', icon: Users },
-    { href: '/my-tech-stack', label: 'My Tech Stack', icon: Shield },
     { href: '/stacktalk', label: 'StackTalk', icon: MessageSquare },
   ] : [
     // Seller navigation for Phase 1
@@ -108,14 +105,13 @@ export function GlobalNavigation({ user, notificationCount = 0, messageCount = 0
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                    "px-4 py-2 text-sm font-medium transition-all duration-200",
                     isActive
-                      ? "text-stackmatch-blue bg-stackmatch-blue/10 shadow-sm"
-                      : "text-charcoal hover:text-stackmatch-blue hover:bg-slate-50"
+                      ? "text-stackmatch-blue border-b-2 border-stackmatch-blue"
+                      : "text-charcoal hover:text-stackmatch-blue"
                   )}
                 >
-                  <Icon className="w-4 h-4" />
-                  <span>{item.label}</span>
+                  {item.label}
                 </Link>
               )
             })}
@@ -294,14 +290,13 @@ export function GlobalNavigation({ user, notificationCount = 0, messageCount = 0
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={cn(
-                      "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                      "block px-3 py-2 text-sm font-medium transition-all",
                       isActive
-                        ? "text-stackmatch-blue bg-stackmatch-blue/10"
-                        : "text-charcoal hover:text-stackmatch-blue hover:bg-slate-50"
+                        ? "text-stackmatch-blue bg-stackmatch-blue/10 rounded-lg"
+                        : "text-charcoal hover:text-stackmatch-blue hover:bg-slate-50 rounded-lg"
                     )}
                   >
-                    <Icon className="w-5 h-5" />
-                    <span>{item.label}</span>
+                    {item.label}
                   </Link>
                 )
               })}
