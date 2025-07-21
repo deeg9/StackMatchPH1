@@ -41,11 +41,12 @@ export default function LoginPage() {
           window.location.href = '/dashboard'
         }
       } else {
-        alert(data.error || 'Login failed')
+        console.error('Login failed:', data)
+        alert(data.error || 'Login failed. Please check your credentials and try again.')
       }
     } catch (error) {
       console.error('Login error:', error)
-      alert('Login failed. Please try again.')
+      alert('Unable to connect to the server. Please check your internet connection and try again.')
     } finally {
       setIsLoading(false)
     }

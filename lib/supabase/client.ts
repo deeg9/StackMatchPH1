@@ -3,8 +3,8 @@ import type { Database } from '@/types/supabase'
 
 export const createClient = () =>
   createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.StackMatch_NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.StackMatch_NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
 // Create a singleton client for the browser
