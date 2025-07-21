@@ -120,7 +120,19 @@ This document contains detailed documentation of all completed features in the S
 
 ## 5. AI-Powered Create Listing - Revolutionary TurboTax-Style Workflow
 **Location**: `/app/create-listing/page.tsx`
-**Enhanced**: January 2025 - Expanded from 4 to 8 comprehensive sections
+**Enhanced**: January 2025 - Two-step category selection + expanded 8-section AI workflow
+
+### Two-Step Category Selection Architecture (NEW)
+- **Hierarchical Organization**: 30+ software categories organized under 6 parent categories
+- **Parent Categories**: 
+  - Finance & ERP (12 sub-categories)
+  - Sales & Marketing (8 sub-categories)
+  - HR & Workforce (5 sub-categories)
+  - Engineering & Product (7 sub-categories)
+  - Operations & Supply Chain (3 sub-categories)
+  - Commerce & Service (5 sub-categories)
+- **Professional Icon System**: Lucide React icons replacing emojis (Briefcase, TrendingUp, Users, Code, Package, ShoppingCart)
+- **Smooth Navigation Flow**: Parent category selection → Sub-category grid → AI workflow initiation
 
 ### AI-First Intelligent RFQ Creation System
 - **Strategic Innovation**: Revolutionary shift from complex forms to conversational AI experience

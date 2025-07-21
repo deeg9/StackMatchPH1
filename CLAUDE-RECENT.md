@@ -6,6 +6,24 @@ This document tracks recent achievements, enhancements, and bug fixes in the Sta
 
 ## Phase 1 Go-to-Market Implementation (Late January 2025)
 
+### Create Listing Page - Two-Step Category Selection
+- **Hierarchical Category System**: Complete redesign of category selection from flat 6-category grid to two-step process
+  - **Parent Categories**: 6 main categories (Finance & ERP, HR & Workforce, Sales/Marketing/Service, Operations & Supply Chain, E-commerce, Project Management & Analytics)
+  - **Sub-Categories**: 30+ specific software categories distributed across parent categories
+  - **Lucide Icons**: Replaced emoji icons with professional Lucide React icons (Briefcase, Users, Megaphone, Truck, ShoppingCart, BarChart3)
+  - **Two-Step Flow**: Parent category selection → Sub-category grid → AI workflow initiation
+  - **Responsive Grid**: Parent view (3 cols desktop, 2 tablet, 1 mobile), Sub view (4 cols desktop, 3 lg, 2 md, 1 mobile)
+- **UI Enhancements**:
+  - **Parent Cards**: Colored circles with white icons, category count display, "View Categories" hover effect
+  - **Sub-Category View**: Back button navigation, contextual header, smaller cards with consistent styling
+  - **Help Section**: Moved inside parent view only, maintains AI recommendation feature
+  - **Smooth Transitions**: Animation delays and hover effects throughout
+- **Technical Implementation**:
+  - **New State Variables**: `selectedParentCategory` and `showSubCategories` for view management
+  - **Type Safety**: Updated Category interface to support Lucide icon components
+  - **Data Structure**: `listingCategories` array with ParentCategory interface
+  - **Handler Functions**: `handleParentCategorySelect`, `handleSubCategorySelect`, `handleBackToParentCategories`
+
 ### Strategic Phase 1 Transformation
 - **UI-Only Implementation**: Complete transformation to Phase 1 messaging without backend changes
   - **Messaging Update**: Positioned platform as "AI-powered RFQ creation tool" rather than "marketplace"

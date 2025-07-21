@@ -380,12 +380,22 @@ The project has been migrated to a new Supabase instance for Phase 1 development
   - **Workflow State Management**: AIWorkflowStep union type managing 6 distinct states ('category' | 'ingestion' | 'processing' | 'review' | 'approval' | 'submitted')
   - **Component Integration**: 4 specialized React components with seamless data flow and state transitions
   - **TypeScript Excellence**: Expanded interfaces in `/types/ai-listing.ts` supporting 8-section workflow
+- **Two-Step Category Selection Architecture**: Scalable hierarchical system for 30+ software categories
+  - **Hierarchical Data Structure**: 6 parent categories (Finance & ERP, Sales & Marketing, HR & Workforce, Engineering & Product, Operations & Supply Chain, Commerce & Service)
+  - **Sub-Category Organization**: Each parent contains 4-12 specific software sub-categories for precise classification
+  - **Icon System Migration**: Professional Lucide React icons replacing emojis (Briefcase, TrendingUp, Users, Code, Package, ShoppingCart)
+  - **State Management**: selectedParentCategory and showSubCategories states managing navigation flow
+  - **User Experience**: Smooth transitions between parent and sub-category views with consistent back navigation
 - **Enhanced AI API Architecture**: Production-ready endpoints generating comprehensive 8-section RFQs
   - **Analysis Endpoint**: `/api/ai-listing/analyze/route.ts` with category-specific data generation for all 8 sections
   - **Submission Endpoint**: `/api/ai-listing/submit/route.ts` with vendor matching calculations and response predictions
   - **Category Customization**: HR & Payroll and Web Development specific content with dynamic business processes
   - **Error Handling**: Comprehensive try-catch patterns with realistic fallback data for demonstration purposes
 - **Component Design Patterns**:
+  - **Category Selection**: Two-step hierarchical navigation replacing flat 6-category grid
+    - **Parent Category View**: 6 large cards with icons, descriptions, and sub-category counts
+    - **Sub-Category View**: Responsive grid (2-3 columns) with back navigation
+    - **Seamless Integration**: Category selection flows directly into AI workflow
   - **Intelligent Ingestion**: Multi-source validation (website, LinkedIn, files) with real-time form validation
   - **AI Working Screen**: 5-step processing animation with dynamic progress tracking and professional transitions
   - **Enhanced Split-Screen Review**: Revolutionary collaborative interface with 8 comprehensive sections
