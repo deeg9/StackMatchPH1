@@ -96,7 +96,7 @@ export function GlobalNavigation({ user, notificationCount = 0, messageCount = 0
           </div>
 
           {/* Center Navigation - Desktop */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             {mainNavigation.map((item) => {
               const Icon = item.icon
               const isActive = isActivePage(item.href)
@@ -270,7 +270,7 @@ export function GlobalNavigation({ user, notificationCount = 0, messageCount = 0
             variant="ghost"
             size="icon"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden"
+            className="md:hidden"
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
@@ -278,7 +278,7 @@ export function GlobalNavigation({ user, notificationCount = 0, messageCount = 0
 
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden border-t border-slate-200 py-4">
+          <div className="md:hidden border-t border-slate-200 py-4">
             <div className="space-y-2">
               {/* Main navigation links */}
               {mainNavigation.map((item) => {
