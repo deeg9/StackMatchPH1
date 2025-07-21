@@ -111,7 +111,8 @@ export function MyListingsGrid({ searchQuery, statusFilter, sortBy }: MyListings
           filteredListings.sort((a, b) => a.title.localeCompare(b.title))
           break
         case 'proposals':
-          filteredListings.sort((a, b) => b.proposalsReceived - a.proposalsReceived)
+          // Sort by views instead since proposals are removed
+          filteredListings.sort((a, b) => b.views - a.views)
           break
         case 'deadline':
           filteredListings.sort((a, b) => {

@@ -501,10 +501,27 @@ export default function CreateListingPage() {
                 onClick={() => {
                   if (aiGeneratedRFQ) {
                     downloadRFQPDF({
-                      title: aiGeneratedRFQ.title,
+                      title: aiGeneratedRFQ.projectOverview.projectTitle,
                       category: selectedCategory?.name || '',
                       company: 'Your Company', // This would come from user profile
-                      ...aiGeneratedRFQ
+                      coreRequirements: aiGeneratedRFQ.coreRequirements,
+                      technicalSpecs: aiGeneratedRFQ.technicalSpecs,
+                      budget: {
+                        range: aiGeneratedRFQ.budgetTimeline.budgetRange,
+                        paymentTerms: '',
+                        contractLength: ''
+                      },
+                      timeline: {
+                        startDate: '',
+                        implementationDeadline: aiGeneratedRFQ.budgetTimeline.targetGoLive,
+                        goLiveDate: aiGeneratedRFQ.budgetTimeline.targetGoLive,
+                        evaluationPeriod: ''
+                      },
+                      businessContext: {
+                        currentChallenges: [aiGeneratedRFQ.projectOverview.primaryChallenges],
+                        expectedOutcomes: [aiGeneratedRFQ.projectOverview.desiredOutcomes],
+                        successMetrics: aiGeneratedRFQ.projectDetails?.successMetrics || []
+                      }
                     })
                   }
                 }}

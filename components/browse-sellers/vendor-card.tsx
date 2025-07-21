@@ -169,8 +169,6 @@ export function VendorCard({ vendor }: VendorCardProps) {
           </div>
         </div>
       </CardContent>
-      
-      />
     </Card>
   )
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { ESignatureAddFields } from '@/components/deal-rooms/esignature/esignature-add-fields'
 
 interface AddFieldsPageProps {
@@ -11,9 +12,19 @@ interface AddFieldsPageProps {
   }>
 }
 
-export default async function AddFieldsPage({ params, searchParams }: AddFieldsPageProps) {
-  const resolvedParams = await params
-  const resolvedSearchParams = await searchParams
+export default function AddFieldsPage({ params, searchParams }: AddFieldsPageProps) {
+  // Since this is a client component, we'll handle the promises differently
+  const [resolvedParams, setResolvedParams] = React.useState<{ id: string } | null>(null)
+  const [resolvedSearchParams, setResolvedSearchParams] = React.useState<{ documentId?: string } | null>(null)
+  
+  React.useEffect(() => {
+    params.then(setResolvedParams)
+    searchParams.then(setResolvedSearchParams)
+  }, [params, searchParams])
+  
+  if (!resolvedParams || !resolvedSearchParams) {
+    return <div>Loading...</div>
+  }
   // In a real app, you would fetch the document and recipient data based on documentId
   const mockDocument = {
     id: resolvedSearchParams.documentId || '1',
