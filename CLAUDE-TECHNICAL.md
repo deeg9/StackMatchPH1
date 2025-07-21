@@ -143,7 +143,9 @@ if (error || !user) {
 │   └── [id]/page.tsx (Individual client record pages)
 ├── browse-listings/page.tsx (Seller opportunity discovery)
 ├── listings/
-│   └── [id]/page.tsx (RFQ Details "Command Center" with 5-tab interface)
+│   ├── [id]/page.tsx (RFQ Details "Command Center" with 5-tab interface)
+│   └── new/
+│       └── [formId]/page.tsx (Dynamic questionnaire with AI Co-Pilot)
 ├── create-proposal/
 │   └── [listingId]/page.tsx (AI-powered proposal creation workflow)
 └── api/
@@ -233,6 +235,19 @@ if (error || !user) {
 │   ├── ai-working-screen.tsx (Processing animations)
 │   ├── ai-assisted-review.tsx (Split-screen collaborative review)
 │   └── final-approval.tsx (Submission confirmation)
+├── rfq-forms/ (Dynamic form engine components)
+│   ├── RfqFormRenderer.tsx (Master form renderer with section navigation)
+│   ├── AiCoPilot.tsx (Context-aware AI assistant sidebar)
+│   └── form-components/
+│       ├── SectionHeader.tsx
+│       ├── InstructionalText.tsx
+│       ├── TextInput.tsx
+│       ├── TextAreaInput.tsx
+│       ├── RadioGroup.tsx
+│       ├── CheckboxGroup.tsx
+│       ├── CheckboxGroupWithNumber.tsx
+│       ├── KeyValueTable.tsx
+│       └── QuestionList.tsx
 ├── create-proposal/ (AI-powered proposal submission components)
 │   ├── intelligent-analysis.tsx (Seller context capture)
 │   ├── ai-processing-screen.tsx (4-step processing animation)
@@ -243,15 +258,18 @@ if (error || !user) {
 └── guided-listing/
 
 /lib/
-└── supabase/
-    ├── client.ts (Browser client)
-    └── server.ts (Async server client with cookies)
+├── supabase/
+│   ├── client.ts (Browser client)
+│   └── server.ts (Async server client with cookies)
+└── rfq-blueprints/
+    └── index.ts (Blueprint storage and category mapping)
 
 /types/
 ├── supabase.ts (Complete database schema types)
 ├── ai-listing.ts (Enhanced AI workflow with 8-section RFQ generation types)
 ├── ai-proposal.ts (AI-powered proposal submission workflow types)
-└── quote-request.ts (Request quote workflow types)
+├── quote-request.ts (Request quote workflow types)
+└── rfq-forms.ts (Dynamic form engine interfaces and types)
 ```
 
 ## Development Patterns Established
@@ -375,6 +393,24 @@ The project has been migrated to a new Supabase instance for Phase 1 development
   - **Filter State Types**: Proper typing for all filter values and state
   - **Component Props**: Full prop typing for maintainability
 
+### Dynamic RFQ Form Engine with AI Co-Pilot Integration (January 2025)
+- **Revolutionary Dual-System Architecture**: Dynamic form engine working alongside AI Co-Pilot for superior UX
+  - **JSON Blueprint System**: Scalable questionnaire rendering from centralized blueprint storage
+  - **Component Library**: 9 reusable form components (SectionHeader, InstructionalText, TextInput, TextAreaInput, RadioGroup, CheckboxGroup, CheckboxGroupWithNumber, KeyValueTable, QuestionList)
+  - **AI Co-Pilot Companion**: Context-aware assistant providing real-time guidance in split-screen layout
+  - **TypeScript Excellence**: Comprehensive interfaces in `/types/rfq-forms.ts` with full type safety
+  - **Smart Routing**: Category-based routing to dynamic forms when blueprints exist, fallback to AI workflow
+- **Technical Implementation Details**:
+  - **Route Architecture**: `/listings/new/[formId]` with Next.js 15 async params
+  - **Blueprint Storage**: `/lib/rfq-blueprints/index.ts` with category mapping functions
+  - **Component Callbacks**: onDataChange and onSectionChange for parent-child communication
+  - **Auto-Save System**: 30-second interval saves with visual feedback
+  - **Section Navigation**: Multi-section forms with progress tracking
+- **Current Blueprint Coverage**:
+  - **Fixed Assets Management**: 3 sections with business info, requirements, evaluation
+  - **Field Service Management**: 2 sections with objectives and service metrics
+  - **Extensible Design**: Easy addition of new category blueprints
+
 ### AI-Powered Create Listing Workflow (January 2025)
 - **Revolutionary TurboTax-Style Architecture**: Complete transformation of RFQ creation from complex forms to conversational AI experience
   - **Workflow State Management**: AIWorkflowStep union type managing 6 distinct states ('category' | 'ingestion' | 'processing' | 'review' | 'approval' | 'submitted')
@@ -395,7 +431,8 @@ The project has been migrated to a new Supabase instance for Phase 1 development
   - **Category Selection**: Two-step hierarchical navigation replacing flat 6-category grid
     - **Parent Category View**: 6 large cards with icons, descriptions, and sub-category counts
     - **Sub-Category View**: Responsive grid (2-3 columns) with back navigation
-    - **Seamless Integration**: Category selection flows directly into AI workflow
+    - **Seamless Integration**: Category selection flows to dynamic forms when blueprints exist, otherwise AI workflow
+    - **Blueprint Routing**: getBlueprintIdByCategory() maps categories to form blueprints
   - **Intelligent Ingestion**: Multi-source validation (website, LinkedIn, files) with real-time form validation
   - **AI Working Screen**: 5-step processing animation with dynamic progress tracking and professional transitions
   - **Enhanced Split-Screen Review**: Revolutionary collaborative interface with 8 comprehensive sections
@@ -509,11 +546,13 @@ The project has been migrated to a new Supabase instance for Phase 1 development
 ## Next Technical Priorities
 
 ### Phase 1 Priorities
-1. **RFQ PDF Export**: Generate downloadable RFQs from AI-created listings
-2. **User Onboarding Flow**: Streamlined registration focused on RFQ creation
-3. **StackTalk Enhancement**: Community features for procurement discussions
-4. **Analytics Integration**: Track RFQ creation and utility feature usage
-5. **SEO Optimization**: Landing pages for RFQ creation keywords
+1. **RFQ PDF Export**: Generate downloadable RFQs from AI-created listings and dynamic forms
+2. **Blueprint Expansion**: Add blueprints for remaining 28+ software categories
+3. **Form Analytics**: Track completion rates and drop-off points in dynamic forms
+4. **AI Co-Pilot Enhancement**: Improve contextual tips based on user behavior
+5. **User Onboarding Flow**: Streamlined registration focused on RFQ creation
+6. **StackTalk Enhancement**: Community features for procurement discussions
+7. **SEO Optimization**: Landing pages for RFQ creation keywords
 
 ### Phase 2/3 Features (Deferred)
 1. **eSignature Backend Integration**: API endpoints for document signing workflow
@@ -531,6 +570,13 @@ The project has been migrated to a new Supabase instance for Phase 1 development
 - Test with both user types (buyer/seller)
 
 ## Component Development Guidelines
+
+### Dynamic Form Engine Guidelines
+- **Blueprint-Driven Development**: All forms should be defined as JSON blueprints in `/lib/rfq-blueprints/`
+- **Component Reusability**: Use existing form components from `/components/rfq-forms/form-components/`
+- **AI Integration**: Always include AiCoPilot component for dynamic forms
+- **Type Safety**: Define all new input types in `/types/rfq-forms.ts`
+- **Split Layout**: Use 2/3 form + 1/3 AI assistant for optimal UX
 
 ### Phase 1 Guidelines
 - **Coming Soon Pages**: Use consistent design for features deferred to Phase 2/3

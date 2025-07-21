@@ -13,7 +13,7 @@
 ### Current Focus
 StackMatch is currently in **Phase 1** of our strategic go-to-market plan, focusing on user acquisition through high-value "single-player" tools:
 
-- **AI-Powered RFQ Creation**: Revolutionary TurboTax-style workflow that creates comprehensive RFQs in minutes
+- **AI-Powered RFQ Creation**: Revolutionary TurboTax-style workflow and dynamic form engine that creates comprehensive RFQs in minutes
 - **Vendor Research**: Browse and research 500+ verified B2B software vendors
 - **Tech Stack Management**: Comprehensive software asset tracking and renewal management
 - **Community Engagement**: StackTalk forum for peer discussions and advice
@@ -21,6 +21,7 @@ StackMatch is currently in **Phase 1** of our strategic go-to-market plan, focus
 ### Phase 1 Implementation Status
 ✅ **Completed**:
 - AI-powered Create Listing workflow (8 comprehensive sections)
+- Dynamic RFQ Form Engine with AI Co-Pilot for structured questionnaires
 - Browse Vendors marketplace with enterprise vendors
 - My Tech Stack software management platform
 - StackTalk community forum
@@ -70,10 +71,11 @@ Environment variables use `StackMatch_` prefix for Vercel deployment:
 ## Phase 1 Features
 
 ### Core User Value
-1. **AI-Powered RFQ Creation** - TurboTax-style workflow that reduces RFQ creation from weeks to minutes
-2. **Vendor Discovery** - Research and compare enterprise software vendors
-3. **Tech Stack Management** - Track software costs, renewals, and optimization opportunities
-4. **Community Support** - StackTalk forum for peer advice and discussions
+1. **AI-Powered RFQ Creation** - TurboTax-style workflow and dynamic form engine that reduces RFQ creation from weeks to minutes
+2. **Dynamic Form Engine** - Structured questionnaires with AI Co-Pilot guidance for comprehensive requirements gathering
+3. **Vendor Discovery** - Research and compare enterprise software vendors
+4. **Tech Stack Management** - Track software costs, renewals, and optimization opportunities
+5. **Community Support** - StackTalk forum for peer advice and discussions
 
 ### Hidden Features (Phase 2/3)
 - Deal Rooms and real-time collaboration
@@ -84,7 +86,7 @@ Environment variables use `StackMatch_` prefix for Vercel deployment:
 ## Key Directories
 - `/app/` - Next.js pages and API routes
 - `/components/` - Reusable UI components organized by feature
-- `/lib/` - Utility functions and Supabase clients
+- `/lib/` - Utility functions, Supabase clients, and RFQ blueprints
 - `/types/` - TypeScript type definitions
 - `/middleware.ts` - Route management for Phase 1 feature gating
 
@@ -152,6 +154,11 @@ For comprehensive technical documentation including:
 > **Note**: For comprehensive recent updates and bug fixes, see [CLAUDE-RECENT.md](./CLAUDE-RECENT.md)
 
 ### January 2025 Phase 1 Implementation:
+- **Dynamic RFQ Form Engine**: JSON-based questionnaire system with AI Co-Pilot companion
+  - 9 reusable form components for comprehensive requirements gathering
+  - Split-screen layout with contextual AI guidance
+  - Blueprint system for scalable category coverage
+  - Smart routing between dynamic forms and AI workflow
 - **Phase 1 Dashboard Refactoring**: Simplified buyer dashboard removing Phase 2/3 features
 - **Navigation Updates**: Showing only Dashboard, Browse Vendors, and StackTalk
 - **Middleware Implementation**: Routes to "Coming Soon" pages for hidden features
@@ -160,7 +167,7 @@ For comprehensive technical documentation including:
 - **Create Listing Redesign**: Two-step hierarchical category selection for 30+ software categories
   - 6 parent categories with professional Lucide React icons
   - Smooth navigation between parent and sub-category views
-  - Maintained existing AI workflow integration
+  - Intelligent routing to dynamic forms or AI workflow based on blueprint availability
 
 ## Project Impact
 
@@ -168,9 +175,11 @@ Phase 1 positions StackMatch as the industry's first AI-powered RFQ creation pla
 
 Key Phase 1 differentiators:
 - **AI-First RFQ Creation**: Industry's first TurboTax-style RFQ workflow with scalable category selection
+- **Dynamic Form Engine**: Structured questionnaires with AI Co-Pilot for comprehensive requirements
 - **Immediate Value**: Users get value without waiting for marketplace liquidity
 - **Vendor Research**: Comprehensive vendor profiles without commitment
 - **Software Cost Control**: Tech stack management saves money today
 - **Scalable Category System**: Two-step selection handles 30+ categories elegantly
+- **Dual Approach**: AI workflow for flexibility, dynamic forms for structure
 
 The phased approach de-risks the platform launch while building a loyal user base that will drive marketplace adoption in Phase 2.

@@ -8,6 +8,7 @@ This document contains detailed documentation of all completed features in the S
 
 ### Currently Active Features (Phase 1)
 ✅ **AI-Powered Create Listing** - Revolutionary RFQ creation tool (Core feature)
+✅ **Dynamic RFQ Form Engine** - Structured questionnaires with AI Co-Pilot guidance
 ✅ **StackTalk Forum** - Community discussions for procurement professionals
 ✅ **Browse Vendors** - Read-only vendor discovery and company profiles
 ✅ **My Tech Stack** - Software asset management utility
@@ -50,7 +51,8 @@ This document contains detailed documentation of all completed features in the S
 21. [Browse Project Listings](#21-browse-project-listings---seller-opportunity-discovery)
 22. [Proposal Submission System](#22-proposal-submission-system---ai-powered-seller-response-workflow)
 23. [RFQ Details Page](#23-rfq-details-page---rfq-command-center)
-24. [UI Components](#24-ui-component-system)
+24. [Dynamic RFQ Form Engine](#24-dynamic-rfq-form-engine---structured-questionnaires-with-ai-co-pilot)
+25. [UI Components](#25-ui-component-system)
 
 ---
 
@@ -808,7 +810,87 @@ This document contains detailed documentation of all completed features in the S
 - **Build Fixes**: Resolved JSX structure and component prop issues
 - **Performance**: Optimized component rendering with proper React patterns
 
-## 24. UI Component System
+## 24. Dynamic RFQ Form Engine - Structured Questionnaires with AI Co-Pilot
+
+**Location**: `/listings/new/[formId]` and `/components/rfq-forms/`
+**Status**: ✅ Complete
+**Phase**: Phase 1 - Core Feature
+
+### Overview
+Revolutionary dual-system architecture combining structured questionnaires with AI guidance. The Dynamic RFQ Form Engine reads JSON blueprints to dynamically render comprehensive qualification questionnaires while providing real-time AI assistance alongside the form.
+
+### Key Features
+- **JSON Blueprint System**: Scalable questionnaire rendering from centralized storage
+- **9 Form Components**: Complete component library for all question types
+- **AI Co-Pilot Companion**: Context-aware assistant in split-screen layout
+- **Smart Routing**: Automatic routing from category selection to appropriate forms
+- **Auto-Save System**: 30-second interval saves with visual feedback
+- **Section Navigation**: Multi-section forms with progress tracking
+- **TypeScript Excellence**: Full type safety across all components
+
+### Component Architecture
+
+#### Form Components (`/components/rfq-forms/form-components/`)
+1. **SectionHeader** - Section titles with professional styling
+2. **InstructionalText** - Contextual instructions and guidelines  
+3. **TextInput** - Single-line text inputs with validation
+4. **TextAreaInput** - Multi-line text areas with character counts
+5. **RadioGroup** - Single-select options with custom styling
+6. **CheckboxGroup** - Multi-select options with StackMatch branding
+7. **CheckboxGroupWithNumber** - Checkboxes with quantity inputs
+8. **KeyValueTable** - Dynamic key-value pair inputs
+9. **QuestionList** - Container for rendering mixed question types
+
+#### Core Components
+- **RfqFormRenderer** (`/components/rfq-forms/RfqFormRenderer.tsx`)
+  - Master form renderer reading JSON blueprints
+  - Section navigation and progress tracking
+  - Form state management and validation
+  - Callback integration for parent components
+
+- **AiCoPilot** (`/components/rfq-forms/AiCoPilot.tsx`)
+  - Context-aware AI assistant sidebar
+  - Section-specific tips and guidance
+  - Progress tracking and completion metrics
+  - Real-time updates based on form state
+
+### Blueprint System (`/lib/rfq-blueprints/`)
+- **Centralized Storage**: All questionnaires defined as JSON blueprints
+- **Category Mapping**: `getBlueprintIdByCategory()` function for routing
+- **Current Coverage**:
+  - Fixed Assets Management (3 sections, 15+ questions)
+  - Field Service Management (2 sections, 10+ questions)
+- **Extensible Design**: Easy addition of new category blueprints
+
+### User Experience
+- **Split Layout**: 2/3 form content + 1/3 AI assistant
+- **Seamless Integration**: Works alongside existing AI workflow
+- **Category Selection**: Automatic routing to forms when blueprints exist
+- **Fallback Support**: Defaults to AI workflow for categories without blueprints
+- **Professional Design**: Consistent with StackMatch brand guidelines
+
+### Technical Implementation
+- **Route Architecture**: `/listings/new/[formId]` with Next.js 15 async params
+- **State Management**: React hooks with proper memoization
+- **Component Communication**: onDataChange and onSectionChange callbacks
+- **Error Handling**: Graceful fallbacks for missing blueprints
+- **TypeScript Interfaces**: Comprehensive types in `/types/rfq-forms.ts`
+
+### Development Patterns
+- **Blueprint-Driven**: All forms defined as JSON for maintainability
+- **Component Reusability**: Shared components across all questionnaires
+- **Type Safety**: Full TypeScript coverage with strict mode
+- **Responsive Design**: Mobile-first with desktop enhancements
+- **Accessibility**: WCAG compliance with proper ARIA labels
+
+### Future Enhancements
+1. **Blueprint Expansion**: Add remaining 28+ software categories
+2. **Form Analytics**: Track completion rates and drop-off points
+3. **AI Enhancement**: Improve contextual tips based on user behavior
+4. **PDF Export**: Generate downloadable RFQs from form data
+5. **API Integration**: Save form data to database
+
+## 25. UI Component System
 
 - **Core Library**: Button, Card, Badge, Input, Label, Checkbox, Radio, Progress, Avatar, Textarea, Separator
 - **Advanced Components**: Select, Dropdown Menu, Tabs (Radix UI powered)
