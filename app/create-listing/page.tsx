@@ -20,7 +20,12 @@ import {
   Sparkles,
   FileText,
   Upload,
-  Eye
+  Eye,
+  Briefcase,
+  Megaphone,
+  Truck,
+  ShoppingCart,
+  ChevronLeft
 } from "lucide-react"
 import Link from "next/link"
 import { NavigationWrapper } from '@/components/navigation/navigation-wrapper'
@@ -34,7 +39,7 @@ import FinalApproval from '@/components/ai-listing/final-approval'
 interface Category {
   id: string
   name: string
-  icon: string
+  icon: any // Changed to support Lucide icon component
   description: string
   isPopular?: boolean
   estimatedTime: string
@@ -132,57 +137,80 @@ interface AIGeneratedRFQ {
 
 type AIWorkflowStep = 'category' | 'ingestion' | 'processing' | 'review' | 'approval' | 'submitted'
 
-const categories: Category[] = [
+// Hierarchical category structure
+interface ParentCategory {
+  id: string
+  parentName: string
+  icon: any // Lucide icon component
+  description: string
+  color: string
+  subCategories: string[]
+}
+
+const listingCategories: ParentCategory[] = [
   {
-    id: 'hr-payroll',
-    name: 'HR & Payroll',
-    icon: '👥',
-    description: 'Human resources and payroll management solutions',
-    isPopular: true,
-    estimatedTime: '10-15 min',
-    color: 'bg-[#3B82F6]'
+    id: 'finance-erp',
+    parentName: 'Finance & ERP',
+    icon: Briefcase,
+    description: 'For core financial operations, planning, and ERP.',
+    color: 'bg-[#3B82F6]',
+    subCategories: [
+      'Financial Management', 'Billing', 'Enterprise Performance Management (EPM)',
+      'Planning & Budgeting', 'Account Reconciliation', 'Procurement Management',
+      'Advanced Accounting / Multi-Book', 'Vendor Bill Processing',
+      'Collections Management', 'Tax Management', 'Fixed Assets Management', 'Rebate Management'
+    ]
   },
   {
-    id: 'web-development',
-    name: 'Web Development',
-    icon: '🌐',
-    description: 'Custom websites, web applications, and digital platforms',
-    isPopular: true,
-    estimatedTime: '12-18 min',
-    color: 'bg-[#22C55E]'
+    id: 'hr-workforce',
+    parentName: 'HR & Workforce',
+    icon: Users,
+    description: 'For managing employees, payroll, and related processes.',
+    color: 'bg-[#22C55E]',
+    subCategories: [
+      'HR', 'Payroll', 'Workforce Management', 'Incentive Compensation / Commissions'
+    ]
   },
   {
-    id: 'mobile-development',
-    name: 'Mobile Development',
-    icon: '📱',
-    description: 'iOS and Android mobile applications',
-    estimatedTime: '15-20 min',
-    color: 'bg-[#F59E0B]'
+    id: 'sales-marketing-service',
+    parentName: 'Sales, Marketing & Service',
+    icon: Megaphone,
+    description: 'For all customer-facing activities and CRM.',
+    color: 'bg-[#F59E0B]',
+    subCategories: [
+      'CRM', 'Configure, Price & Quote (CPQ)', 'Field Service Management'
+    ]
   },
   {
-    id: 'design-creative',
-    name: 'Design & Creative',
-    icon: '🎨',
-    description: 'UI/UX design, branding, and creative services',
-    estimatedTime: '8-12 min',
-    color: 'bg-[#8B5CF6]'
+    id: 'operations-supply-chain',
+    parentName: 'Operations & Supply Chain',
+    icon: Truck,
+    description: 'For managing goods, inventory, and production.',
+    color: 'bg-[#8B5CF6]',
+    subCategories: [
+      'Inventory Management', 'Warehouse Management System (WMS)', 'Demand Planning',
+      'Work Orders & Assemblies', 'WIP & Routing', 'Quality Management (QMS)'
+    ]
   },
   {
-    id: 'data-science',
-    name: 'Data Science',
-    icon: '📊',
-    description: 'Analytics, machine learning, and data visualization',
-    estimatedTime: '10-15 min',
-    color: 'bg-[#EF4444]'
+    id: 'ecommerce',
+    parentName: 'E-commerce',
+    icon: ShoppingCart,
+    description: 'For online sales and customer digital platforms.',
+    color: 'bg-[#EF4444]',
+    subCategories: [
+      'E-commerce', 'E-commerce / Customer Account Management'
+    ]
   },
   {
-    id: 'digital-marketing',
-    name: 'Digital Marketing',
-    icon: '📈',
-    description: 'SEO, social media, content marketing, and advertising',
-    isPopular: true,
-    estimatedTime: '8-12 min',
-    color: 'bg-[#06B6D4]'
+    id: 'project-management-analytics',
+    parentName: 'Project Management & Analytics',
+    icon: BarChart3,
+    description: 'For managing projects and business intelligence.',
+    color: 'bg-[#06B6D4]',
+    subCategories: [
+      'Project Management', 'Analytics & Data Warehouse', 'Integration / Connectors'
+    ]
   }
 ]
 
@@ -222,6 +250,10 @@ export default function CreateListingPage() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   
+  // Two-step category selection state
+  const [selectedParentCategory, setSelectedParentCategory] = useState<ParentCategory | null>(null)
+  const [showSubCategories, setShowSubCategories] = useState(false)
+  
   // Legacy form state (kept for compatibility)
   const [currentView, setCurrentView] = useState<'category' | 'form'>('category')
   const [currentStep, setCurrentStep] = useState(1)
@@ -250,11 +282,31 @@ export default function CreateListingPage() {
     }
   })
 
-  const handleCategorySelect = (category: Category) => {
+  const handleParentCategorySelect = (parentCategory: ParentCategory) => {
+    setSelectedParentCategory(parentCategory)
+    setShowSubCategories(true)
+  }
+
+  const handleSubCategorySelect = (subCategoryName: string) => {
+    // Create a Category object from the selected sub-category
+    const category: Category = {
+      id: subCategoryName.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+      name: subCategoryName,
+      icon: selectedParentCategory?.icon || Briefcase,
+      description: `${selectedParentCategory?.parentName} - ${subCategoryName}`,
+      estimatedTime: '10-15 min',
+      color: selectedParentCategory?.color || 'bg-[#3B82F6]'
+    }
+    
     setSelectedCategory(category)
     setFormData(prev => ({ ...prev, category }))
-    // Start AI workflow instead of traditional form
+    // Start AI workflow
     setCurrentWorkflowStep('ingestion')
+  }
+
+  const handleBackToParentCategories = () => {
+    setShowSubCategories(false)
+    setSelectedParentCategory(null)
   }
 
   const handleIngestionAnalyze = async (data: IngestionData) => {
@@ -573,75 +625,133 @@ export default function CreateListingPage() {
 
         {/* Category Selection */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {categories.map((category, index) => (
-              <Card 
-                key={category.id}
-                className="group border-2 border-[#D1D5DB] hover:border-[#4A73CC] transition-all duration-300 cursor-pointer transform hover:-translate-y-2 hover:shadow-xl animate-slide-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
-                onClick={() => handleCategorySelect(category)}
-              >
-                <CardContent className="p-8 text-center space-y-6">
-                  {/* Category Icon */}
-                  <div className="relative">
-                    <div className={`w-20 h-20 ${category.color} rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                      <span className="text-3xl">{category.icon}</span>
-                    </div>
-                    {category.isPopular && (
-                      <Badge className="absolute -top-2 -right-2 bg-[#F59E0B] text-white px-2 py-1 text-xs animate-pulse">
-                        Popular
-                      </Badge>
-                    )}
-                  </div>
+          {/* Parent Category View */}
+          {!showSubCategories ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {listingCategories.map((parentCategory, index) => {
+                  const Icon = parentCategory.icon
+                  return (
+                    <Card 
+                      key={parentCategory.id}
+                      className="group border-2 border-[#D1D5DB] hover:border-[#4A73CC] transition-all duration-300 cursor-pointer transform hover:-translate-y-2 hover:shadow-xl animate-slide-up"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                      onClick={() => handleParentCategorySelect(parentCategory)}
+                    >
+                      <CardContent className="p-8 text-center space-y-6">
+                        {/* Category Icon */}
+                        <div className="relative">
+                          <div className={`w-20 h-20 ${parentCategory.color} rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                            <Icon className="h-10 w-10 text-white" />
+                          </div>
+                        </div>
 
-                  {/* Category Info */}
-                  <div className="space-y-3">
-                    <h3 className="text-xl font-bold text-[#1A2B4C] group-hover:text-[#4A73CC] transition-colors">
-                      {category.name}
-                    </h3>
-                    <p className="text-[#6B7280] text-sm leading-relaxed">
-                      {category.description}
+                        {/* Category Info */}
+                        <div className="space-y-3">
+                          <h3 className="text-xl font-bold text-[#1A2B4C] group-hover:text-[#4A73CC] transition-colors">
+                            {parentCategory.parentName}
+                          </h3>
+                          <p className="text-[#6B7280] text-sm leading-relaxed">
+                            {parentCategory.description}
+                          </p>
+                          <p className="text-[#4A73CC] text-xs font-medium">
+                            {parentCategory.subCategories.length} categories
+                          </p>
+                        </div>
+
+                        {/* Hover Effect */}
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="flex items-center justify-center space-x-2 text-[#22C55E]">
+                            <ArrowRight className="h-4 w-4" />
+                            <span className="text-sm font-semibold">View Categories</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+
+              {/* Help Section */}
+              <div className="mt-16 text-center">
+                <Card className="max-w-2xl mx-auto border-2 border-[#E5E7EB] bg-gradient-to-r from-[#F9FAFB] to-white">
+                  <CardContent className="p-8">
+                    <div className="flex items-center justify-center space-x-3 mb-4">
+                      <div className="w-10 h-10 bg-[#3B82F6] rounded-full flex items-center justify-center">
+                        <FileText className="h-5 w-5 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-[#1A2B4C]">Need Help Choosing?</h3>
+                    </div>
+                    <p className="text-[#6B7280] mb-6">
+                      Not sure which category fits your project? Our AI can analyze your requirements and suggest the best category for optimal results.
                     </p>
-                  </div>
-
-                  {/* Estimated Time */}
-                  <div className="flex items-center justify-center space-x-2 text-[#6B7280]">
-                    <Clock className="h-4 w-4" />
-                    <span className="text-sm font-medium">{category.estimatedTime}</span>
-                  </div>
-
-                  {/* Hover Effect */}
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="flex items-center justify-center space-x-2 text-[#22C55E]">
-                      <ArrowRight className="h-4 w-4" />
-                      <span className="text-sm font-semibold">Get Started</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Help Section */}
-          <div className="mt-16 text-center">
-            <Card className="max-w-2xl mx-auto border-2 border-[#E5E7EB] bg-gradient-to-r from-[#F9FAFB] to-white">
-              <CardContent className="p-8">
-                <div className="flex items-center justify-center space-x-3 mb-4">
-                  <div className="w-10 h-10 bg-[#3B82F6] rounded-full flex items-center justify-center">
-                    <FileText className="h-5 w-5 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#1A2B4C]">Need Help Choosing?</h3>
-                </div>
-                <p className="text-[#6B7280] mb-6">
-                  Not sure which category fits your project? Our AI can analyze your requirements and suggest the best category for optimal results.
-                </p>
-                <Button className="bg-[#3B82F6] hover:bg-[#2563EB] text-white">
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  Get AI Recommendation
+                    <Button className="bg-[#3B82F6] hover:bg-[#2563EB] text-white">
+                      <Sparkles className="h-4 w-4 mr-2" />
+                      Get AI Recommendation
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </>
+          ) : (
+            /* Sub-Category View */
+            <>
+              {/* Back Button and Header */}
+              <div className="mb-8">
+                <Button
+                  variant="ghost"
+                  onClick={handleBackToParentCategories}
+                  className="mb-4 text-[#4A73CC] hover:text-[#1A2B4C]"
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Back to All Categories
                 </Button>
-              </CardContent>
-            </Card>
-          </div>
+                <h2 className="text-3xl font-bold text-[#1A2B4C]">
+                  Choose a {selectedParentCategory?.parentName} Category
+                </h2>
+                <p className="text-[#6B7280] mt-2">
+                  Select the specific category that best matches your needs
+                </p>
+              </div>
+
+              {/* Sub-Categories Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {selectedParentCategory?.subCategories.map((subCategory, index) => {
+                  const Icon = selectedParentCategory.icon
+                  return (
+                    <Card
+                      key={subCategory}
+                      className="group border-2 border-[#D1D5DB] hover:border-[#4A73CC] transition-all duration-300 cursor-pointer transform hover:-translate-y-1 hover:shadow-lg animate-slide-up"
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                      onClick={() => handleSubCategorySelect(subCategory)}
+                    >
+                      <CardContent className="p-6 space-y-4">
+                        {/* Icon */}
+                        <div className={`w-12 h-12 ${selectedParentCategory.color} rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                          <Icon className="h-6 w-6 text-white" />
+                        </div>
+
+                        {/* Category Name */}
+                        <div>
+                          <h4 className="font-semibold text-[#1A2B4C] group-hover:text-[#4A73CC] transition-colors">
+                            {subCategory}
+                          </h4>
+                        </div>
+
+                        {/* Hover Effect */}
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="flex items-center justify-center space-x-2 text-[#22C55E] text-sm">
+                            <ArrowRight className="h-3 w-3" />
+                            <span className="font-medium">Get Started</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+            </>
+          )}
         </div>
       </div>
     )
