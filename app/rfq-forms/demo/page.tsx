@@ -1,7 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import { RfqFormRenderer } from '@/components/rfq-forms/RfqFormRenderer'
-import { type RfqFormBlueprint } from '@/types/rfq-forms'
+import { type RfqFormBlueprint, type FormData } from '@/types/rfq-forms'
+import { Button } from '@/components/ui/button'
+import { FileText, Wrench } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 // Fixed Assets Management JSON Blueprint
 const fixedAssetsBlueprint: RfqFormBlueprint = {
@@ -148,14 +152,114 @@ const fixedAssetsBlueprint: RfqFormBlueprint = {
           ]
         }
       ]
-    },
+    }
+  ]
+}
+
+// Field Service Management JSON Blueprint
+const fieldServiceBlueprint: RfqFormBlueprint = {
+  formTitle: "Field Service Management",
+  formId: "field-service-management-v1",
+  sections: [
     {
-      sectionId: "next-steps",
-      sectionTitle: "NEXT STEPS",
+      sectionId: "general-info",
+      sectionTitle: "GENERAL DEAL CYCLE INFORMATION",
       components: [
         {
           componentType: "InstructionalText",
-          content: "AMO – Fill out the SVD for the CSER"
+          content: "This section should be filled out by the AE or AM before submitting an SC Request."
+        },
+        {
+          componentType: "KeyValueTable",
+          id: "general-info-table",
+          rows: [
+            { label: "Company Name", inputType: "text" },
+            { label: "Sales Rep", inputType: "text" }
+          ]
+        }
+      ]
+    },
+    {
+      sectionId: "sales-qual",
+      sectionTitle: "SALES – QUALIFICATION QUESTIONS",
+      components: [
+        {
+          componentType: "InstructionalText",
+          content: "This section should be filled out by the AE or AM before submitting an SC Request."
+        },
+        {
+          componentType: "QuestionList",
+          id: "sales-questions",
+          questions: [
+            {
+              id: "sq_fsm_01",
+              questionText: "How many field service technicians going out to the field for you?",
+              helpText: "Note: Anything under 10 is typically not a good fit, but if the prospect/customer has the budget for it, we can still proceed.",
+              inputType: "radiogroup",
+              options: ["<10 – Confirm budget.", ">10 – Continue.", ">50 – Engage an Overlay Sales Rep", ">1000 – Disqualify."]
+            },
+            {
+              id: "sq_fsm_02",
+              questionText: "What is 80% of the services you provide?",
+              helpText: "Note: Sales rep should try to understand the breakdown of their services. What is the majority of their business model?",
+              inputType: "textarea"
+            },
+            {
+              id: "sq_fsm_07",
+              questionText: "Do you require clock in/out for payroll purposes?",
+              helpText: "Note: It is important to understand this requirement to know what needs to be positioned.",
+              inputType: "radiogroup",
+              options: ["Yes", "No"]
+            },
+            {
+              id: "sq_fsm_08",
+              questionText: "Are your assets serialized or lot tracked?",
+              helpText: "Note: If yes, they will also need Adv. Inventory",
+              inputType: "radiogroup",
+              options: ["Yes", "No"]
+            },
+            {
+              id: "sq_fsm_10",
+              questionText: "Do they NEED any of the following?",
+              helpText: "Note: These can be disqualifiers, but it is dependent on the size of the company and budget.",
+              inputType: "checkboxgroup",
+              options: ["Delivery Service", "Rental Management", "Automated Job Order & Route Mapping", "Customer Portal for Scheduling"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      sectionId: "sc-qual",
+      sectionTitle: "SC – QUALIFICATION/DISCOVERY",
+      components: [
+        {
+          componentType: "QuestionList",
+          id: "sc-questions",
+          questions: [
+            {
+              id: "scq_fsm_03",
+              questionText: "Is your work predominantly B2B or B2C?",
+              inputType: "radiogroup",
+              options: ["B2B", "B2C"]
+            },
+            {
+              id: "scq_fsm_06",
+              questionText: "Are PMs (preventative maintenance) created based on set schedules (calendar based) or usage/hours/miles(km) based?",
+              inputType: "radiogroup",
+              options: ["Calendar Based", "Usage/Hours/Miles(km) Based – Requires Scripting"]
+            },
+            {
+              id: "scq_fsm_07",
+              questionText: "Do you take pictures, capture signatures, or fill out forms in the field?",
+              inputType: "checkboxgroup_with_number",
+              options: [
+                { label: "Pictures" },
+                { label: "Signatures" },
+                { label: "Forms" }
+              ]
+            }
+          ]
         }
       ]
     }
@@ -163,16 +267,67 @@ const fixedAssetsBlueprint: RfqFormBlueprint = {
 }
 
 export default function RfqFormsDemoPage() {
-  const handleFormSubmit = (formData: any) => {
-    console.log('Form submitted with data:', formData)
-    // Here you would typically send the data to your API
-    alert('Form submitted successfully! Check console for data.')
+  const [selectedForm, setSelectedForm] = useState<'fixed-assets' | 'field-service'>('fixed-assets')
+  const [fixedAssetsData, setFixedAssetsData] = useState<FormData>({})
+  const [fieldServiceData, setFieldServiceData] = useState<FormData>({})
+
+  const handleFormSubmit = (formData: FormData) => {
+    console.log(`${selectedForm} form submitted with data:`, formData)
+    alert(`${selectedForm === 'fixed-assets' ? 'Fixed Assets Management' : 'Field Service Management'} form submitted successfully! Check console for data.`)
   }
 
+  const currentBlueprint = selectedForm === 'fixed-assets' ? fixedAssetsBlueprint : fieldServiceBlueprint
+  const currentData = selectedForm === 'fixed-assets' ? fixedAssetsData : fieldServiceData
+
   return (
-    <RfqFormRenderer
-      blueprint={fixedAssetsBlueprint}
-      onSubmit={handleFormSubmit}
-    />
+    <div className="min-h-screen bg-background-gray">
+      {/* Form Selection Header */}
+      <div className="bg-white border-b border-light-gray shadow-sm sticky top-0 z-10">
+        <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-display-bold text-stackmatch-navy">
+              Dynamic RFQ Form Demo
+            </h1>
+            <div className="flex gap-2">
+              <Button
+                variant={selectedForm === 'fixed-assets' ? 'default' : 'outline'}
+                onClick={() => setSelectedForm('fixed-assets')}
+                className={cn(
+                  "flex items-center gap-2",
+                  selectedForm === 'fixed-assets' && "bg-stackmatch-blue hover:bg-stackmatch-blue/90"
+                )}
+              >
+                <FileText className="w-4 h-4" />
+                Fixed Assets Management
+              </Button>
+              <Button
+                variant={selectedForm === 'field-service' ? 'default' : 'outline'}
+                onClick={() => setSelectedForm('field-service')}
+                className={cn(
+                  "flex items-center gap-2",
+                  selectedForm === 'field-service' && "bg-stackmatch-blue hover:bg-stackmatch-blue/90"
+                )}
+              >
+                <Wrench className="w-4 h-4" />
+                Field Service Management
+              </Button>
+            </div>
+          </div>
+          <p className="text-sm text-medium-gray mt-2">
+            Switch between forms to test different component types and configurations
+          </p>
+        </div>
+      </div>
+
+      {/* Form Renderer */}
+      <div className="animate-fade-in">
+        <RfqFormRenderer
+          key={selectedForm} // Force re-render when switching forms
+          blueprint={currentBlueprint}
+          onSubmit={handleFormSubmit}
+          initialData={currentData}
+        />
+      </div>
+    </div>
   )
 }

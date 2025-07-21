@@ -47,9 +47,19 @@ export interface Question {
   id: string
   questionText: string
   helpText?: string
-  inputType: 'textarea' | 'text' | 'radio' | 'checkbox'
-  options?: string[] // For radio and checkbox types
-  value?: string | string[] // string for text/radio, string[] for checkbox
+  inputType: 'textarea' | 'text' | 'radio' | 'checkbox' | 'radiogroup' | 'checkboxgroup' | 'checkboxgroup_with_number'
+  options?: string[] | CheckboxOption[] // For radio and checkbox types
+  value?: string | string[] | CheckboxWithNumberValue[] // string for text/radio, string[] for checkbox, CheckboxWithNumberValue[] for checkbox_with_number
+}
+
+export interface CheckboxOption {
+  label: string
+}
+
+export interface CheckboxWithNumberValue {
+  label: string
+  checked: boolean
+  number?: number
 }
 
 // Form state management types
@@ -111,6 +121,17 @@ export interface CheckboxGroupProps {
   onChange: (value: string[]) => void
   error?: string
   required?: boolean
+}
+
+export interface CheckboxGroupWithNumberProps {
+  id: string
+  label: string
+  options: CheckboxOption[]
+  value: CheckboxWithNumberValue[]
+  onChange: (value: CheckboxWithNumberValue[]) => void
+  error?: string
+  required?: boolean
+  helpText?: string
 }
 
 export interface KeyValueTableProps {

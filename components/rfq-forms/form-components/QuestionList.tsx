@@ -1,10 +1,11 @@
 'use client'
 
-import { type QuestionListProps } from '@/types/rfq-forms'
+import { type QuestionListProps, type CheckboxOption, type CheckboxWithNumberValue } from '@/types/rfq-forms'
 import { TextAreaInput } from './TextAreaInput'
 import { TextInput } from './TextInput'
 import { RadioGroup } from './RadioGroup'
 import { CheckboxGroup } from './CheckboxGroup'
+import { CheckboxGroupWithNumber } from './CheckboxGroupWithNumber'
 
 export function QuestionList({
   questions,
@@ -39,26 +40,42 @@ export function QuestionList({
         )
       
       case 'radio':
+      case 'radiogroup':
         return (
           <RadioGroup
             id={question.id}
             label={question.questionText}
-            options={question.options || []}
+            options={(question.options as string[]) || []}
             value={values[question.id] || ''}
+            onChange={(value) => onChange(question.id, value)}
+            error={errors[question.id]}
+            helpText={question.helpText}
+          />
+        )
+      
+      case 'checkbox':
+      case 'checkboxgroup':
+        return (
+          <CheckboxGroup
+            id={question.id}
+            label={question.questionText}
+            options={(question.options as string[]) || []}
+            value={values[question.id] || []}
             onChange={(value) => onChange(question.id, value)}
             error={errors[question.id]}
           />
         )
       
-      case 'checkbox':
+      case 'checkboxgroup_with_number':
         return (
-          <CheckboxGroup
+          <CheckboxGroupWithNumber
             id={question.id}
             label={question.questionText}
-            options={question.options || []}
+            options={(question.options as CheckboxOption[]) || []}
             value={values[question.id] || []}
             onChange={(value) => onChange(question.id, value)}
             error={errors[question.id]}
+            helpText={question.helpText}
           />
         )
       
