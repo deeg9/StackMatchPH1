@@ -32,9 +32,9 @@ export function ProjectScopeStep({
   const handleSuggestMetrics = () => {
     // Simulate AI suggestion
     const suggestedMetrics: SuccessMetric[] = [
-      { id: 'metric-1', metric: 'Reduce manual data entry by 50%', target: '6 months' },
-      { id: 'metric-2', metric: 'Improve processing speed by 75%', target: '3 months' },
-      { id: 'metric-3', metric: 'Achieve 99.9% system uptime', target: 'Ongoing' }
+      { id: 'metric-1', value: 'Reduce manual data entry by 50%' },
+      { id: 'metric-2', value: 'Improve processing speed by 75%' },
+      { id: 'metric-3', value: 'Achieve 99.9% system uptime' }
     ]
     handleFieldChange('successMetrics', suggestedMetrics)
   }
@@ -43,10 +43,10 @@ export function ProjectScopeStep({
     // Simulate AI budget breakdown
     const total = formData.projectScope.budgetRange.max || 100000
     const breakdown: BudgetBreakdownItem[] = [
-      { id: 'budget-1', category: 'Software Licenses', amount: total * 0.4, percentage: 40 },
-      { id: 'budget-2', category: 'Implementation', amount: total * 0.35, percentage: 35 },
-      { id: 'budget-3', category: 'Training', amount: total * 0.15, percentage: 15 },
-      { id: 'budget-4', category: 'Support & Maintenance', amount: total * 0.1, percentage: 10 }
+      { id: 'budget-1', key: 'Software Licenses', value: total * 0.4, percentage: 40 },
+      { id: 'budget-2', key: 'Implementation', value: total * 0.35, percentage: 35 },
+      { id: 'budget-3', key: 'Training', value: total * 0.15, percentage: 15 },
+      { id: 'budget-4', key: 'Support & Maintenance', value: total * 0.1, percentage: 10 }
     ]
     handleFieldChange('budgetBreakdown', breakdown)
   }

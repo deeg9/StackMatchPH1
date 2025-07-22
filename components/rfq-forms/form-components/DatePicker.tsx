@@ -76,11 +76,6 @@ export function DatePicker({
             mode="single"
             selected={date}
             onSelect={handleSelect}
-            disabled={(date) => {
-              if (minDate && date < minDate) return true
-              if (maxDate && date > maxDate) return true
-              return false
-            }}
             initialFocus
           />
         </PopoverContent>

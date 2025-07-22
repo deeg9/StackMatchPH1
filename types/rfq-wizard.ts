@@ -36,8 +36,8 @@ export interface StepFormData {
     targetGoLiveDate: string
     implementationPhases: ImplementationPhase[]
     budgetRange: {
-      min: number
-      max: number
+      min: number | undefined
+      max: number | undefined
     }
     budgetBreakdown: BudgetBreakdownItem[]
     evaluationCriteria: EvaluationCriterion[]
@@ -56,21 +56,21 @@ export interface StepFormData {
 
 export interface SuccessMetric {
   id: string
-  metric: string
-  target: string
+  value: string // Changed from 'metric' to 'value' to match DynamicListItem
+  target?: string
 }
 
 export interface ImplementationPhase {
   id: string
-  name: string
-  duration: string // e.g., "3 months", "6 weeks"
+  value: string // Changed from 'name' to 'value' to match DynamicListItem
+  duration?: string // e.g., "3 months", "6 weeks"
   description?: string
 }
 
 export interface BudgetBreakdownItem {
   id: string
-  category: string // Implementation, License, Training, etc.
-  amount: number
+  key: string // Changed from 'category' to 'key' to match DynamicKeyValueItem
+  value: number // Changed from 'amount' to 'value' to match DynamicKeyValueItem
   percentage?: number
 }
 
