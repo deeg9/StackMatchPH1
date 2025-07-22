@@ -6,10 +6,14 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { QuestionList } from '../form-components/QuestionList'
 import { MagicButton } from '../form-components/MagicButton'
 import { type StepComponentProps } from '@/types/rfq-wizard'
-import { type Question } from '@/types/rfq-forms'
+import { type Question, type RfqFormBlueprint } from '@/types/rfq-forms'
 
-// Sample technical/additional questions
-const additionalProcessQuestions: Question[] = [
+interface AdditionalProcessStepProps extends StepComponentProps {
+  blueprint?: RfqFormBlueprint | null
+}
+
+// Default technical/additional questions
+const defaultAdditionalProcessQuestions: Question[] = [
   {
     id: 'ap_01',
     questionText: 'What are your technical infrastructure requirements?',
@@ -78,8 +82,28 @@ export function AdditionalProcessStep({
   formData,
   onDataChange,
   onNext,
-  onPrevious
-}: StepComponentProps) {
+  onPrevious,
+  blueprint
+}: AdditionalProcessStepProps) {
+  // Get questions from blueprint or use defaults
+  const getQuestions = (): Question[] => {
+    if (blueprint) {
+      // Find the additional-process section in the blueprint
+      const additionalProcessSection = blueprint.sections.find(s => s.sectionId === 'additional-process')
+      if (additionalProcessSection) {
+        // Extract questions from the QuestionList component
+        const questionListComponent = additionalProcessSection.components.find(c => c.componentType === 'QuestionList')
+        if (questionListComponent && 'questions' in questionListComponent) {
+          return questionListComponent.questions
+        }
+      }
+    }
+    // Fallback to default questions
+    return defaultAdditionalProcessQuestions
+  }
+
+  const questions = getQuestions()
+
   const handleQuestionChange = (questionId: string, value: any) => {
     const newData = {
       ...formData,
@@ -136,7 +160,7 @@ export function AdditionalProcessStep({
           </div>
 
           <QuestionList
-            questions={additionalProcessQuestions}
+            questions={questions}
             values={formData.additionalProcess}
             onChange={handleQuestionChange}
             onSmartPromptClick={handleSmartPrompt}

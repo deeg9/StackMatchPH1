@@ -7,6 +7,7 @@ import { TickerBanner } from '@/components/ticker/ticker-banner'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getBlueprintById } from '@/lib/rfq-blueprints'
 
 // Wizard Components
 import { StepperNavigation } from '@/components/rfq-forms/StepperNavigation'
@@ -71,6 +72,9 @@ const wizardSteps = [
 export default function DynamicRfqFormPage({ params }: PageProps) {
   const router = useRouter()
   const resolvedParams = use(params)
+  
+  // Load blueprint
+  const blueprint = getBlueprintById(resolvedParams.formId)
   
   // Wizard state
   const [wizardState, setWizardState] = useState<WizardState>({
@@ -194,9 +198,9 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
       case 2:
         return <ProjectScopeStep {...stepProps} />
       case 3:
-        return <CurrentProcessStep {...stepProps} />
+        return <CurrentProcessStep {...stepProps} blueprint={blueprint} />
       case 4:
-        return <AdditionalProcessStep {...stepProps} />
+        return <AdditionalProcessStep {...stepProps} blueprint={blueprint} />
       case 5:
         return <FinalizeReviewStep {...stepProps} />
       default:

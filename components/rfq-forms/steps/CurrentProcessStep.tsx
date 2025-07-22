@@ -5,10 +5,14 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { QuestionList } from '../form-components/QuestionList'
 import { type StepComponentProps } from '@/types/rfq-wizard'
-import { type Question } from '@/types/rfq-forms'
+import { type Question, type RfqFormBlueprint } from '@/types/rfq-forms'
 
-// Sample questions for current process requirements
-const currentProcessQuestions: Question[] = [
+interface CurrentProcessStepProps extends StepComponentProps {
+  blueprint?: RfqFormBlueprint | null
+}
+
+// Default questions for current process requirements
+const defaultCurrentProcessQuestions: Question[] = [
   {
     id: 'cp_01',
     questionText: 'How do you currently manage this process?',
@@ -69,8 +73,28 @@ export function CurrentProcessStep({
   formData,
   onDataChange,
   onNext,
-  onPrevious
-}: StepComponentProps) {
+  onPrevious,
+  blueprint
+}: CurrentProcessStepProps) {
+  // Get questions from blueprint or use defaults
+  const getQuestions = (): Question[] => {
+    if (blueprint) {
+      // Find the current-process section in the blueprint
+      const currentProcessSection = blueprint.sections.find(s => s.sectionId === 'current-process')
+      if (currentProcessSection) {
+        // Extract questions from the QuestionList component
+        const questionListComponent = currentProcessSection.components.find(c => c.componentType === 'QuestionList')
+        if (questionListComponent && 'questions' in questionListComponent) {
+          return questionListComponent.questions
+        }
+      }
+    }
+    // Fallback to default questions
+    return defaultCurrentProcessQuestions
+  }
+
+  const questions = getQuestions()
+
   const handleQuestionChange = (questionId: string, value: any) => {
     const newData = {
       ...formData,
@@ -104,7 +128,7 @@ export function CurrentProcessStep({
           </div>
 
           <QuestionList
-            questions={currentProcessQuestions}
+            questions={questions}
             values={formData.currentProcess}
             onChange={handleQuestionChange}
             onSmartPromptClick={handleSmartPrompt}

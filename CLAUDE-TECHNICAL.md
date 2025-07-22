@@ -145,7 +145,7 @@ if (error || !user) {
 ├── listings/
 │   ├── [id]/page.tsx (RFQ Details "Command Center" with 5-tab interface)
 │   └── new/
-│       └── [formId]/page.tsx (Dynamic questionnaire with AI Co-Pilot)
+│       └── [formId]/page.tsx (5-Step Dynamic RFQ wizard with AI Assistant)
 ├── create-proposal/
 │   └── [listingId]/page.tsx (AI-powered proposal creation workflow)
 └── api/
@@ -237,10 +237,18 @@ if (error || !user) {
 │   └── final-approval.tsx (Submission confirmation)
 ├── rfq-forms/ (Dynamic form engine components)
 │   ├── RfqFormRenderer.tsx (Master form renderer with section navigation)
-│   ├── AiAssistant.tsx (Interactive tabbed AI assistant with chat and info)
+│   ├── AiAssistant.tsx (Interactive tabbed AI assistant with completeness score)
+│   ├── RfqCompletenessScore.tsx (Dynamic score visualization component)
+│   ├── StepperNavigation.tsx (5-step wizard progress indicator)
 │   ├── ai-assistant/
 │   │   ├── ChatTab.tsx (Conversational UI with message history)
 │   │   └── SectionInfoTab.tsx (Context-aware tips and progress)
+│   ├── steps/ (5-step wizard components)
+│   │   ├── GeneralInformationStep.tsx
+│   │   ├── ProjectScopeStep.tsx
+│   │   ├── CurrentProcessStep.tsx
+│   │   ├── AdditionalProcessStep.tsx
+│   │   └── FinalizeReviewStep.tsx
 │   └── form-components/
 │       ├── SectionHeader.tsx
 │       ├── InstructionalText.tsx
@@ -251,7 +259,13 @@ if (error || !user) {
 │       ├── CheckboxGroupWithNumber.tsx
 │       ├── KeyValueTable.tsx
 │       ├── QuestionList.tsx (Enhanced with smart prompt callbacks)
-│       └── SmartPromptButton.tsx (One-click assistance triggers)
+│       ├── SmartPromptButton.tsx (One-click assistance triggers)
+│       ├── MagicButton.tsx (AI-powered action triggers)
+│       ├── DynamicList.tsx (Add/remove items with drag-drop)
+│       ├── DatePicker.tsx (Calendar-based date selection)
+│       ├── NumberRangeInput.tsx (Min/max range inputs)
+│       ├── DynamicKeyValueTable.tsx (Budget breakdown tables)
+│       └── WeightedCriteriaList.tsx (Evaluation criteria with weights)
 ├── create-proposal/ (AI-powered proposal submission components)
 │   ├── intelligent-analysis.tsx (Seller context capture)
 │   ├── ai-processing-screen.tsx (4-step processing animation)
@@ -274,7 +288,8 @@ if (error || !user) {
 ├── ai-proposal.ts (AI-powered proposal submission workflow types)
 ├── quote-request.ts (Request quote workflow types)
 ├── rfq-forms.ts (Dynamic form engine interfaces and types)
-└── ai-assistant.ts (AI Assistant interfaces for chat and smart prompts)
+├── ai-assistant.ts (AI Assistant interfaces for chat and smart prompts)
+└── rfq-wizard.ts (5-step wizard types and interfaces)
 ```
 
 ## Development Patterns Established
@@ -549,15 +564,50 @@ The project has been migrated to a new Supabase instance for Phase 1 development
   - **Build Error Fixes**: Resolved all TypeScript compilation issues
   - **Spread Operator Safety**: Type checking for object spread operations
 
+### Complete 5-Step Dynamic RFQ Creation Flow (January 2025)
+- **Revolutionary Wizard Implementation**: Complete transformation of dynamic RFQ creation into comprehensive 5-step wizard
+  - **5-Step Architecture**: General Information → Project Scope → Current Process → Additional Process → Finalize & Review
+  - **StepperNavigation Component**: Visual progress bar with clickable completed steps, mobile-responsive design
+  - **Wizard State Management**: Centralized state tracking with TypeScript interfaces in `/types/rfq-wizard.ts`
+  - **RFQ Completeness Score**: Dynamic 0-100% score integrated into AI Assistant sidebar
+  - **Page Transformation**: `/app/listings/new/[formId]/page.tsx` completely rewritten for wizard flow
+- **New Form Component Library**:
+  - **DynamicList**: Add/remove/reorder items with drag-and-drop support
+  - **DatePicker**: Calendar-based selection using date-fns and shadcn/ui Calendar
+  - **NumberRangeInput**: Min/max inputs with prefix/suffix support
+  - **DynamicKeyValueTable**: Budget breakdowns with auto-percentage calculation
+  - **WeightedCriteriaList**: Evaluation criteria that must total 100%
+  - **MagicButton**: AI-powered assistance triggers in inline/standalone variants
+- **Step Implementation Details**:
+  1. **GeneralInformationStep**: Company details with AI pre-fill from URL
+  2. **ProjectScopeStep**: Goals, metrics, timeline, budget with AI suggestions
+  3. **CurrentProcessStep**: Requirements with inline writing assistance
+  4. **AdditionalProcessStep**: Technical requirements with example prompts
+  5. **FinalizeReviewStep**: Read-only summary with completeness analysis
+- **AI Magic Features**:
+  - **Proactive Pre-fill**: Auto-populate fields from company URL analysis
+  - **Data Enrichment**: Suggest metrics, budget breakdowns, integrations
+  - **Inline Writing Tools**: Improve responses with professional language
+  - **Show Example**: Context-aware examples for complex questions
+  - **Final Quality Check**: Section-by-section completeness recommendations
+- **Technical Implementation**:
+  - **TypeScript Excellence**: Complete type safety with new interfaces
+  - **Real-time Completeness**: Dynamic calculation across all form fields
+  - **Form Persistence**: Auto-save with visual feedback
+  - **Build Optimization**: Fixed all TypeScript errors for clean deployment
+  - **Responsive Design**: Mobile-first with adaptive layouts
+
 ### AI Assistant Sidebar Enhancement (January 2025)
 - **Revolutionary Transformation**: Complete redesign from static AI Co-Pilot to interactive, tabbed AI Assistant command center
   - **Tabbed Interface Architecture**: Chat (default) and Section Info tabs using shadcn/ui Tabs components
+  - **RFQ Completeness Score Integration**: Dynamic score display at top of sidebar
   - **Full Conversational UI**: Message history with user/AI role distinction, timestamps, and auto-scrolling
   - **Smart Prompt Integration**: One-click assistance buttons on form fields triggering automatic chat interactions
   - **Ref Forwarding Pattern**: ChatTab uses forwardRef and useImperativeHandle to expose methods to parent
   - **Proactive Assistance**: Section-specific welcome messages and contextual guidance
 - **Component Structure**:
   - **AiAssistant.tsx**: Main container managing tab state and smart prompt callbacks
+  - **RfqCompletenessScore.tsx**: Animated circular progress with color-coded status
   - **ChatTab.tsx**: Conversational interface with message state management and AI responses
   - **SectionInfoTab.tsx**: Refactored original AI Co-Pilot content with progress tracking
   - **SmartPromptButton.tsx**: Reusable button component with Sparkles icon and hover effects
