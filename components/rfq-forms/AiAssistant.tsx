@@ -6,15 +6,21 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Sparkles, MessageSquare, InfoIcon } from 'lucide-react'
 import { ChatTab, type ChatTabRef } from './ai-assistant/ChatTab'
 import { SectionInfoTab } from './ai-assistant/SectionInfoTab'
+import { RfqCompletenessScore } from './RfqCompletenessScore'
 import { type AiAssistantProps, type SmartPrompt, type Message } from '@/types/ai-assistant'
+
+interface EnhancedAiAssistantProps extends AiAssistantProps {
+  completenessScore?: number
+}
 
 export function AiAssistant({ 
   currentSection, 
   currentQuestions,
   formData,
   categoryName,
-  onSmartPromptTrigger
-}: AiAssistantProps) {
+  onSmartPromptTrigger,
+  completenessScore = 0
+}: EnhancedAiAssistantProps) {
   const [activeTab, setActiveTab] = useState('chat')
   const chatTabRef = useRef<ChatTabRef>(null)
 
@@ -45,8 +51,8 @@ export function AiAssistant({
 
   return (
     <Card className="h-full bg-white shadow-lg border-light-gray flex flex-col">
-      {/* Header */}
-      <div className="p-6 border-b border-light-gray">
+      {/* Header with Completeness Score */}
+      <div className="p-6 border-b border-light-gray space-y-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-stackmatch-blue to-information-blue rounded-full flex items-center justify-center">
             <Sparkles className="w-5 h-5 text-white" />
@@ -56,6 +62,13 @@ export function AiAssistant({
             <p className="text-sm text-medium-gray">Helping you complete your {categoryName} RFQ</p>
           </div>
         </div>
+        
+        {/* Completeness Score */}
+        <RfqCompletenessScore 
+          score={completenessScore} 
+          className="mt-4"
+          showDetails={false}
+        />
       </div>
 
       {/* Tab Navigation */}
