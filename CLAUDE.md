@@ -157,10 +157,12 @@ For comprehensive technical documentation including:
 > **Note**: For comprehensive recent updates and bug fixes, see [CLAUDE-RECENT.md](./CLAUDE-RECENT.md)
 
 ### January 2025 Phase 1 Implementation:
-- **Complete 5-Step Dynamic RFQ Creation Flow**: Revolutionary wizard implementation transforming RFQ creation
+- **Complete Dynamic RFQ Creation Flow**: Revolutionary implementation with separated data input and 5-step wizard
+  - Standalone data input page for initial context gathering (website, LinkedIn, documents)
+  - AI analyzing transition screen with progress animations
   - 5-step wizard: General Info → Project Scope → Current Process → Additional Process → Review
   - Visual stepper navigation with progress tracking and step validation
-  - RFQ Completeness Score (0-100%) integrated into AI Assistant sidebar
+  - Completeness Score (0-100%) integrated into AI Assistant sidebar
   - New component library: DynamicList, DatePicker, NumberRangeInput, DynamicKeyValueTable, WeightedCriteriaList
   - AI Magic Buttons: Proactive pre-fill, data enrichment, inline writing tools, show examples
 - **Dynamic RFQ Form Engine**: JSON-based questionnaire system with interactive AI Assistant companion

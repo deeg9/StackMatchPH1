@@ -813,7 +813,7 @@ This document contains detailed documentation of all completed features in the S
 
 ## 24. Dynamic RFQ Form Engine - Structured Questionnaires with AI Co-Pilot
 
-**Location**: `/listings/new/[formId]` and `/components/rfq-forms/`
+**Location**: `/listings/new/[formId]` and `/listings/new/[formId]/data-input` and `/components/rfq-forms/`
 **Status**: ✅ Complete
 **Phase**: Phase 1 - Core Feature
 

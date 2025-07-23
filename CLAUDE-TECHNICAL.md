@@ -145,7 +145,9 @@ if (error || !user) {
 ├── listings/
 │   ├── [id]/page.tsx (RFQ Details "Command Center" with 5-tab interface)
 │   └── new/
-│       └── [formId]/page.tsx (5-Step Dynamic RFQ wizard with AI Assistant)
+│       └── [formId]/
+│           ├── page.tsx (5-Step Dynamic RFQ wizard with AI Assistant)
+│           └── data-input/page.tsx (Standalone data input page)
 ├── create-proposal/
 │   └── [listingId]/page.tsx (AI-powered proposal creation workflow)
 └── api/
@@ -243,7 +245,8 @@ if (error || !user) {
 │   ├── ai-assistant/
 │   │   ├── ChatTab.tsx (Conversational UI with message history)
 │   │   └── SectionInfoTab.tsx (Context-aware tips and progress)
-│   ├── steps/ (5-step wizard components)
+│   ├── steps/ (Wizard step components)
+│   │   ├── RfqDataInputStep.tsx (Standalone data input step)
 │   │   ├── GeneralInformationStep.tsx
 │   │   ├── ProjectScopeStep.tsx
 │   │   ├── CurrentProcessStep.tsx
@@ -359,6 +362,23 @@ The project has been migrated to a new Supabase instance for Phase 1 development
 - **Seller**: bigdfill@gmail.com / [password] (Diego Fill, BiltLocal)
 
 ## Recent Technical Improvements
+
+### Final RFQ Creation Flow UI Refinements (January 2025)
+- **Flow Restructuring Implementation**: Complete separation of data input from main wizard
+  - **New Route Architecture**: Created `/app/listings/new/[formId]/data-input/page.tsx` as standalone page
+  - **Wizard Reduction**: Main wizard reduced from 6 to 5 steps by extracting data input
+  - **Navigation Flow**: Create listing → Data input page → AI analysis → 5-step wizard
+  - **Session Storage**: Analysis results passed between pages using sessionStorage
+- **UI Polish Implementation**: Professional refinements for clarity and consistency
+  - **Title Updates**: Changed "Create Your {categoryName} RFQ" to "Create Your {categoryName} Listing"
+  - **Version Stripping**: Added regex `.replace(/\s+V\d+$/, '')` to remove version suffixes from titles
+  - **Component Updates**: Removed subtitle from AI Assistant, changed "RFQ Completeness" to "Completeness"
+  - **Content Cleanup**: Removed company-specific NSCorp tip from Section Info tab
+- **TypeScript Updates**: Complete type safety maintenance
+  - **WizardStep Type**: Updated from `1 | 2 | 3 | 4 | 5 | 6` to `1 | 2 | 3 | 4 | 5`
+  - **Component Props**: Added missing onPrevious prop to RfqDataInputStep
+  - **Import Cleanup**: Removed unused imports from main wizard page
+  - **Build Success**: All TypeScript errors resolved for clean deployment
 
 ### Browse Project Listings Implementation (January 2025)
 - **Complete Seller Opportunity Discovery System**: Revolutionary project listing page for sellers
@@ -564,13 +584,15 @@ The project has been migrated to a new Supabase instance for Phase 1 development
   - **Build Error Fixes**: Resolved all TypeScript compilation issues
   - **Spread Operator Safety**: Type checking for object spread operations
 
-### Complete 5-Step Dynamic RFQ Creation Flow (January 2025)
-- **Revolutionary Wizard Implementation**: Complete transformation of dynamic RFQ creation into comprehensive 5-step wizard
-  - **5-Step Architecture**: General Information → Project Scope → Current Process → Additional Process → Finalize & Review
-  - **StepperNavigation Component**: Visual progress bar with clickable completed steps, mobile-responsive design
-  - **Wizard State Management**: Centralized state tracking with TypeScript interfaces in `/types/rfq-wizard.ts`
-  - **RFQ Completeness Score**: Dynamic 0-100% score integrated into AI Assistant sidebar
-  - **Page Transformation**: `/app/listings/new/[formId]/page.tsx` completely rewritten for wizard flow
+### Complete Dynamic RFQ Creation Flow with Separated Data Input (January 2025)
+- **Revolutionary Implementation**: Complete transformation with separated data input page and 5-step wizard
+  - **Separated Flow Architecture**: Data Input (standalone) → AI Analysis → 5-Step Wizard
+  - **Data Input Page**: New `/app/listings/new/[formId]/data-input/page.tsx` without stepper navigation
+  - **5-Step Wizard**: General Information → Project Scope → Current Process → Additional Process → Finalize & Review
+  - **StepperNavigation Component**: Visual progress bar with clickable completed steps, now showing only 5 steps
+  - **Wizard State Management**: Updated to support 5 steps with TypeScript interfaces in `/types/rfq-wizard.ts`
+  - **Completeness Score**: Dynamic 0-100% score with simplified "Completeness" label
+  - **Session Storage Integration**: Analysis results passed between pages via sessionStorage
 - **New Form Component Library**:
   - **DynamicList**: Add/remove/reorder items with drag-and-drop support
   - **DatePicker**: Calendar-based selection using date-fns and shadcn/ui Calendar
