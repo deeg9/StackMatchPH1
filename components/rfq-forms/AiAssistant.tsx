@@ -59,7 +59,6 @@ export function AiAssistant({
           </div>
           <div>
             <h3 className="text-lg font-semibold text-stackmatch-navy">AI Assistant</h3>
-            <p className="text-sm text-medium-gray">Helping you complete your {categoryName} RFQ</p>
           </div>
         </div>
         

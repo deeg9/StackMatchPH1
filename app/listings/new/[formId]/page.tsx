@@ -12,8 +12,6 @@ import { getBlueprintById } from '@/lib/rfq-blueprints'
 // Wizard Components
 import { StepperNavigation } from '@/components/rfq-forms/StepperNavigation'
 import { AiAssistant } from '@/components/rfq-forms/AiAssistant'
-import { AiAnalyzingScreen } from '@/components/rfq-forms/AiAnalyzingScreen'
-import { RfqDataInputStep } from '@/components/rfq-forms/steps/RfqDataInputStep'
 import { GeneralInformationStep } from '@/components/rfq-forms/steps/GeneralInformationStep'
 import { ProjectScopeStep } from '@/components/rfq-forms/steps/ProjectScopeStep'
 import { CurrentProcessStep } from '@/components/rfq-forms/steps/CurrentProcessStep'
@@ -67,14 +65,13 @@ const initialFormData: StepFormData = {
   additionalProcess: {}
 }
 
-// Step definitions
+// Step definitions - 5 steps without data input
 const wizardSteps = [
-  { id: 1, label: 'Let\'s Build Your RFQ', shortLabel: 'Data Input' },
-  { id: 2, label: 'General Information', shortLabel: 'General' },
-  { id: 3, label: 'Project Scope, Budget & Timeline', shortLabel: 'Scope & Budget' },
-  { id: 4, label: 'Current Process Requirements', shortLabel: 'Current Process' },
-  { id: 5, label: 'Additional Process Requirements', shortLabel: 'Additional' },
-  { id: 6, label: 'Finalize and Review', shortLabel: 'Review' }
+  { id: 1, label: 'General Information', shortLabel: 'General' },
+  { id: 2, label: 'Project Scope, Budget & Timeline', shortLabel: 'Scope & Budget' },
+  { id: 3, label: 'Current Process Requirements', shortLabel: 'Current Process' },
+  { id: 4, label: 'Additional Process Requirements', shortLabel: 'Additional' },
+  { id: 5, label: 'Finalize and Review', shortLabel: 'Review' }
 ]
 
 export default function DynamicRfqFormPage({ params }: PageProps) {
@@ -94,8 +91,29 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
   })
   
   const [isLoading, setIsLoading] = useState(false)
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [smartPromptHandler, setSmartPromptHandler] = useState<((questionId: string, prompt: { text: string; question: string }) => void) | null>(null)
+
+  // Load analysis data from sessionStorage on mount
+  useEffect(() => {
+    const analysisData = sessionStorage.getItem('rfqAnalysisData')
+    if (analysisData) {
+      const parsed = JSON.parse(analysisData)
+      setWizardState(prev => ({
+        ...prev,
+        formData: {
+          ...prev.formData,
+          dataInput: parsed.dataInput,
+          generalInfo: {
+            ...prev.formData.generalInfo,
+            companyName: parsed.analysisResults?.companyName || prev.formData.generalInfo.companyName,
+            companyUrl: parsed.dataInput?.websiteUrl || prev.formData.generalInfo.companyUrl
+          }
+        }
+      }))
+      // Clear the data after using it
+      sessionStorage.removeItem('rfqAnalysisData')
+    }
+  }, [])
 
   // Calculate completeness score whenever form data changes
   useEffect(() => {
@@ -103,16 +121,7 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
       let totalFields = 0
       let filledFields = 0
 
-      // Data Input (10%)
-      const di = wizardState.formData.dataInput
-      if (di) {
-        totalFields += 3
-        if (di.websiteUrl) filledFields++
-        if (di.linkedinUrl) filledFields++
-        if (di.documents.length > 0) filledFields++
-      }
-
-      // General Info (20%)
+      // General Info (25%) - adjusted weight after removing data input
       const gi = wizardState.formData.generalInfo
       totalFields += 7
       if (gi.projectTitle) filledFields++
@@ -123,7 +132,7 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
       if (gi.technicalContact.name) filledFields++
       if (gi.technicalContact.email) filledFields++
 
-      // Project Scope (25%)
+      // Project Scope (30%)
       const ps = wizardState.formData.projectScope
       totalFields += 8
       if (ps.primaryChallenges) filledFields++
@@ -135,12 +144,12 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
       if (ps.budgetBreakdown.length > 0) filledFields++
       if (ps.evaluationCriteria.length > 0) filledFields++
 
-      // Current Process (20%)
+      // Current Process (25%)
       totalFields += 5
       const cpCount = Object.keys(wizardState.formData.currentProcess).length
       filledFields += Math.min(cpCount, 5)
 
-      // Additional Process (25%)
+      // Additional Process (20%)
       totalFields += 6
       const apCount = Object.keys(wizardState.formData.additionalProcess).length
       filledFields += Math.min(apCount, 6)
@@ -158,7 +167,7 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
   }
 
   const handleNext = () => {
-    if (wizardState.currentStep < 6) {
+    if (wizardState.currentStep < 5) {
       setWizardState(prev => ({
         ...prev,
         currentStep: (prev.currentStep + 1) as WizardStep,
@@ -196,57 +205,6 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
     }, 1500)
   }
 
-  const handleAIAnalysis = async (data: {
-    websiteUrl: string
-    linkedinUrl: string
-    documents: File[]
-  }) => {
-    // Show analyzing screen
-    setIsAnalyzing(true)
-    
-    try {
-      // Simulate API call with minimum delay to show animation
-      const analysisPromise = fetch('/api/ai-listing/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          websiteUrl: data.websiteUrl,
-          linkedinUrl: data.linkedinUrl,
-          categoryName: categoryName
-        })
-      })
-      
-      // Ensure minimum animation time
-      const minimumDelay = new Promise(resolve => setTimeout(resolve, 13000))
-      
-      const [response] = await Promise.all([analysisPromise, minimumDelay])
-      const result = await response.json()
-      
-      if (result.success) {
-        // Pre-fill form data with AI analysis results
-        setWizardState(prev => ({
-          ...prev,
-          formData: {
-            ...prev.formData,
-            generalInfo: {
-              ...prev.formData.generalInfo,
-              companyName: result.data.companyName || prev.formData.generalInfo.companyName,
-              companyUrl: data.websiteUrl || prev.formData.generalInfo.companyUrl
-            },
-            dataInput: {
-              ...prev.formData.dataInput!,
-              aiAnalysisResults: result.data
-            }
-          }
-        }))
-      }
-    } catch (error) {
-      console.error('AI analysis error:', error)
-      // Still continue even if API fails
-    }
-  }
 
   // Get category name from formId
   const categoryName = resolvedParams.formId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
@@ -259,25 +217,19 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
       onNext: handleNext,
       onPrevious: handlePrevious,
       isFirstStep: wizardState.currentStep === 1,
-      isLastStep: wizardState.currentStep === 6
+      isLastStep: wizardState.currentStep === 5
     }
 
     switch (wizardState.currentStep) {
       case 1:
-        return <RfqDataInputStep 
-          {...stepProps} 
-          categoryName={categoryName}
-          onAnalyze={handleAIAnalysis}
-        />
-      case 2:
         return <GeneralInformationStep {...stepProps} />
-      case 3:
+      case 2:
         return <ProjectScopeStep {...stepProps} />
-      case 4:
+      case 3:
         return <CurrentProcessStep {...stepProps} blueprint={blueprint} />
-      case 5:
+      case 4:
         return <AdditionalProcessStep {...stepProps} blueprint={blueprint} />
-      case 6:
+      case 5:
         return <FinalizeReviewStep {...stepProps} />
       default:
         return null
@@ -287,12 +239,11 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
   // Get current section for AI Assistant
   const getCurrentSection = (): FormSection | undefined => {
     const sectionMap: Record<WizardStep, string> = {
-      1: 'data-input',
-      2: 'general-info',
-      3: 'project-scope',
-      4: 'current-process',
-      5: 'additional-process',
-      6: 'review'
+      1: 'general-info',
+      2: 'project-scope',
+      3: 'current-process',
+      4: 'additional-process',
+      5: 'review'
     }
     
     return {
@@ -322,7 +273,7 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
               </Button>
               <div>
                 <h1 className="text-xl font-semibold text-stackmatch-navy">
-                  Create Your {categoryName} RFQ
+                  Create Your {categoryName} Listing
                 </h1>
                 <p className="text-sm text-medium-gray mt-1">
                   Complete all steps to generate a comprehensive RFQ
@@ -383,16 +334,6 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
         </div>
       )}
 
-      {/* AI Analyzing Screen */}
-      {isAnalyzing && (
-        <AiAnalyzingScreen 
-          categoryName={categoryName}
-          onComplete={() => {
-            setIsAnalyzing(false)
-            handleNext() // Move to step 2 (General Information)
-          }}
-        />
-      )}
     </div>
   )
 }

@@ -296,8 +296,8 @@ export default function CreateListingPage() {
     const blueprintId = getBlueprintIdByCategory(subCategoryName)
     
     if (blueprintId) {
-      // Route to dynamic form page
-      router.push(`/listings/new/${blueprintId}`)
+      // Route to data input page first
+      router.push(`/listings/new/${blueprintId}/data-input`)
     } else {
       // Continue with AI workflow for categories without blueprints
       const category: Category = {
