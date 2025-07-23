@@ -36,7 +36,6 @@ export function RfqDataInputStep({
   const [linkedinUrl, setLinkedinUrl] = useState(formData.dataInput?.linkedinUrl || '')
   const [documents, setDocuments] = useState<File[]>(formData.dataInput?.documents || [])
   const [isDragging, setIsDragging] = useState(false)
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
 
   const hasInput = websiteUrl || linkedinUrl || documents.length > 0
 
@@ -80,8 +79,6 @@ export function RfqDataInputStep({
   }
 
   const handleAnalyzeAndBuild = async () => {
-    setIsAnalyzing(true)
-    
     // Update form data
     onDataChange({
       ...formData,
@@ -92,15 +89,12 @@ export function RfqDataInputStep({
       }
     })
     
-    // Trigger analysis
-    await onAnalyze({
+    // Trigger analysis (parent will handle navigation after analysis)
+    onAnalyze({
       websiteUrl,
       linkedinUrl,
       documents
     })
-    
-    setIsAnalyzing(false)
-    onNext()
   }
 
   return (
@@ -262,20 +256,11 @@ export function RfqDataInputStep({
       <div className="flex justify-center pt-4">
         <Button
           onClick={handleAnalyzeAndBuild}
-          disabled={!hasInput || isAnalyzing}
+          disabled={!hasInput}
           className="bg-stackmatch-blue hover:bg-stackmatch-blue/90 text-white px-8 py-6 text-lg"
         >
-          {isAnalyzing ? (
-            <>
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-              Analyzing...
-            </>
-          ) : (
-            <>
-              Analyze & Build First Draft
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </>
-          )}
+          Analyze & Build First Draft
+          <ArrowRight className="w-5 h-5 ml-2" />
         </Button>
       </div>
     </div>

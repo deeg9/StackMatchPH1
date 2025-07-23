@@ -12,6 +12,7 @@ import { getBlueprintById } from '@/lib/rfq-blueprints'
 // Wizard Components
 import { StepperNavigation } from '@/components/rfq-forms/StepperNavigation'
 import { AiAssistant } from '@/components/rfq-forms/AiAssistant'
+import { AiAnalyzingScreen } from '@/components/rfq-forms/AiAnalyzingScreen'
 import { RfqDataInputStep } from '@/components/rfq-forms/steps/RfqDataInputStep'
 import { GeneralInformationStep } from '@/components/rfq-forms/steps/GeneralInformationStep'
 import { ProjectScopeStep } from '@/components/rfq-forms/steps/ProjectScopeStep'
@@ -93,6 +94,7 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
   })
   
   const [isLoading, setIsLoading] = useState(false)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [smartPromptHandler, setSmartPromptHandler] = useState<((questionId: string, prompt: { text: string; question: string }) => void) | null>(null)
 
   // Calculate completeness score whenever form data changes
@@ -199,9 +201,12 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
     linkedinUrl: string
     documents: File[]
   }) => {
+    // Show analyzing screen
+    setIsAnalyzing(true)
+    
     try {
-      // TODO: Call AI analysis API
-      const response = await fetch('/api/ai-listing/analyze', {
+      // Simulate API call with minimum delay to show animation
+      const analysisPromise = fetch('/api/ai-listing/analyze', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -213,6 +218,10 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
         })
       })
       
+      // Ensure minimum animation time
+      const minimumDelay = new Promise(resolve => setTimeout(resolve, 13000))
+      
+      const [response] = await Promise.all([analysisPromise, minimumDelay])
       const result = await response.json()
       
       if (result.success) {
@@ -235,6 +244,7 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
       }
     } catch (error) {
       console.error('AI analysis error:', error)
+      // Still continue even if API fails
     }
   }
 
@@ -371,6 +381,17 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
             <p className="text-lg font-medium text-stackmatch-navy">Submitting your RFQ...</p>
           </div>
         </div>
+      )}
+
+      {/* AI Analyzing Screen */}
+      {isAnalyzing && (
+        <AiAnalyzingScreen 
+          categoryName={categoryName}
+          onComplete={() => {
+            setIsAnalyzing(false)
+            handleNext() // Move to step 2 (General Information)
+          }}
+        />
       )}
     </div>
   )
