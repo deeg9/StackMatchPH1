@@ -34,13 +34,6 @@ const sectionTips: Record<string, Tip[]> = {
       title: 'Company Information',
       content: 'Ensure the company name matches your legal entity. This helps vendors provide accurate pricing and compliance information.',
       icon: Info
-    },
-    {
-      id: '2',
-      type: 'tip',
-      title: 'NSCorp Record',
-      content: 'Having your NSCorp record link handy speeds up vendor verification and can lead to faster proposal turnaround.',
-      icon: Lightbulb
     }
   ],
   'sales-qual': [

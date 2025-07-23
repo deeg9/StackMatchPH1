@@ -62,7 +62,7 @@ export function RfqCompletenessScore({
     <div className={cn("bg-white rounded-lg border border-light-gray p-4", className)}>
       {/* Score Header */}
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-semibold text-stackmatch-navy">RFQ Completeness</h4>
+        <h4 className="text-sm font-semibold text-stackmatch-navy">Completeness</h4>
         <TrendingUp className="w-4 h-4 text-stackmatch-blue" />
       </div>
 

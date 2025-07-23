@@ -206,8 +206,11 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
   }
 
 
-  // Get category name from formId
-  const categoryName = resolvedParams.formId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+  // Get category name from formId and remove version suffix (e.g., V1, V2)
+  const categoryName = resolvedParams.formId
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, l => l.toUpperCase())
+    .replace(/\s+V\d+$/, '') // Remove version suffix like V1, V2, etc.
 
   // Render current step component
   const renderStepContent = () => {
