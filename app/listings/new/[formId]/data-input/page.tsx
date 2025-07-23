@@ -126,6 +126,7 @@ export default function DataInputPage({ params }: PageProps) {
           }}
           onDataChange={() => {}} // Not needed for standalone page
           onNext={() => {}} // Not needed for standalone page
+          onPrevious={() => router.push('/create-listing')} // Go back to category selection
           categoryName={categoryName}
           onAnalyze={handleAIAnalysis}
           isFirstStep={true}
