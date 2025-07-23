@@ -1,6 +1,6 @@
 // RFQ Wizard Type Definitions
 
-export type WizardStep = 1 | 2 | 3 | 4 | 5
+export type WizardStep = 1 | 2 | 3 | 4 | 5 | 6
 
 export interface WizardState {
   currentStep: WizardStep
@@ -11,7 +11,15 @@ export interface WizardState {
 }
 
 export interface StepFormData {
-  // Step 1: General Information
+  // Step 1: Data Input
+  dataInput?: {
+    websiteUrl: string
+    linkedinUrl: string
+    documents: File[]
+    aiAnalysisResults?: any
+  }
+  
+  // Step 2: General Information
   generalInfo: {
     projectTitle: string
     companyName: string
@@ -28,7 +36,7 @@ export interface StepFormData {
     }
   }
   
-  // Step 2: Project Scope, Budget & Timeline
+  // Step 3: Project Scope, Budget & Timeline
   projectScope: {
     primaryChallenges: string
     desiredOutcomes: string
@@ -43,12 +51,12 @@ export interface StepFormData {
     evaluationCriteria: EvaluationCriterion[]
   }
   
-  // Step 3: Current Process Requirements
+  // Step 4: Current Process Requirements
   currentProcess: {
     [questionId: string]: any // Dynamic based on blueprint
   }
   
-  // Step 4: Additional Process Requirements
+  // Step 5: Additional Process Requirements
   additionalProcess: {
     [questionId: string]: any // Dynamic based on blueprint
   }
