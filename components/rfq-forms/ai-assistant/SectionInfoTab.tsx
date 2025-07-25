@@ -166,14 +166,9 @@ export function SectionInfoTab({
           {/* Current Section Info */}
           {currentSection && (
             <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Badge variant="secondary" className="bg-stackmatch-blue/10 text-stackmatch-blue">
-                  Current Section
-                </Badge>
-                <h4 className="font-medium text-stackmatch-navy">
-                  {currentSection.sectionTitle}
-                </h4>
-              </div>
+              <h4 className="font-medium text-stackmatch-navy">
+                {currentSection.sectionTitle}
+              </h4>
 
               {/* Section Tips */}
               <div className="space-y-3">

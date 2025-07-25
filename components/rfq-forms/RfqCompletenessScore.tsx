@@ -105,7 +105,6 @@ export function RfqCompletenessScore({
           <span className={cn("text-3xl font-bold transition-colors", getScoreColor())}>
             {displayScore}%
           </span>
-          <span className="text-xs text-medium-gray">Complete</span>
         </div>
       </div>
 

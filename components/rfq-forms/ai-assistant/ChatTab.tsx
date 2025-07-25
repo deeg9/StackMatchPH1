@@ -67,29 +67,22 @@ export const ChatTab = forwardRef<ChatTabRef, ChatTabProps>(
     handleSmartPrompt
   }), [handleSmartPrompt])
 
-  // Generate welcome message when section changes
+  // Generate welcome message only once when chat is first opened
   useEffect(() => {
-    if (currentSection) {
-      const welcomeMessage = sectionWelcomeMessages[currentSection.sectionId] || 
-        `Welcome to the ${currentSection.sectionTitle} section! I'm here to help you complete this part of your ${categoryName} RFQ. What questions do you have?`
+    // Only add welcome message if there are no messages yet
+    if (messages.length === 0 && categoryName) {
+      const welcomeMessage = `Welcome! I'm here to help you create a comprehensive ${categoryName} RFQ. Feel free to ask me any questions about the requirements, best practices, or examples to help you complete your RFQ.`
       
       const newMessage: Message = {
-        id: `welcome-${currentSection.sectionId}-${Date.now()}`,
+        id: `welcome-${Date.now()}`,
         role: 'ai',
         content: welcomeMessage,
         timestamp: new Date()
       }
       
-      setMessages(prev => {
-        // Only add if this isn't already the last message
-        const lastMessage = prev[prev.length - 1]
-        if (!lastMessage || lastMessage.content !== welcomeMessage) {
-          return [...prev, newMessage]
-        }
-        return prev
-      })
+      setMessages([newMessage])
     }
-  }, [currentSection, categoryName])
+  }, []) // Empty dependency array ensures this only runs once on mount
 
   // Handle smart prompt triggers
   useEffect(() => {
