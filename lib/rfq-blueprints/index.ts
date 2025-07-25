@@ -4,6 +4,7 @@ import { accountReconciliationBlueprint } from './categories/account-reconciliat
 import { collectionsManagementBlueprint } from './categories/collections-management'
 import { planningBudgetingBlueprint } from './categories/planning-budgeting'
 import { procurementManagementBlueprint } from './categories/procurement-management'
+import { multiBookAccountingBlueprint } from './categories/multi-book-accounting'
 
 // Fixed Assets Management Blueprint
 const fixedAssetsManagementBlueprint: RfqFormBlueprint = {
@@ -393,7 +394,9 @@ const blueprintMapping: Record<string, string> = {
   'Planning & Budgeting': 'planning-budgeting-v1',
   'FP&A': 'planning-budgeting-v1', // Alternative name mapping
   'Procurement Management': 'procurement-management-v1',
-  'Procurement': 'procurement-management-v1' // Alternative name mapping
+  'Procurement': 'procurement-management-v1', // Alternative name mapping
+  'Multi-Book Accounting': 'multi-book-accounting-v1',
+  'Multi-Book': 'multi-book-accounting-v1' // Alternative name mapping
 }
 
 // All blueprints registry
@@ -404,7 +407,8 @@ const blueprints: Record<string, RfqFormBlueprint> = {
   'account-reconciliation-v1': accountReconciliationBlueprint,
   'collections-management-v1': collectionsManagementBlueprint,
   'planning-budgeting-v1': planningBudgetingBlueprint,
-  'procurement-management-v1': procurementManagementBlueprint
+  'procurement-management-v1': procurementManagementBlueprint,
+  'multi-book-accounting-v1': multiBookAccountingBlueprint
 }
 
 // Helper functions
@@ -432,5 +436,6 @@ export {
   accountReconciliationBlueprint,
   collectionsManagementBlueprint,
   planningBudgetingBlueprint,
-  procurementManagementBlueprint
+  procurementManagementBlueprint,
+  multiBookAccountingBlueprint
 }
