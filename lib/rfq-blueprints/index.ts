@@ -1,6 +1,8 @@
 import { type RfqFormBlueprint } from '@/types/rfq-forms'
 import { financialManagementBlueprint } from './categories/financial-management'
 import { accountReconciliationBlueprint } from './categories/account-reconciliation'
+import { collectionsManagementBlueprint } from './categories/collections-management'
+import { planningBudgetingBlueprint } from './categories/planning-budgeting'
 
 // Fixed Assets Management Blueprint
 const fixedAssetsManagementBlueprint: RfqFormBlueprint = {
@@ -384,7 +386,11 @@ const blueprintMapping: Record<string, string> = {
   'Financial Management': 'financial-management-v1',
   'Finance': 'financial-management-v1', // Alternative name mapping
   'Account Reconciliation': 'account-reconciliation-v1',
-  'Reconciliation': 'account-reconciliation-v1' // Alternative name mapping
+  'Reconciliation': 'account-reconciliation-v1', // Alternative name mapping
+  'Collections Management': 'collections-management-v1',
+  'AR Collections': 'collections-management-v1', // Alternative name mapping
+  'Planning & Budgeting': 'planning-budgeting-v1',
+  'FP&A': 'planning-budgeting-v1' // Alternative name mapping
 }
 
 // All blueprints registry
@@ -392,7 +398,9 @@ const blueprints: Record<string, RfqFormBlueprint> = {
   'fixed-assets-management-v1': fixedAssetsManagementBlueprint,
   'field-service-management-v1': fieldServiceManagementBlueprint,
   'financial-management-v1': financialManagementBlueprint,
-  'account-reconciliation-v1': accountReconciliationBlueprint
+  'account-reconciliation-v1': accountReconciliationBlueprint,
+  'collections-management-v1': collectionsManagementBlueprint,
+  'planning-budgeting-v1': planningBudgetingBlueprint
 }
 
 // Helper functions
@@ -417,5 +425,7 @@ export {
   fixedAssetsManagementBlueprint,
   fieldServiceManagementBlueprint,
   financialManagementBlueprint,
-  accountReconciliationBlueprint
+  accountReconciliationBlueprint,
+  collectionsManagementBlueprint,
+  planningBudgetingBlueprint
 }
