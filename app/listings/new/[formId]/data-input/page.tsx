@@ -18,8 +18,11 @@ export default function DataInputPage({ params }: PageProps) {
   const resolvedParams = use(params)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   
-  // Get category name from formId
-  const categoryName = resolvedParams.formId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+  // Get category name from formId and remove version suffix (e.g., V1, V2)
+  const categoryName = resolvedParams.formId
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, l => l.toUpperCase())
+    .replace(/\s+V\d+$/, '') // Remove version suffix like V1, V2, etc.
   
   // Store data input values locally since this is now a separate page
   const [dataInputValues, setDataInputValues] = useState({
