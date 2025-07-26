@@ -201,7 +201,7 @@ const listingCategories: ParentCategory[] = [
     description: 'For online sales and customer digital platforms.',
     color: 'bg-[#EF4444]',
     subCategories: [
-      'E-commerce', 'E-commerce / Customer Account Management'
+      'E-commerce', 'Customer Account Management'
     ]
   },
   {

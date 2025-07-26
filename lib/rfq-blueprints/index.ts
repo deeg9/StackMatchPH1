@@ -29,201 +29,42 @@ import { advancedAccountingMultibookBlueprint } from './categories/advanced-acco
 import { cpqBlueprint } from './categories/cpq'
 import { inventoryManagementBlueprint } from './categories/inventory-management'
 import { crmBlueprint } from './categories/crm'
+import { fixedAssetsManagementBlueprint } from './categories/fixed-assets-management'
 
-// Fixed Assets Management Blueprint
-const fixedAssetsManagementBlueprint: RfqFormBlueprint = {
-  formTitle: "Fixed Assets Management",
-  formId: "fixed-assets-management-v1",
-  sections: [
-    {
-      sectionId: "current-process",
-      sectionTitle: "Current Process Requirements",
-      components: [
-        {
-          componentType: "QuestionList",
-          id: "current-process-questions",
-          questions: [
-            {
-              id: "cp_01",
-              questionText: "How do you manage depreciation today?",
-              helpText: "Are you using spreadsheets or another application for this process?",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Improve Writing",
-                  question: "Can you help me improve my description of our current depreciation management process?"
-                },
-                {
-                  text: "Show Example",
-                  question: "Can you show me an example of how to describe my current fixed asset depreciation management process?"
-                }
-              ]
-            },
-            {
-              id: "cp_02",
-              questionText: "How much time does it take your accounting team to calculate and enter depreciation during month end?",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Improve Writing",
-                  question: "Can you help me better describe the time and effort spent on depreciation calculations?"
-                },
-                {
-                  text: "Show Example",
-                  question: "What's a typical example of time spent on depreciation calculations in companies like mine?"
-                }
-              ]
-            },
-            {
-              id: "cp_03",
-              questionText: "Roughly how many assets are you keeping track of today?",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Show Example",
-                  question: "Can you provide an example of how to categorize and count our assets?"
-                }
-              ]
-            },
-            {
-              id: "cp_04",
-              questionText: "How many different asset classes do you keep track of today? (Furniture, Equipment, Vehicles, etc.)",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Show Example",
-                  question: "Can you show me common asset class categories used in fixed asset management?"
-                }
-              ]
-            },
-            {
-              id: "cp_05",
-              questionText: "Do you have leases that need to be tracked in compliance with ASC-842?",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "What is ASC-842?",
-                  question: "Can you explain what ASC-842 compliance means and why it's important?"
-                },
-                {
-                  text: "Show Example",
-                  question: "Can you provide examples of leases that typically need ASC-842 tracking?"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      sectionId: "additional-process",
-      sectionTitle: "Additional Process Requirements",
-      components: [
-        {
-          componentType: "QuestionList",
-          id: "additional-process-questions",
-          questions: [
-            {
-              id: "ap_01",
-              questionText: "How do you keep track of things like: the asset custodian, the original cost, the current value, any maintenance or warranties, etc.?",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Show Example",
-                  question: "Can you show me an example of comprehensive asset tracking information?"
-                }
-              ]
-            },
-            {
-              id: "ap_02",
-              questionText: "What is your capitalization policy?",
-              helpText: "The minimum value threshold for treating purchases as capital assets rather than expenses",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "What's a capitalization policy?",
-                  question: "Can you explain what a capitalization policy is and provide some examples?"
-                },
-                {
-                  text: "Show Example",
-                  question: "Can you provide examples of typical capitalization policies by company size?"
-                }
-              ]
-            },
-            {
-              id: "ap_03",
-              questionText: "Do you have assets that are related? (Parent/Child relationship)",
-              helpText: "This can be a compound asset or a parent/child relationship",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Show Example",
-                  question: "Can you provide examples of parent/child asset relationships?"
-                }
-              ]
-            },
-            {
-              id: "ap_04",
-              questionText: "Do you ever capitalize your services?",
-              helpText: "Converting service costs into capital assets",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Show Example",
-                  question: "Can you explain when and how services are typically capitalized?"
-                }
-              ]
-            },
-            {
-              id: "ap_05",
-              questionText: "What types of depreciation methods do you use today?",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Show Example",
-                  question: "Can you list common depreciation methods and when they're used?"
-                }
-              ]
-            },
-            {
-              id: "ap_06",
-              questionText: "Do you require any secondary tax depreciation methods?",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Show Example",
-                  question: "Can you explain secondary tax depreciation methods with examples?"
-                }
-              ]
-            },
-            {
-              id: "ap_07",
-              questionText: "How do you manage the revaluation, disposal, write-off, sale, or transfer of assets?",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Show Example",
-                  question: "Can you provide examples of asset lifecycle management processes?"
-                }
-              ]
-            },
-            {
-              id: "ap_08",
-              questionText: "What reports are you running around your fixed assets today?",
-              inputType: "textarea",
-              smartPrompts: [
-                {
-                  text: "Show Example",
-                  question: "Can you list common fixed asset reports and their purposes?"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+/**
+ * RFQ Blueprint Naming Convention Documentation
+ * =============================================
+ * 
+ * Blueprint IDs (formId) follow a standardized naming pattern to ensure consistency
+ * and maintainability across the system.
+ * 
+ * STANDARD FORMAT: [category-name]-v[version]
+ * 
+ * Examples:
+ * - financial-management-v1
+ * - inventory-management-v1
+ * - crm-v1
+ * 
+ * VERSIONING GUIDELINES:
+ * - v1: Initial version of a blueprint
+ * - v2, v3, etc.: Major revisions with significant changes to questions or structure
+ * - Version numbers should be incremented when:
+ *   - Questions are substantially changed or reorganized
+ *   - New sections are added or removed
+ *   - The blueprint structure is significantly modified
+ * 
+ * HISTORICAL EXCEPTIONS:
+ * Some existing blueprints use different patterns for historical reasons:
+ * - hr-v1-expanded: Extended HR blueprint with additional questions
+ * - payroll-v2-final: Second major revision of payroll blueprint
+ * - advanced-accounting-multibook-v3: Third revision of the advanced accounting blueprint
+ * 
+ * These exceptions are maintained to avoid breaking changes. All NEW blueprints
+ * should follow the standard format.
+ * 
+ * IMPORTANT: DO NOT change existing formIds as they may be referenced in stored data.
+ * Changing a formId is a breaking change that requires data migration.
+ */
 
 // Blueprint mapping
 const blueprintMapping: Record<string, string> = {
@@ -258,12 +99,15 @@ const blueprintMapping: Record<string, string> = {
   'WFM': 'workforce-management-v1', // Alternative name mapping
   'Incentive Compensation Management': 'incentive-compensation-v1',
   'ICM': 'incentive-compensation-v1', // Alternative name mapping
+  'Incentive Compensation / Commissions': 'incentive-compensation-v1', // UI exact match
   'Demand Planning': 'demand-planning-v1',
   'DP': 'demand-planning-v1', // Alternative name mapping
   'Quality Management': 'quality-management-v1',
   'QMS': 'quality-management-v1', // Alternative name mapping
+  'Quality Management (QMS)': 'quality-management-v1', // UI exact match
   'Warehouse Management': 'warehouse-management-v1',
   'WMS': 'warehouse-management-v1', // Alternative name mapping
+  'Warehouse Management System (WMS)': 'warehouse-management-v1', // UI exact match
   'WIP & Routing': 'wip-routing-v1',
   'Manufacturing Execution': 'wip-routing-v1', // Alternative name mapping
   'Work Orders & Assemblies': 'work-orders-assemblies-v1',
@@ -271,9 +115,11 @@ const blueprintMapping: Record<string, string> = {
   'Analytics Warehouse': 'analytics-warehouse-v1',
   'Data Warehouse': 'analytics-warehouse-v1', // Alternative name mapping
   'BI Analytics': 'analytics-warehouse-v1', // Alternative name mapping
+  'Analytics & Data Warehouse': 'analytics-warehouse-v1', // UI exact match
   'Connector / Integration': 'connector-integration-v1',
   'Integration Platform': 'connector-integration-v1', // Alternative name mapping
   'iPaaS': 'connector-integration-v1', // Alternative name mapping
+  'Integration / Connectors': 'connector-integration-v1', // UI exact match
   'Project Management': 'project-management-v1',
   'PSA': 'project-management-v1', // Professional Services Automation
   'PPM': 'project-management-v1', // Project Portfolio Management
@@ -283,6 +129,7 @@ const blueprintMapping: Record<string, string> = {
   'Customer Account Management': 'customer-account-management-v2',
   'Customer Portal': 'customer-account-management-v2', // Alternative name mapping
   'Customer Self-Service': 'customer-account-management-v2', // Alternative name mapping
+  'Customer Portals': 'customer-account-management-v2', // Alternative name mapping
   'Billing': 'billing-v1',
   'Invoicing': 'billing-v1', // Alternative name mapping
   'Billing Management': 'billing-v1', // Alternative name mapping
