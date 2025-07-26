@@ -4,9 +4,11 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { QuestionList } from '../form-components/QuestionList'
+import { KeyValueTable } from '../form-components/KeyValueTable'
+import { InstructionalText } from '../form-components/InstructionalText'
 import { MagicButton } from '../form-components/MagicButton'
 import { type StepComponentProps } from '@/types/rfq-wizard'
-import { type Question, type RfqFormBlueprint } from '@/types/rfq-forms'
+import { type Question, type RfqFormBlueprint, type FormSection } from '@/types/rfq-forms'
 
 interface AdditionalProcessStepProps extends StepComponentProps {
   blueprint?: RfqFormBlueprint | null
@@ -85,31 +87,36 @@ export function AdditionalProcessStep({
   onPrevious,
   blueprint
 }: AdditionalProcessStepProps) {
-  // Get questions from blueprint or use defaults
-  const getQuestions = (): Question[] => {
-    if (blueprint) {
-      // Find the additional-process section in the blueprint
-      const additionalProcessSection = blueprint.sections.find(s => s.sectionId === 'additional-process')
-      if (additionalProcessSection) {
-        // Extract questions from the QuestionList component
-        const questionListComponent = additionalProcessSection.components.find(c => c.componentType === 'QuestionList')
-        if (questionListComponent && 'questions' in questionListComponent) {
-          return questionListComponent.questions
-        }
-      }
+  // Get the second half of blueprint sections for additional process
+  const getAdditionalProcessSections = (): FormSection[] => {
+    if (blueprint && blueprint.sections.length > 0) {
+      // Take the second half of sections
+      const halfIndex = Math.ceil(blueprint.sections.length / 2)
+      return blueprint.sections.slice(halfIndex)
     }
-    // Fallback to default questions
-    return defaultAdditionalProcessQuestions
+    return []
   }
 
-  const questions = getQuestions()
+  const sections = getAdditionalProcessSections()
+  const hasBlueprint = sections.length > 0
 
-  const handleQuestionChange = (questionId: string, value: any) => {
+  const handleQuestionChange = (componentId: string, questionId: string, value: any) => {
     const newData = {
       ...formData,
       additionalProcess: {
         ...formData.additionalProcess,
-        [questionId]: value
+        [`${componentId}_${questionId}`]: value
+      }
+    }
+    onDataChange(newData)
+  }
+
+  const handleTableChange = (componentId: string, label: string, value: string) => {
+    const newData = {
+      ...formData,
+      additionalProcess: {
+        ...formData.additionalProcess,
+        [`${componentId}_${label}`]: value
       }
     }
     onDataChange(newData)
@@ -130,10 +137,66 @@ export function AdditionalProcessStep({
       'Google Workspace'
     ].join('\n')
     
-    handleQuestionChange('ap_03', formData.additionalProcess['ap_03'] 
-      ? formData.additionalProcess['ap_03'] + '\n\n' + suggestedIntegrations 
+    const key = hasBlueprint ? 'blueprint_ap_03' : 'default_ap_03'
+    handleQuestionChange('default', 'ap_03', formData.additionalProcess[key] 
+      ? formData.additionalProcess[key] + '\n\n' + suggestedIntegrations 
       : suggestedIntegrations
     )
+  }
+
+  // Render component based on type
+  const renderComponent = (component: any, sectionId: string) => {
+    const componentKey = `${sectionId}_${component.id || component.componentType}`
+    
+    switch (component.componentType) {
+      case 'InstructionalText':
+        return (
+          <InstructionalText
+            key={componentKey}
+            content={component.content}
+          />
+        )
+      
+      case 'KeyValueTable':
+        const tableValues: { [key: string]: string } = {}
+        // Extract values for this specific table
+        Object.entries(formData.additionalProcess || {}).forEach(([key, value]) => {
+          if (key.startsWith(`${component.id}_`)) {
+            const label = key.replace(`${component.id}_`, '')
+            tableValues[label] = value as string
+          }
+        })
+        return (
+          <KeyValueTable
+            key={componentKey}
+            rows={component.rows}
+            values={tableValues}
+            onChange={(label, value) => handleTableChange(component.id, label, value)}
+          />
+        )
+      
+      case 'QuestionList':
+        const questionValues: { [key: string]: any } = {}
+        // Extract values for this specific question list
+        Object.entries(formData.additionalProcess || {}).forEach(([key, value]) => {
+          if (key.startsWith(`${component.id}_`)) {
+            const questionId = key.replace(`${component.id}_`, '')
+            questionValues[questionId] = value
+          }
+        })
+        return (
+          <QuestionList
+            key={componentKey}
+            questions={component.questions}
+            values={questionValues}
+            onChange={(questionId, value) => handleQuestionChange(component.id, questionId, value)}
+            onSmartPromptClick={handleSmartPrompt}
+          />
+        )
+      
+      default:
+        return null
+    }
   }
 
   return (
@@ -159,12 +222,27 @@ export function AdditionalProcessStep({
             </p>
           </div>
 
-          <QuestionList
-            questions={questions}
-            values={formData.additionalProcess}
-            onChange={handleQuestionChange}
-            onSmartPromptClick={handleSmartPrompt}
-          />
+          {hasBlueprint ? (
+            // Render blueprint sections
+            sections.map((section) => (
+              <div key={section.sectionId} className="space-y-6">
+                <h3 className="text-lg font-semibold text-stackmatch-navy">
+                  {section.sectionTitle}
+                </h3>
+                {section.components.map((component) => 
+                  renderComponent(component, section.sectionId)
+                )}
+              </div>
+            ))
+          ) : (
+            // Fallback to default questions
+            <QuestionList
+              questions={defaultAdditionalProcessQuestions}
+              values={formData.additionalProcess}
+              onChange={(questionId, value) => handleQuestionChange('default', questionId, value)}
+              onSmartPromptClick={handleSmartPrompt}
+            />
+          )}
         </div>
       </Card>
 

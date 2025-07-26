@@ -7,7 +7,7 @@ import { TickerBanner } from '@/components/ticker/ticker-banner'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { getBlueprintById } from '@/lib/rfq-blueprints'
+import { getBlueprintById, getBlueprintIdByCategory, hasBlueprint } from '@/lib/rfq-blueprints'
 
 // Wizard Components
 import { StepperNavigation } from '@/components/rfq-forms/StepperNavigation'
@@ -78,8 +78,28 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
   const router = useRouter()
   const resolvedParams = use(params)
   
-  // Load blueprint
-  const blueprint = getBlueprintById(resolvedParams.formId)
+  // Load blueprint - handle both blueprint IDs and category names
+  let blueprintId = resolvedParams.formId
+  
+  // Check if the formId might be a category name instead of a blueprint ID
+  // Blueprint IDs typically end with version suffix like -v1, -v2, etc.
+  if (!blueprintId.match(/-v\d+$/)) {
+    // Try to resolve as category name
+    const resolvedId = getBlueprintIdByCategory(resolvedParams.formId.replace(/-/g, ' '))
+    if (resolvedId) {
+      blueprintId = resolvedId
+    }
+  }
+  
+  const blueprint = getBlueprintById(blueprintId)
+  
+  // If no blueprint found, redirect to AI workflow
+  useEffect(() => {
+    if (!blueprint) {
+      // Redirect to create-listing page with error message
+      router.push('/create-listing?error=blueprint-not-found')
+    }
+  }, [blueprint, router])
   
   // Wizard state
   const [wizardState, setWizardState] = useState<WizardState>({
@@ -206,8 +226,8 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
   }
 
 
-  // Get category name from formId and remove version suffix (e.g., V1, V2)
-  const categoryName = resolvedParams.formId
+  // Get category name from blueprint or formId
+  const categoryName = blueprint?.formTitle || resolvedParams.formId
     .replace(/-/g, ' ')
     .replace(/\b\w/g, l => l.toUpperCase())
     .replace(/\s+V\d+$/, '') // Remove version suffix like V1, V2, etc.
@@ -254,6 +274,18 @@ export default function DynamicRfqFormPage({ params }: PageProps) {
       sectionTitle: wizardSteps[wizardState.currentStep - 1].label,
       components: []
     }
+  }
+
+  // Show loading state while checking blueprint
+  if (!blueprint) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-stackmatch-blue border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-lg text-medium-gray">Loading blueprint...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

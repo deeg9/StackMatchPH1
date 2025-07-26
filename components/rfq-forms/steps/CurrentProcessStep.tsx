@@ -4,8 +4,10 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { QuestionList } from '../form-components/QuestionList'
+import { KeyValueTable } from '../form-components/KeyValueTable'
+import { InstructionalText } from '../form-components/InstructionalText'
 import { type StepComponentProps } from '@/types/rfq-wizard'
-import { type Question, type RfqFormBlueprint } from '@/types/rfq-forms'
+import { type Question, type RfqFormBlueprint, type FormSection } from '@/types/rfq-forms'
 
 interface CurrentProcessStepProps extends StepComponentProps {
   blueprint?: RfqFormBlueprint | null
@@ -76,31 +78,36 @@ export function CurrentProcessStep({
   onPrevious,
   blueprint
 }: CurrentProcessStepProps) {
-  // Get questions from blueprint or use defaults
-  const getQuestions = (): Question[] => {
-    if (blueprint) {
-      // Find the current-process section in the blueprint
-      const currentProcessSection = blueprint.sections.find(s => s.sectionId === 'current-process')
-      if (currentProcessSection) {
-        // Extract questions from the QuestionList component
-        const questionListComponent = currentProcessSection.components.find(c => c.componentType === 'QuestionList')
-        if (questionListComponent && 'questions' in questionListComponent) {
-          return questionListComponent.questions
-        }
-      }
+  // Get the first half of blueprint sections for current process
+  const getCurrentProcessSections = (): FormSection[] => {
+    if (blueprint && blueprint.sections.length > 0) {
+      // Take the first half of sections (rounded up)
+      const halfIndex = Math.ceil(blueprint.sections.length / 2)
+      return blueprint.sections.slice(0, halfIndex)
     }
-    // Fallback to default questions
-    return defaultCurrentProcessQuestions
+    return []
   }
 
-  const questions = getQuestions()
+  const sections = getCurrentProcessSections()
+  const hasBlueprint = sections.length > 0
 
-  const handleQuestionChange = (questionId: string, value: any) => {
+  const handleQuestionChange = (componentId: string, questionId: string, value: any) => {
     const newData = {
       ...formData,
       currentProcess: {
         ...formData.currentProcess,
-        [questionId]: value
+        [`${componentId}_${questionId}`]: value
+      }
+    }
+    onDataChange(newData)
+  }
+
+  const handleTableChange = (componentId: string, label: string, value: string) => {
+    const newData = {
+      ...formData,
+      currentProcess: {
+        ...formData.currentProcess,
+        [`${componentId}_${label}`]: value
       }
     }
     onDataChange(newData)
@@ -109,6 +116,61 @@ export function CurrentProcessStep({
   const handleSmartPrompt = (questionId: string, prompt: { text: string; question: string }) => {
     // This will be handled by the AI Assistant
     console.log('Smart prompt triggered:', { questionId, prompt })
+  }
+
+  // Render component based on type
+  const renderComponent = (component: any, sectionId: string) => {
+    const componentKey = `${sectionId}_${component.id || component.componentType}`
+    
+    switch (component.componentType) {
+      case 'InstructionalText':
+        return (
+          <InstructionalText
+            key={componentKey}
+            content={component.content}
+          />
+        )
+      
+      case 'KeyValueTable':
+        const tableValues: { [key: string]: string } = {}
+        // Extract values for this specific table
+        Object.entries(formData.currentProcess || {}).forEach(([key, value]) => {
+          if (key.startsWith(`${component.id}_`)) {
+            const label = key.replace(`${component.id}_`, '')
+            tableValues[label] = value as string
+          }
+        })
+        return (
+          <KeyValueTable
+            key={componentKey}
+            rows={component.rows}
+            values={tableValues}
+            onChange={(label, value) => handleTableChange(component.id, label, value)}
+          />
+        )
+      
+      case 'QuestionList':
+        const questionValues: { [key: string]: any } = {}
+        // Extract values for this specific question list
+        Object.entries(formData.currentProcess || {}).forEach(([key, value]) => {
+          if (key.startsWith(`${component.id}_`)) {
+            const questionId = key.replace(`${component.id}_`, '')
+            questionValues[questionId] = value
+          }
+        })
+        return (
+          <QuestionList
+            key={componentKey}
+            questions={component.questions}
+            values={questionValues}
+            onChange={(questionId, value) => handleQuestionChange(component.id, questionId, value)}
+            onSmartPromptClick={handleSmartPrompt}
+          />
+        )
+      
+      default:
+        return null
+    }
   }
 
   return (
@@ -127,12 +189,27 @@ export function CurrentProcessStep({
             </p>
           </div>
 
-          <QuestionList
-            questions={questions}
-            values={formData.currentProcess}
-            onChange={handleQuestionChange}
-            onSmartPromptClick={handleSmartPrompt}
-          />
+          {hasBlueprint ? (
+            // Render blueprint sections
+            sections.map((section) => (
+              <div key={section.sectionId} className="space-y-6">
+                <h3 className="text-lg font-semibold text-stackmatch-navy">
+                  {section.sectionTitle}
+                </h3>
+                {section.components.map((component) => 
+                  renderComponent(component, section.sectionId)
+                )}
+              </div>
+            ))
+          ) : (
+            // Fallback to default questions
+            <QuestionList
+              questions={defaultCurrentProcessQuestions}
+              values={formData.currentProcess}
+              onChange={(questionId, value) => handleQuestionChange('default', questionId, value)}
+              onSmartPromptClick={handleSmartPrompt}
+            />
+          )}
         </div>
       </Card>
 
