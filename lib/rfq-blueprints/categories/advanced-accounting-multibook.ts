@@ -2,7 +2,7 @@ import { type RfqFormBlueprint } from '@/types/rfq-forms'
 
 export const advancedAccountingMultibookBlueprint: RfqFormBlueprint = {
   formTitle: "Advanced Accounting & Multi-Book",
-  formId: "advanced-accounting-multibook-v3",
+  formId: "multi-book-accounting-advanced-v1",
   sections: [
     {
       sectionId: "advanced-acct-qual",

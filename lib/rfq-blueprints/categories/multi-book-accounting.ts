@@ -1,8 +1,8 @@
 import { type RfqFormBlueprint } from '@/types/rfq-forms'
 
 export const multiBookAccountingBlueprint: RfqFormBlueprint = {
-  formTitle: "Multi-Book Accounting",
-  formId: "multi-book-accounting-v1",
+  formTitle: "Multi-Book Accounting (Basic)",
+  formId: "multi-book-accounting-basic-v1",
   sections: [
     {
       sectionId: "general-info",

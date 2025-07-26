@@ -53,14 +53,28 @@ import { fixedAssetsManagementBlueprint } from './categories/fixed-assets-manage
  *   - New sections are added or removed
  *   - The blueprint structure is significantly modified
  * 
- * HISTORICAL EXCEPTIONS:
+ * HISTORICAL EXCEPTIONS (DO NOT MODIFY):
  * Some existing blueprints use different patterns for historical reasons:
- * - hr-v1-expanded: Extended HR blueprint with additional questions
- * - payroll-v2-final: Second major revision of payroll blueprint
- * - advanced-accounting-multibook-v3: Third revision of the advanced accounting blueprint
+ * 
+ * 1. hr-v1-expanded: 
+ *    - Created as an expanded version of the original HR blueprint
+ *    - Contains comprehensive HR questions across multiple sections
+ *    - The "expanded" suffix was used before version numbering was standardized
+ *    - Should have been named "hr-v2" but kept for backward compatibility
+ * 
+ * 2. payroll-v2-final:
+ *    - Second major revision of the payroll blueprint
+ *    - The "final" suffix was added during a major project milestone
+ *    - Should have been named "payroll-v2" but kept for backward compatibility
+ * 
+ * 3. Multi-Book Accounting Split:
+ *    - Two separate blueprints exist: basic (internal only) and advanced (shown in UI)
+ *    - multi-book-accounting-basic-v1: Legacy/internal use only, not shown in UI
+ *    - multi-book-accounting-advanced-v1: Primary version shown as "Advanced Accounting / Multi-Book"
+ *    - UI only shows the advanced version to avoid user confusion
  * 
  * These exceptions are maintained to avoid breaking changes. All NEW blueprints
- * should follow the standard format.
+ * MUST follow the standard format: [category-name]-v[version]
  * 
  * IMPORTANT: DO NOT change existing formIds as they may be referenced in stored data.
  * Changing a formId is a breaking change that requires data migration.
@@ -81,11 +95,12 @@ const blueprintMapping: Record<string, string> = {
   'FP&A': 'planning-budgeting-v1', // Alternative name mapping
   'Procurement Management': 'procurement-management-v1',
   'Procurement': 'procurement-management-v1', // Alternative name mapping
-  'Multi-Book Accounting': 'multi-book-accounting-v1',
-  'Multi-Book': 'multi-book-accounting-v1', // Alternative name mapping
-  'Advanced Accounting / Multi-Book': 'advanced-accounting-multibook-v3',
-  'Advanced Accounting': 'advanced-accounting-multibook-v3', // Alternative name mapping
-  'Advanced Multi-Book': 'advanced-accounting-multibook-v3', // Alternative name mapping
+  // Multi-Book Accounting - Basic version is internal only, Advanced is shown in UI
+  'Multi-Book Accounting': 'multi-book-accounting-basic-v1', // Internal/legacy use only
+  'Multi-Book': 'multi-book-accounting-basic-v1', // Internal/legacy use only
+  'Advanced Accounting / Multi-Book': 'multi-book-accounting-advanced-v1', // Primary UI option
+  'Advanced Accounting': 'multi-book-accounting-advanced-v1', // Alternative name mapping
+  'Advanced Multi-Book': 'multi-book-accounting-advanced-v1', // Alternative name mapping
   'Vendor Bill Processing': 'vendor-bill-processing-v1',
   'AP Automation': 'vendor-bill-processing-v1', // Alternative name mapping
   'Tax Management': 'tax-management-v1',
@@ -156,7 +171,8 @@ const blueprints: Record<string, RfqFormBlueprint> = {
   'collections-management-v1': collectionsManagementBlueprint,
   'planning-budgeting-v1': planningBudgetingBlueprint,
   'procurement-management-v1': procurementManagementBlueprint,
-  'multi-book-accounting-v1': multiBookAccountingBlueprint,
+  'multi-book-accounting-basic-v1': multiBookAccountingBlueprint,
+  'multi-book-accounting-v1': multiBookAccountingBlueprint, // Legacy alias for backward compatibility
   'vendor-bill-processing-v1': vendorBillProcessingBlueprint,
   'tax-management-v1': taxManagementBlueprint,
   'rebate-management-v1': rebateManagementBlueprint,
@@ -176,7 +192,8 @@ const blueprints: Record<string, RfqFormBlueprint> = {
   'customer-account-management-v2': customerAccountManagementBlueprint,
   'billing-v1': billingBlueprint,
   'epm-v1': epmBlueprint,
-  'advanced-accounting-multibook-v3': advancedAccountingMultibookBlueprint,
+  'multi-book-accounting-advanced-v1': advancedAccountingMultibookBlueprint,
+  'advanced-accounting-multibook-v3': advancedAccountingMultibookBlueprint, // Legacy alias for backward compatibility
   'cpq-v1': cpqBlueprint,
   'inventory-management-v1': inventoryManagementBlueprint,
   'crm-v1': crmBlueprint
