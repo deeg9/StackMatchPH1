@@ -283,7 +283,36 @@ if (error || !user) {
 │   ├── client.ts (Browser client)
 │   └── server.ts (Async server client with cookies)
 └── rfq-blueprints/
-    └── index.ts (Blueprint storage and category mapping)
+    ├── index.ts (Blueprint storage and category mapping - 29 categories)
+    └── categories/
+        ├── financial-management.ts
+        ├── account-reconciliation.ts
+        ├── collections-management.ts
+        ├── planning-budgeting.ts
+        ├── procurement-management.ts
+        ├── multi-book-accounting.ts
+        ├── advanced-accounting-multibook.ts
+        ├── vendor-bill-processing.ts
+        ├── tax-management.ts
+        ├── rebate-management.ts
+        ├── hr.ts
+        ├── payroll.ts
+        ├── workforce-management.ts
+        ├── incentive-compensation.ts
+        ├── field-service-management.ts
+        ├── demand-planning.ts
+        ├── quality-management.ts
+        ├── warehouse-management.ts
+        ├── wip-routing.ts
+        ├── work-orders-assemblies.ts
+        ├── analytics-warehouse.ts
+        ├── connector-integration.ts
+        ├── project-management.ts
+        ├── ecommerce-website.ts
+        ├── customer-account-management.ts
+        ├── billing.ts
+        ├── epm.ts
+        └── cpq.ts
 
 /types/
 ├── supabase.ts (Complete database schema types)
@@ -447,10 +476,43 @@ The project has been migrated to a new Supabase instance for Phase 1 development
   - **Component Callbacks**: onDataChange and onSectionChange for parent-child communication
   - **Auto-Save System**: 30-second interval saves with visual feedback
   - **Section Navigation**: Multi-section forms with progress tracking
-- **Current Blueprint Coverage**:
-  - **Fixed Assets Management**: 3 sections with business info, requirements, evaluation
-  - **Field Service Management**: 2 sections with objectives and service metrics
-  - **Extensible Design**: Easy addition of new category blueprints
+- **Current Blueprint Coverage** (29 categories implemented):
+  - **Financial Categories** (11 blueprints):
+    - **Fixed Assets Management**: 3 sections with business info, requirements, evaluation
+    - **Financial Management**: 10 questions across 2 sections (general requirements, specialized needs)
+    - **Account Reconciliation**: 18 questions across 3 sections (current process, discovery, control)
+    - **Collections Management**: 14 questions across 2 sections (current process, functional requirements)
+    - **Planning & Budgeting**: 16 questions across 3 sections (general, functional, technical)
+    - **Procurement Management**: 18 questions across 3 sections with sub-sections (user profiles, requisition, approval)
+    - **Multi-Book Accounting**: 4 questions across 2 sections (high-level, detailed needs)
+    - **Advanced Accounting / Multi-Book**: 8 questions with enhanced multi-entity focus
+    - **Vendor Bill Processing**: 17 questions across 2 sections (general process, detailed qualification)
+    - **Tax Management**: 12 questions across 4 sections (general, sales/use, VAT/GST, 1099 reporting)
+    - **Rebate Management**: 10 questions across 2 sections (current process, technical requirements)
+  - **HR & Workforce Categories** (4 blueprints):
+    - **Human Resources (HR)**: 13 questions covering HRIS, global workforce, compliance
+    - **Payroll**: 18 comprehensive questions on processing, compliance, reporting
+    - **Workforce Management**: 10 questions on scheduling, shifts, time tracking
+    - **Incentive Compensation Management**: 8 questions on commission calculations and policies
+  - **Operations Categories** (5 blueprints):
+    - **Field Service Management**: 2 sections with objectives and service metrics
+    - **Demand Planning**: 15 questions across 2 sections (forecasting, inventory optimization)
+    - **Quality Management**: 12 questions on quality systems and compliance
+    - **Warehouse Management**: 14 questions on inventory, fulfillment, warehouse operations
+    - **WIP & Routing**: 12 questions on manufacturing execution and production tracking
+  - **Commerce Categories** (4 blueprints):
+    - **Work Orders & Assemblies**: 10 questions on production management and BOM
+    - **E-commerce Website**: 17 questions across 3 sections (objectives, functional, technical)
+    - **Customer Account Management**: 12 questions across 2 sections (current state, requirements)
+    - **Billing**: 9 questions on invoice generation, collections, revenue recognition
+  - **Business Intelligence Categories** (3 blueprints):
+    - **Analytics Warehouse**: 16 questions across 3 sections (current state, data, reporting)
+    - **Connector / Integration**: 14 questions across 2 sections (current landscape, requirements)
+    - **Enterprise Performance Management (EPM)**: 13 questions on planning, consolidation, reporting
+  - **Sales & Project Categories** (2 blueprints):
+    - **Project Management**: 20 questions across 3 sections (current state, functional, reporting)
+    - **Configure, Price & Quote (CPQ)**: 15 questions across 3 subsections (Configure, Price, Quote)
+  - **Extensible Design**: Easy addition of new category blueprints with standardized structure
 
 ### AI-Powered Create Listing Workflow (January 2025)
 - **Revolutionary TurboTax-Style Architecture**: Complete transformation of RFQ creation from complex forms to conversational AI experience
@@ -620,7 +682,7 @@ The project has been migrated to a new Supabase instance for Phase 1 development
   - **Responsive Design**: Mobile-first with adaptive layouts
 
 ### AI Assistant Sidebar Enhancement (January 2025)
-- **Revolutionary Transformation**: Complete redesign from static AI Co-Pilot to interactive, tabbed AI Assistant command center
+- **Revolutionary Transformation**: Complete redesign from static AI Assistant to interactive, tabbed AI Assistant command center
   - **Tabbed Interface Architecture**: Chat (default) and Section Info tabs using shadcn/ui Tabs components
   - **RFQ Completeness Score Integration**: Dynamic score display at top of sidebar
   - **Full Conversational UI**: Message history with user/AI role distinction, timestamps, and auto-scrolling
@@ -631,7 +693,7 @@ The project has been migrated to a new Supabase instance for Phase 1 development
   - **AiAssistant.tsx**: Main container managing tab state and smart prompt callbacks
   - **RfqCompletenessScore.tsx**: Animated circular progress with color-coded status
   - **ChatTab.tsx**: Conversational interface with message state management and AI responses
-  - **SectionInfoTab.tsx**: Refactored original AI Co-Pilot content with progress tracking
+  - **SectionInfoTab.tsx**: Refactored original AI Assistant content with progress tracking
   - **SmartPromptButton.tsx**: Reusable button component with Sparkles icon and hover effects
 - **Form Integration Architecture**:
   - **TextAreaInput Enhancement**: Supports smart prompts array with onClick callbacks
@@ -654,9 +716,9 @@ The project has been migrated to a new Supabase instance for Phase 1 development
 
 ### Phase 1 Priorities
 1. **RFQ PDF Export**: Generate downloadable RFQs from AI-created listings and dynamic forms
-2. **Blueprint Expansion**: Add blueprints for remaining 28+ software categories
+2. **Blueprint Enhancement**: Refine existing 29 blueprints based on user feedback and add any missing categories
 3. **Form Analytics**: Track completion rates and drop-off points in dynamic forms
-4. **AI Co-Pilot Enhancement**: Improve contextual tips based on user behavior
+4. **AI Assistant Enhancement**: Improve contextual tips based on user behavior
 5. **User Onboarding Flow**: Streamlined registration focused on RFQ creation
 6. **StackTalk Enhancement**: Community features for procurement discussions
 7. **SEO Optimization**: Landing pages for RFQ creation keywords

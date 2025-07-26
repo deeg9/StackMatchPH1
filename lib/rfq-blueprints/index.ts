@@ -6,6 +6,29 @@ import { planningBudgetingBlueprint } from './categories/planning-budgeting'
 import { procurementManagementBlueprint } from './categories/procurement-management'
 import { multiBookAccountingBlueprint } from './categories/multi-book-accounting'
 import { vendorBillProcessingBlueprint } from './categories/vendor-bill-processing'
+import { taxManagementBlueprint } from './categories/tax-management'
+import { rebateManagementBlueprint } from './categories/rebate-management'
+import { hrBlueprint } from './categories/hr'
+import { payrollBlueprint } from './categories/payroll'
+import { workforceManagementBlueprint } from './categories/workforce-management'
+import { incentiveCompensationBlueprint } from './categories/incentive-compensation'
+import { fieldServiceManagementBlueprint } from './categories/field-service-management'
+import { demandPlanningBlueprint } from './categories/demand-planning'
+import { qualityManagementBlueprint } from './categories/quality-management'
+import { warehouseManagementBlueprint } from './categories/warehouse-management'
+import { wipRoutingBlueprint } from './categories/wip-routing'
+import { workOrdersAssembliesBlueprint } from './categories/work-orders-assemblies'
+import { analyticsWarehouseBlueprint } from './categories/analytics-warehouse'
+import { connectorIntegrationBlueprint } from './categories/connector-integration'
+import { projectManagementBlueprint } from './categories/project-management'
+import { ecommerceWebsiteBlueprint } from './categories/ecommerce-website'
+import { customerAccountManagementBlueprint } from './categories/customer-account-management'
+import { billingBlueprint } from './categories/billing'
+import { epmBlueprint } from './categories/epm'
+import { advancedAccountingMultibookBlueprint } from './categories/advanced-accounting-multibook'
+import { cpqBlueprint } from './categories/cpq'
+import { inventoryManagementBlueprint } from './categories/inventory-management'
+import { crmBlueprint } from './categories/crm'
 
 // Fixed Assets Management Blueprint
 const fixedAssetsManagementBlueprint: RfqFormBlueprint = {
@@ -202,185 +225,6 @@ const fixedAssetsManagementBlueprint: RfqFormBlueprint = {
   ]
 }
 
-// Field Service Management Blueprint
-const fieldServiceManagementBlueprint: RfqFormBlueprint = {
-  formTitle: "Field Service Management",
-  formId: "field-service-management-v1",
-  sections: [
-    {
-      sectionId: "general-info",
-      sectionTitle: "GENERAL DEAL CYCLE INFORMATION",
-      components: [
-        {
-          componentType: "InstructionalText",
-          content: "This section should be filled out by the AE or AM before submitting an SC Request."
-        },
-        {
-          componentType: "KeyValueTable",
-          id: "general-info-table",
-          rows: [
-            { label: "Company Name", inputType: "text" },
-            { label: "Sales Rep", inputType: "text" }
-          ]
-        }
-      ]
-    },
-    {
-      sectionId: "sales-qual",
-      sectionTitle: "SALES – QUALIFICATION QUESTIONS",
-      components: [
-        {
-          componentType: "InstructionalText",
-          content: "This section should be filled out by the AE or AM before submitting an SC Request."
-        },
-        {
-          componentType: "QuestionList",
-          id: "sales-questions",
-          questions: [
-            {
-              id: "sq_fsm_01",
-              questionText: "How many field service technicians going out to the field for you?",
-              helpText: "Note: Anything under 10 is typically not a good fit, but if the prospect/customer has the budget for it, we can still proceed.",
-              inputType: "radiogroup",
-              options: ["<10 – Confirm budget.", ">10 – Continue.", ">50 – Engage an Overlay Sales Rep", ">1000 – Disqualify."]
-            },
-            {
-              id: "sq_fsm_02",
-              questionText: "What is 80% of the services you provide?",
-              helpText: "Note: Sales rep should try to understand the breakdown of their services. What is the majority of their business model?",
-              inputType: "textarea"
-            },
-            {
-              id: "sq_fsm_03",
-              questionText: "What are your sources of revenue?",
-              helpText: "Is servicing equipment / assets (installations, preventive maintenance, corrective maintenance) a major part of your revenue stream? Roughly how much is its revenue contribution as compared to other revenue streams?",
-              inputType: "textarea"
-            },
-            {
-              id: "sq_fsm_04",
-              questionText: "Can you describe the types of activities, assets, and field work?",
-              helpText: "Ex Types: installations, preventative maintenance, and/or break fix. Ex Assets: Machinery, Properties, Parks, Pools, Vehicles, Equipment, etc. Ex Field Work: engineers, technicians, maintenance staff",
-              inputType: "textarea"
-            },
-            {
-              id: "sq_fsm_05",
-              questionText: "Where is the work being completed?",
-              helpText: "Ex: In house at a fixed location? Or in the field (various locations)?",
-              inputType: "textarea"
-            },
-            {
-              id: "sq_fsm_06",
-              questionText: "How do you schedule your technicians to jobs?",
-              inputType: "textarea"
-            },
-            {
-              id: "sq_fsm_07",
-              questionText: "Do you require clock in/out for payroll purposes?",
-              helpText: "Note: It is important to understand this requirement to know what needs to be positioned. Work with your SC to position the appropriate modules.",
-              inputType: "radiogroup",
-              options: ["Yes", "No"]
-            },
-            {
-              id: "sq_fsm_08",
-              questionText: "Are your assets serialized or lot tracked?",
-              helpText: "Note: If yes, they will also need Adv. Inventory",
-              inputType: "radiogroup",
-              options: ["Yes", "No"]
-            },
-            {
-              id: "sq_fsm_09",
-              questionText: "Do your technicians use inventory/parts to complete their jobs out in the field?",
-              inputType: "radiogroup",
-              options: ["Yes", "No"]
-            },
-            {
-              id: "sq_fsm_10",
-              questionText: "Do they NEED any of the following?",
-              helpText: "Note: These can be disqualifiers, but it is dependent on the size of the company and budget. Work with your SC to understand requirements and validate fit.",
-              inputType: "checkboxgroup",
-              options: ["Delivery Service", "Rental Management", "Automated Job Order & Route Mapping", "Customer Portal for Scheduling"]
-            },
-            {
-              id: "sq_fsm_11",
-              questionText: "Do you have an existing FSM solution?",
-              helpText: "If yes, what solution are using today? Or is it homegrown?",
-              inputType: "radiogroup",
-              options: ["Yes", "No"]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      sectionId: "sc-qual",
-      sectionTitle: "SC – QUALIFICATION/DISCOVERY",
-      components: [
-        {
-          componentType: "QuestionList",
-          id: "sc-questions",
-          questions: [
-            {
-              id: "scq_fsm_01",
-              questionText: "How many subsidiaries will be managed with a need for FSM?",
-              helpText: "Note: Only support 1 subsidiary out of the box, can create a large SOW to accommodate for additional subsidiaries – budget and implementation time concerns.",
-              inputType: "textarea"
-            },
-            {
-              id: "scq_fsm_02",
-              questionText: "If FSM is needed in more than one subsidiary, are customers and/or technicians/staff shared across them?",
-              inputType: "checkboxgroup",
-              options: ["Customers are shared across subsidiaries", "Technicians/Staff are shared across subsidiaries"]
-            },
-            {
-              id: "scq_fsm_03",
-              questionText: "Is your work predominantly B2B or B2C?",
-              helpText: "Note: B2C can be challenging due to subcontracting, showing a catalog of items out in the field, and lack of customer portal (calendars and scheduling by the customer).",
-              inputType: "radiogroup",
-              options: ["B2B", "B2C"]
-            },
-            {
-              id: "scq_fsm_04",
-              questionText: "Do you require Fleet Management?",
-              helpText: "Ex: Company owned vehicles requiring service. Caution: If this is the majority, we don't handle it well.",
-              inputType: "textarea"
-            },
-            {
-              id: "scq_fsm_05",
-              questionText: "Do you do any rental management?",
-              helpText: "Caution: If this is the majority, we don't handle it well.",
-              inputType: "textarea"
-            },
-            {
-              id: "scq_fsm_06",
-              questionText: "Are PMs (preventative maintenance) created based on set schedules (calendar based) or usage/hours/miles(km) based?",
-              helpText: "Caution: FSM does not support usage based out of the box.",
-              inputType: "radiogroup",
-              options: ["Calendar Based", "Usage/Hours/Miles(km) Based – Requires Scripting"]
-            },
-            {
-              id: "scq_fsm_07",
-              questionText: "Do you take pictures, capture signatures, or fill out forms in the field?",
-              helpText: "Caution: For pictures they get stored in the file cabinet, so the limitation is around budget for additional file cabinet space.",
-              inputType: "checkboxgroup_with_number",
-              options: [
-                { label: "Pictures" },
-                { label: "Signatures" },
-                { label: "Forms" }
-              ]
-            },
-            {
-              id: "scq_fsm_08",
-              questionText: "Do you require quoting or upselling out in the field?",
-              inputType: "checkboxgroup",
-              options: ["Quoting", "Upselling", "Both"]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-
 // Blueprint mapping
 const blueprintMapping: Record<string, string> = {
   'Fixed Assets Management': 'fixed-assets-management-v1',
@@ -398,8 +242,62 @@ const blueprintMapping: Record<string, string> = {
   'Procurement': 'procurement-management-v1', // Alternative name mapping
   'Multi-Book Accounting': 'multi-book-accounting-v1',
   'Multi-Book': 'multi-book-accounting-v1', // Alternative name mapping
+  'Advanced Accounting / Multi-Book': 'advanced-accounting-multibook-v3',
+  'Advanced Accounting': 'advanced-accounting-multibook-v3', // Alternative name mapping
+  'Advanced Multi-Book': 'advanced-accounting-multibook-v3', // Alternative name mapping
   'Vendor Bill Processing': 'vendor-bill-processing-v1',
-  'AP Automation': 'vendor-bill-processing-v1' // Alternative name mapping
+  'AP Automation': 'vendor-bill-processing-v1', // Alternative name mapping
+  'Tax Management': 'tax-management-v1',
+  'Tax Compliance': 'tax-management-v1', // Alternative name mapping
+  'Rebate Management': 'rebate-management-v1',
+  'Rebates': 'rebate-management-v1', // Alternative name mapping
+  'Human Resources (HR)': 'hr-v1-expanded',
+  'HR': 'hr-v1-expanded', // Alternative name mapping
+  'Payroll': 'payroll-v2-final',
+  'Workforce Management': 'workforce-management-v1',
+  'WFM': 'workforce-management-v1', // Alternative name mapping
+  'Incentive Compensation Management': 'incentive-compensation-v1',
+  'ICM': 'incentive-compensation-v1', // Alternative name mapping
+  'Demand Planning': 'demand-planning-v1',
+  'DP': 'demand-planning-v1', // Alternative name mapping
+  'Quality Management': 'quality-management-v1',
+  'QMS': 'quality-management-v1', // Alternative name mapping
+  'Warehouse Management': 'warehouse-management-v1',
+  'WMS': 'warehouse-management-v1', // Alternative name mapping
+  'WIP & Routing': 'wip-routing-v1',
+  'Manufacturing Execution': 'wip-routing-v1', // Alternative name mapping
+  'Work Orders & Assemblies': 'work-orders-assemblies-v1',
+  'Assembly Management': 'work-orders-assemblies-v1', // Alternative name mapping
+  'Analytics Warehouse': 'analytics-warehouse-v1',
+  'Data Warehouse': 'analytics-warehouse-v1', // Alternative name mapping
+  'BI Analytics': 'analytics-warehouse-v1', // Alternative name mapping
+  'Connector / Integration': 'connector-integration-v1',
+  'Integration Platform': 'connector-integration-v1', // Alternative name mapping
+  'iPaaS': 'connector-integration-v1', // Alternative name mapping
+  'Project Management': 'project-management-v1',
+  'PSA': 'project-management-v1', // Professional Services Automation
+  'PPM': 'project-management-v1', // Project Portfolio Management
+  'E-commerce Website': 'ecommerce-website-v1',
+  'Ecommerce': 'ecommerce-website-v1', // Alternative name mapping
+  'Online Store': 'ecommerce-website-v1', // Alternative name mapping
+  'Customer Account Management': 'customer-account-management-v2',
+  'Customer Portal': 'customer-account-management-v2', // Alternative name mapping
+  'Customer Self-Service': 'customer-account-management-v2', // Alternative name mapping
+  'Billing': 'billing-v1',
+  'Invoicing': 'billing-v1', // Alternative name mapping
+  'Billing Management': 'billing-v1', // Alternative name mapping
+  'Enterprise Performance Management (EPM)': 'epm-v1',
+  'EPM': 'epm-v1', // Alternative name mapping
+  'Corporate Performance Management': 'epm-v1', // Alternative name mapping
+  'CPM': 'epm-v1', // Alternative name mapping
+  'Configure, Price & Quote (CPQ)': 'cpq-v1',
+  'CPQ': 'cpq-v1', // Alternative name mapping
+  'Configure Price Quote': 'cpq-v1', // Alternative name mapping
+  'Inventory Management': 'inventory-management-v1',
+  'Inventory': 'inventory-management-v1', // Alternative name mapping
+  'Customer Relationship Management (CRM)': 'crm-v1',
+  'CRM': 'crm-v1', // Alternative name mapping
+  'Customer Relationship Management': 'crm-v1' // Alternative name mapping
 }
 
 // All blueprints registry
@@ -412,7 +310,29 @@ const blueprints: Record<string, RfqFormBlueprint> = {
   'planning-budgeting-v1': planningBudgetingBlueprint,
   'procurement-management-v1': procurementManagementBlueprint,
   'multi-book-accounting-v1': multiBookAccountingBlueprint,
-  'vendor-bill-processing-v1': vendorBillProcessingBlueprint
+  'vendor-bill-processing-v1': vendorBillProcessingBlueprint,
+  'tax-management-v1': taxManagementBlueprint,
+  'rebate-management-v1': rebateManagementBlueprint,
+  'hr-v1-expanded': hrBlueprint,
+  'payroll-v2-final': payrollBlueprint,
+  'workforce-management-v1': workforceManagementBlueprint,
+  'incentive-compensation-v1': incentiveCompensationBlueprint,
+  'demand-planning-v1': demandPlanningBlueprint,
+  'quality-management-v1': qualityManagementBlueprint,
+  'warehouse-management-v1': warehouseManagementBlueprint,
+  'wip-routing-v1': wipRoutingBlueprint,
+  'work-orders-assemblies-v1': workOrdersAssembliesBlueprint,
+  'analytics-warehouse-v1': analyticsWarehouseBlueprint,
+  'connector-integration-v1': connectorIntegrationBlueprint,
+  'project-management-v1': projectManagementBlueprint,
+  'ecommerce-website-v1': ecommerceWebsiteBlueprint,
+  'customer-account-management-v2': customerAccountManagementBlueprint,
+  'billing-v1': billingBlueprint,
+  'epm-v1': epmBlueprint,
+  'advanced-accounting-multibook-v3': advancedAccountingMultibookBlueprint,
+  'cpq-v1': cpqBlueprint,
+  'inventory-management-v1': inventoryManagementBlueprint,
+  'crm-v1': crmBlueprint
 }
 
 // Helper functions
@@ -442,5 +362,27 @@ export {
   planningBudgetingBlueprint,
   procurementManagementBlueprint,
   multiBookAccountingBlueprint,
-  vendorBillProcessingBlueprint
+  vendorBillProcessingBlueprint,
+  taxManagementBlueprint,
+  rebateManagementBlueprint,
+  hrBlueprint,
+  payrollBlueprint,
+  workforceManagementBlueprint,
+  incentiveCompensationBlueprint,
+  demandPlanningBlueprint,
+  qualityManagementBlueprint,
+  warehouseManagementBlueprint,
+  wipRoutingBlueprint,
+  workOrdersAssembliesBlueprint,
+  analyticsWarehouseBlueprint,
+  connectorIntegrationBlueprint,
+  projectManagementBlueprint,
+  ecommerceWebsiteBlueprint,
+  customerAccountManagementBlueprint,
+  billingBlueprint,
+  epmBlueprint,
+  advancedAccountingMultibookBlueprint,
+  cpqBlueprint,
+  inventoryManagementBlueprint,
+  crmBlueprint
 }
