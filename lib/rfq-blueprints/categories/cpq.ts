@@ -11,7 +11,6 @@ export const cpqBlueprint: RfqFormBlueprint = {
         {
           componentType: "QuestionList",
           id: "cpq-questions-configure",
-          listTitle: "CONFIGURE",
           questions: [
             {
               id: "cpq_conf_01",
@@ -85,7 +84,6 @@ export const cpqBlueprint: RfqFormBlueprint = {
         {
           componentType: "QuestionList",
           id: "cpq-questions-price",
-          listTitle: "PRICE",
           questions: [
             {
               id: "cpq_price_01",
@@ -159,7 +157,6 @@ export const cpqBlueprint: RfqFormBlueprint = {
         {
           componentType: "QuestionList",
           id: "cpq-questions-quote",
-          listTitle: "QUOTE",
           questions: [
             {
               id: "cpq_quote_01",

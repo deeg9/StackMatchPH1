@@ -11,7 +11,6 @@ export const projectManagementBlueprint: RfqFormBlueprint = {
         {
           componentType: "QuestionList",
           id: "pm-questions-pm",
-          listTitle: "PROJECT MANAGEMENT",
           questions: [
             {
               id: "pm_pm_01",
@@ -98,7 +97,6 @@ export const projectManagementBlueprint: RfqFormBlueprint = {
         {
           componentType: "QuestionList",
           id: "pm-questions-rm",
-          listTitle: "RESOURCE MANAGEMENT",
           questions: [
             {
               id: "pm_rm_01",
@@ -181,7 +179,6 @@ export const projectManagementBlueprint: RfqFormBlueprint = {
         {
           componentType: "QuestionList",
           id: "pm-questions-te",
-          listTitle: "TIME & EXPENSE MANAGEMENT",
           questions: [
             {
               id: "pm_te_01",
@@ -233,7 +230,6 @@ export const projectManagementBlueprint: RfqFormBlueprint = {
         {
           componentType: "QuestionList",
           id: "pm-questions-fm",
-          listTitle: "FINANCIAL MANAGEMENT",
           questions: [
             {
               id: "pm_fm_01",
@@ -286,7 +282,6 @@ export const projectManagementBlueprint: RfqFormBlueprint = {
         {
           componentType: "QuestionList",
           id: "pm-questions-reporting",
-          listTitle: "REPORTING",
           questions: [
             {
               id: "pm_rpt_01",
