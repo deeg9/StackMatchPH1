@@ -9,15 +9,9 @@ import {
   Users, 
   MessageSquare, 
   Eye, 
-  ArrowRight,
   Star,
-  Building2,
-  Phone,
-  Mail,
   Calendar,
-  ExternalLink,
-  Clock,
-  CheckCircle
+  ExternalLink
 } from 'lucide-react'
 
 interface Contact {
@@ -29,14 +23,6 @@ interface Contact {
   phone: string
   avatarUrl: string
   isPrimary: boolean
-}
-
-interface DealRoom {
-  id: string
-  name: string
-  status: 'active' | 'completed' | 'closed'
-  lastActivity: string
-  participants: number
 }
 
 interface SimilarVendor {
@@ -54,12 +40,11 @@ interface CompanySidebarProps {
 
 export function CompanySidebar({ companyId }: CompanySidebarProps) {
   const [contacts, setContacts] = useState<Contact[]>([])
-  const [dealRooms, setDealRooms] = useState<DealRoom[]>([])
   const [similarVendors, setSimilarVendors] = useState<SimilarVendor[]>([])
   const [loading, setLoading] = useState(true)
 
   // Mock data for different companies
-  const mockData: Record<string, { contacts: Contact[], dealRooms: DealRoom[], similarVendors: SimilarVendor[] }> = {
+  const mockData: Record<string, { contacts: Contact[], dealRooms: any[], similarVendors: SimilarVendor[] }> = {
     'salesforce': {
       contacts: [
         {
@@ -227,26 +212,22 @@ export function CompanySidebar({ companyId }: CompanySidebarProps) {
       setLoading(true)
       try {
         // Try API calls first
-        const [contactsRes, dealRoomsRes, similarRes] = await Promise.all([
+        const [contactsRes, similarRes] = await Promise.all([
           fetch(`/api/companies/${companyId}/contacts`),
-          fetch(`/api/companies/${companyId}/deal-rooms`),
           fetch(`/api/companies/${companyId}/similar`)
         ])
 
-        if (contactsRes.ok && dealRoomsRes.ok && similarRes.ok) {
-          const [contactsData, dealRoomsData, similarData] = await Promise.all([
+        if (contactsRes.ok && similarRes.ok) {
+          const [contactsData, similarData] = await Promise.all([
             contactsRes.json(),
-            dealRoomsRes.json(),
             similarRes.json()
           ])
           setContacts(contactsData.contacts)
-          setDealRooms(dealRoomsData.dealRooms)
           setSimilarVendors(similarData.vendors)
         } else {
           // Fallback to mock data
           const mock = mockData[companyId] || mockData['salesforce']
           setContacts(mock.contacts)
-          setDealRooms(mock.dealRooms)
           setSimilarVendors(mock.similarVendors)
         }
       } catch (error) {
@@ -254,7 +235,6 @@ export function CompanySidebar({ companyId }: CompanySidebarProps) {
         // Fallback to mock data
         const mock = mockData[companyId] || mockData['salesforce']
         setContacts(mock.contacts)
-        setDealRooms(mock.dealRooms)
         setSimilarVendors(mock.similarVendors)
       } finally {
         setLoading(false)
@@ -263,24 +243,6 @@ export function CompanySidebar({ companyId }: CompanySidebarProps) {
 
     fetchSidebarData()
   }, [companyId])
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'text-trust-green bg-trust-green/10'
-      case 'completed': return 'text-stackmatch-blue bg-stackmatch-blue/10'
-      case 'closed': return 'text-medium-gray bg-medium-gray/10'
-      default: return 'text-medium-gray bg-medium-gray/10'
-    }
-  }
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'active': return Clock
-      case 'completed': return CheckCircle
-      case 'closed': return CheckCircle
-      default: return Clock
-    }
-  }
 
   if (loading) {
     return (
@@ -356,62 +318,6 @@ export function CompanySidebar({ companyId }: CompanySidebarProps) {
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Deal Room History */}
-      <Card className="border-slate-200 shadow-sm">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-2 mb-4">
-            <Building2 className="w-5 h-5 text-stackmatch-blue" />
-            <h3 className="font-semibold text-stackmatch-navy">Your Deal Room History</h3>
-          </div>
-          
-          {dealRooms.length > 0 ? (
-            <div className="space-y-3">
-              {dealRooms.map((room) => {
-                const StatusIcon = getStatusIcon(room.status)
-                return (
-                  <div key={room.id} className="p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-semibold text-sm text-stackmatch-navy">{room.name}</h4>
-                      <Badge variant="secondary" className={`text-xs ${getStatusColor(room.status)}`}>
-                        <StatusIcon className="w-3 h-3 mr-1" />
-                        {room.status}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-medium-gray">
-                      <div className="flex items-center gap-1">
-                        <Users className="w-3 h-3" />
-                        <span>{room.participants} participants</span>
-                      </div>
-                      <span>{room.lastActivity}</span>
-                    </div>
-                  </div>
-                )
-              })}
-              
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="w-full border-stackmatch-blue text-stackmatch-blue hover:bg-stackmatch-blue hover:text-white"
-              >
-                View All Deal Rooms
-                <ArrowRight className="w-3 h-3 ml-1" />
-              </Button>
-            </div>
-          ) : (
-            <div className="text-center py-6">
-              <Building2 className="w-8 h-8 text-medium-gray mx-auto mb-2" />
-              <p className="text-sm text-medium-gray mb-3">No deal rooms yet</p>
-              <Button 
-                size="sm" 
-                className="bg-stackmatch-blue hover:bg-stackmatch-navy text-white"
-              >
-                Start Deal Room
-              </Button>
-            </div>
-          )}
         </CardContent>
       </Card>
 

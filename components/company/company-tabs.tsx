@@ -74,12 +74,7 @@ export function CompanyTabs({ companyId }: CompanyTabsProps) {
                   className="relative flex flex-col items-center gap-2 p-4 text-center data-[state=active]:bg-white data-[state=active]:text-stackmatch-blue data-[state=active]:shadow-sm rounded-none border-b-2 border-transparent data-[state=active]:border-stackmatch-blue transition-all duration-200 hover:bg-white/50"
                 >
                   <IconComponent className="w-5 h-5" />
-                  <div>
-                    <div className="font-semibold text-sm">{tab.label}</div>
-                    <div className="text-xs text-medium-gray mt-1 hidden lg:block">
-                      {tab.description}
-                    </div>
-                  </div>
+                  <div className="font-semibold text-sm">{tab.label}</div>
                   
                   {/* Active Tab Indicator */}
                   {activeTab === tab.value && (
