@@ -5,18 +5,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CompanyOverview } from './overview/company-overview'
 import { ProductsServices } from './products/products-services'
 import { CaseStudiesReviews } from './reviews/case-studies-reviews'
-import { CompanyInfo } from './company-info/company-info'
 import { Resources } from './resources/resources'
 import { 
   Building2, 
   Package, 
   Star, 
-  Info, 
-  FileText, 
-  Users, 
-  TrendingUp,
-  Award,
-  BookOpen
+  FileText
 } from 'lucide-react'
 
 interface CompanyTabsProps {
@@ -46,12 +40,6 @@ export function CompanyTabs({ companyId }: CompanyTabsProps) {
       description: 'Customer success stories and testimonials'
     },
     {
-      value: 'company-info',
-      label: 'Company Info',
-      icon: Info,
-      description: 'Detailed company information'
-    },
-    {
       value: 'resources',
       label: 'Resources',
       icon: FileText,
@@ -64,7 +52,7 @@ export function CompanyTabs({ companyId }: CompanyTabsProps) {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {/* Tab Navigation */}
         <div className="border-b border-slate-200 bg-slate-50/50">
-          <TabsList className="grid w-full grid-cols-5 bg-transparent p-0 h-auto">
+          <TabsList className="grid w-full grid-cols-4 bg-transparent p-0 h-auto">
             {tabs.map((tab) => {
               const IconComponent = tab.icon
               return (
@@ -98,10 +86,6 @@ export function CompanyTabs({ companyId }: CompanyTabsProps) {
 
           <TabsContent value="reviews" className="mt-0 space-y-6">
             <CaseStudiesReviews companyId={companyId} />
-          </TabsContent>
-
-          <TabsContent value="company-info" className="mt-0 space-y-6">
-            <CompanyInfo companyId={companyId} />
           </TabsContent>
 
           <TabsContent value="resources" className="mt-0 space-y-6">
