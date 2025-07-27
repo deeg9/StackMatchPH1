@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { CheckCircle, Calendar, Users, MapPin, Globe, MessageSquare, Video } from 'lucide-react'
+import { CheckCircle, Calendar, Users, MapPin, Globe, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -223,22 +223,14 @@ export function CompanyHeader({ companyId }: CompanyHeaderProps) {
                 </div>
               </div>
               
-              {/* Right Side - Action Buttons */}
-              <div className="lg:ml-auto flex flex-col sm:flex-row gap-3 lg:mb-4">
+              {/* Right Side - Action Button */}
+              <div className="lg:ml-auto lg:mb-4">
                 <Button 
                   size="lg" 
                   className="bg-trust-green hover:bg-green-600 text-white font-semibold px-8 py-3 text-base shadow-lg hover:shadow-xl transition-all"
                 >
                   <MessageSquare className="w-5 h-5 mr-2" />
                   Request Quote
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="bg-white/90 hover:bg-white text-stackmatch-navy border-2 border-white font-semibold px-8 py-3 text-base shadow-lg hover:shadow-xl transition-all"
-                >
-                  <Video className="w-5 h-5 mr-2" />
-                  Schedule Demo
                 </Button>
               </div>
             </div>
